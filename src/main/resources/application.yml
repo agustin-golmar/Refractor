@@ -1,0 +1,9 @@
+#
+# >>> Refractor Properties
+#
+
+refractor:
+    title: "(2018) Refractor v1.0"
+    layout: "classpath:layout.fxml"
+    width: 640
+    height: 480
