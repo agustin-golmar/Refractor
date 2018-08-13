@@ -8,8 +8,8 @@
 	<stylesheets>
 		<URL value = "@style.css"/>
 	</stylesheets>
-	<Button GridPane.columnIndex = "0" GridPane.rowIndex = "0" text = "Button-1" onAction = "#clickButton"/>
-	<Button GridPane.columnIndex = "0" GridPane.rowIndex = "1" text = "Button-2" onAction = "#clickButton"/>
+	<Button GridPane.columnIndex = "0" GridPane.rowIndex = "0" text = "White Square" onAction = "#whiteSquare"/>
+	<Button GridPane.columnIndex = "0" GridPane.rowIndex = "1" text = "BARCO" onAction = "#loadBarco"/>
 	<Button GridPane.columnIndex = "1" GridPane.rowIndex = "1" text = "Button-3" onAction = "#clickButton"/>
 	<Button GridPane.columnIndex = "2" GridPane.rowIndex = "2" text = "Button-4" onAction = "#clickButton"/>
 </GridPane>
