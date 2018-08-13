@@ -4,6 +4,7 @@
 	import javafx.embed.swing.SwingFXUtils;
     import javafx.event.ActionEvent;
 	import javafx.fxml.FXML;
+    import javafx.scene.Node;
     import javafx.scene.Scene;
     import javafx.scene.image.Image;
     import javafx.scene.image.ImageView;
@@ -34,16 +35,23 @@
                 for (int j=0;j<300;j++) {
                     if (i<100 || i>200 || j<100 || j>200) {
                         image.getPixelWriter().setColor(i,j,Color.BLACK);
+
                     }
                 }
             }
             ImageView imageView = new ImageView();
             imageView.setImage(image);
+            imageView.setOnMouseDragged(e -> {
+                        System.out.println(e.getX() + " " + e.getY());
+                        image.getPixelWriter().setColor((int)e.getX(),(int)e.getY(),Color.RED);
+                    });
 
             // Display image on screen
             StackPane root = new StackPane();
             root.getChildren().add(imageView);
-            Scene scene = new Scene(root, 300, 250);
+            Scene scene = new Scene(root, 300, 300);
+            //Scene scene= ((Node)event.getSource()).getScene();
+            //scene.setRoot(root);
             Stage stage = new Stage();
             stage.setScene(scene);
             stage.show();
@@ -69,6 +77,11 @@
                 //image.getPixelWriter().setPixels(0,0,290,207,PixelFormat.getByteBgraPreInstance(),imageBytes,0,290);
                 ImageView imageView = new ImageView();
                 imageView.setImage(image);
+
+                imageView.setOnMouseDragged(e -> {
+                    System.out.println(e.getX() + " " + e.getY());
+                    image.getPixelWriter().setColor((int)e.getX(),(int)e.getY(),Color.RED);
+                });
                 StackPane root = new StackPane();
                 root.getChildren().add(imageView);
                 Scene scene = new Scene(root, 290, 207);
