@@ -21,6 +21,7 @@
     public class Navigation {
 
         private static final int BARCO_RES =290*207;
+        private double startX, startY;
 
         @FXML
 		protected void clickButton(final ActionEvent event) {
@@ -34,17 +35,48 @@
             for (int i=0;i<300;i++) {
                 for (int j=0;j<300;j++) {
                     if (i<100 || i>200 || j<100 || j>200) {
-                        image.getPixelWriter().setColor(i,j,Color.BLACK);
+                        image.getPixelWriter().setColor(i,j,Color.RED);
 
+                    }
+                    else {
+                        image.getPixelWriter().setColor(i,j,Color.BLUE);
                     }
                 }
             }
             ImageView imageView = new ImageView();
             imageView.setImage(image);
             imageView.setOnMouseDragged(e -> {
-                        System.out.println(e.getX() + " " + e.getY());
-                        image.getPixelWriter().setColor((int)e.getX(),(int)e.getY(),Color.RED);
+                        if (e.isShiftDown()) {
+                            System.out.println(e.getX() + " " + e.getY());
+                            image.getPixelWriter().setColor((int) e.getX(), (int) e.getY(), Color.RED);
+                        }
                     });
+
+            imageView.setOnMousePressed(e -> {
+                System.out.println("Rect Start: "+e.getX() + " " + e.getY());
+                startX=e.getX();
+                startY=e.getY();
+                //System.out.println("B: "+image.getPixelReader().getColor((int)e.getX(),(int)e.getY()).getBlue());
+            });
+
+            imageView.setOnMouseReleased(e -> {
+                System.out.println("Rect Finish: "+e.getX() + " " + e.getY());
+                double area = Math.abs(e.getX()-startX)*Math.abs(e.getY()-startY);
+                System.out.println("Area: "+area);
+                double totalR=0;
+                double totalG=0;
+                double totalB=0;
+                for (int x = (int)Math.min(e.getX(),startX);x<Math.max(e.getX(),startX);x++) {
+                    for (int y = (int)Math.min(e.getY(),startY);y<Math.max(e.getY(),startY);y++) {
+                        totalR+=image.getPixelReader().getColor(x,y).getRed();
+                        totalG+=image.getPixelReader().getColor(x,y).getGreen();
+                        totalB+=image.getPixelReader().getColor(x,y).getBlue();
+                    }
+                }
+                System.out.println("Avg red: "+totalR/area);
+                System.out.println("Avg green: "+totalG/area);
+                System.out.println("Avg blue: "+totalB/area);
+            });
 
             // Display image on screen
             StackPane root = new StackPane();
@@ -79,8 +111,36 @@
                 imageView.setImage(image);
 
                 imageView.setOnMouseDragged(e -> {
-                    System.out.println(e.getX() + " " + e.getY());
-                    image.getPixelWriter().setColor((int)e.getX(),(int)e.getY(),Color.RED);
+                    if (e.isShiftDown()) {
+                        System.out.println(e.getX() + " " + e.getY());
+                        image.getPixelWriter().setColor((int) e.getX(), (int) e.getY(), Color.RED);
+                    }
+                });
+
+                imageView.setOnMousePressed(e -> {
+                    System.out.println("Rect Start: "+e.getX() + " " + e.getY());
+                    startX=e.getX();
+                    startY=e.getY();
+                    //System.out.println("B: "+image.getPixelReader().getColor((int)e.getX(),(int)e.getY()).getBlue());
+                });
+
+                imageView.setOnMouseReleased(e -> {
+                    System.out.println("Rect Finish: "+e.getX() + " " + e.getY());
+                    double area = Math.abs(e.getX()-startX)*Math.abs(e.getY()-startY);
+                    System.out.println("Area: "+area);
+                    double totalR=0;
+                    double totalG=0;
+                    double totalB=0;
+                    for (int x = (int)Math.min(e.getX(),startX);x<Math.max(e.getX(),startX);x++) {
+                        for (int y = (int)Math.min(e.getY(),startY);y<Math.max(e.getY(),startY);y++) {
+                            totalR+=image.getPixelReader().getColor(x,y).getRed();
+                            totalG+=image.getPixelReader().getColor(x,y).getGreen();
+                            totalB+=image.getPixelReader().getColor(x,y).getBlue();
+                        }
+                    }
+                    System.out.println("Avg red: "+totalR/area);
+                    System.out.println("Avg green: "+totalG/area);
+                    System.out.println("Avg blue: "+totalB/area);
                 });
                 StackPane root = new StackPane();
                 root.getChildren().add(imageView);
