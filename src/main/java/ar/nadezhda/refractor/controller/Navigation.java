@@ -71,7 +71,22 @@
             Stage stage = new Stage();
             stage.setScene(scene);
             stage.show();
+            writePGM(image);
 
+        }
+
+        private void writePGM(WritableImage image) {
+            try (RandomAccessFile rf = new RandomAccessFile("src/main/resources/SQUARE.PGM","rw")) {
+                rf.setLength(0);
+                rf.writeBytes("P5\n300 300\n 255\n");
+                for (int h=0;h<300;h++) {
+                    for (int w=0;w<300;w++) {
+                        rf.writeByte((int)image.getPixelReader().getColor(w,h).getBlue()*255);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         @FXML
