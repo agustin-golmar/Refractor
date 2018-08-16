@@ -59,24 +59,7 @@
                 //System.out.println("B: "+image.getPixelReader().getColor((int)e.getX(),(int)e.getY()).getBlue());
             });
 
-            imageView.setOnMouseReleased(e -> {
-                System.out.println("Rect Finish: "+e.getX() + " " + e.getY());
-                double area = Math.abs(e.getX()-startX)*Math.abs(e.getY()-startY);
-                System.out.println("Area: "+area);
-                double totalR=0;
-                double totalG=0;
-                double totalB=0;
-                for (int x = (int)Math.min(e.getX(),startX);x<Math.max(e.getX(),startX);x++) {
-                    for (int y = (int)Math.min(e.getY(),startY);y<Math.max(e.getY(),startY);y++) {
-                        totalR+=image.getPixelReader().getColor(x,y).getRed();
-                        totalG+=image.getPixelReader().getColor(x,y).getGreen();
-                        totalB+=image.getPixelReader().getColor(x,y).getBlue();
-                    }
-                }
-                System.out.println("Avg red: "+totalR/area);
-                System.out.println("Avg green: "+totalG/area);
-                System.out.println("Avg blue: "+totalB/area);
-            });
+            getAvgColors(image, imageView);
 
             // Display image on screen
             StackPane root = new StackPane();
@@ -124,24 +107,7 @@
                     //System.out.println("B: "+image.getPixelReader().getColor((int)e.getX(),(int)e.getY()).getBlue());
                 });
 
-                imageView.setOnMouseReleased(e -> {
-                    System.out.println("Rect Finish: "+e.getX() + " " + e.getY());
-                    double area = Math.abs(e.getX()-startX)*Math.abs(e.getY()-startY);
-                    System.out.println("Area: "+area);
-                    double totalR=0;
-                    double totalG=0;
-                    double totalB=0;
-                    for (int x = (int)Math.min(e.getX(),startX);x<Math.max(e.getX(),startX);x++) {
-                        for (int y = (int)Math.min(e.getY(),startY);y<Math.max(e.getY(),startY);y++) {
-                            totalR+=image.getPixelReader().getColor(x,y).getRed();
-                            totalG+=image.getPixelReader().getColor(x,y).getGreen();
-                            totalB+=image.getPixelReader().getColor(x,y).getBlue();
-                        }
-                    }
-                    System.out.println("Avg red: "+totalR/area);
-                    System.out.println("Avg green: "+totalG/area);
-                    System.out.println("Avg blue: "+totalB/area);
-                });
+                getAvgColors(image, imageView);
                 StackPane root = new StackPane();
                 root.getChildren().add(imageView);
                 Scene scene = new Scene(root, 290, 207);
@@ -152,6 +118,32 @@
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+        }
+
+        private void getAvgColors(WritableImage image, ImageView imageView) {
+            imageView.setOnMouseReleased(e -> {
+                System.out.println("Rect Finish: "+e.getX() + " " + e.getY());
+                double area = Math.abs(e.getX()-startX)*Math.abs(e.getY()-startY);
+                System.out.println("Area: "+area);
+                double totalR=0;
+                double totalG=0;
+                double totalB=0;
+                for (int x = (int)Math.min(e.getX(),startX);x<Math.max(e.getX(),startX);x++) {
+                    for (int y = (int)Math.min(e.getY(),startY);y<Math.max(e.getY(),startY);y++) {
+                        totalR+=image.getPixelReader().getColor(x,y).getRed();
+                        totalG+=image.getPixelReader().getColor(x,y).getGreen();
+                        totalB+=image.getPixelReader().getColor(x,y).getBlue();
+                    }
+                }
+                System.out.println("Avg red: "+totalR/area);
+                System.out.println("Avg green: "+totalG/area);
+                System.out.println("Avg blue: "+totalB/area);
+            });
+        }
+
+        @FXML
+        protected void loadPGM (final ActionEvent event) {
 
         }
 	}
