@@ -17,8 +17,10 @@
 			this.rawData = raw;
 			for (int h = 0; h < getHeight(); ++h)
 				for (int w = 0; w < getWidth(); ++w)
-					for (int c = 0; c < getChannels(); ++c)
+					for (int c = 0; c < getChannels(); ++c) {
 						this.data[c][w][h] = Byte.toUnsignedInt(raw[c][w][h]);
+						this.data[c][w][h] /= 255.0;
+					}
 		}
 
 		public Image(final int channels, final int width, final int height) {

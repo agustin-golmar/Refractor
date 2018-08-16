@@ -2,14 +2,20 @@
 	package ar.nadezhda.refractor.controller;
 
 	import ar.nadezhda.refractor.Main;
+	import ar.nadezhda.refractor.core.Image;
+	import ar.nadezhda.refractor.core.ImageState;
 	import ar.nadezhda.refractor.core.ImageTool;
 	import ar.nadezhda.refractor.core.Workspace;
 	import java.io.File;
 	import java.io.IOException;
+	import java.text.DecimalFormat;
+	import java.text.DecimalFormatSymbols;
 	import java.util.Optional;
 	import javafx.event.ActionEvent;
 	import javafx.fxml.FXML;
 	import javafx.scene.control.CheckBox;
+	import javafx.scene.control.Label;
+	import javafx.scene.image.ImageView;
 	import javafx.scene.image.WritableImage;
 	import javafx.stage.FileChooser;
 
@@ -24,8 +30,13 @@
 	public class ResourceController {
 
 		protected final FileChooser chooser;
+		protected final DecimalFormat decimal;
 
 		@FXML protected CheckBox useConfigForLoad;
+		@FXML protected Label mouseLocation;
+		@FXML protected Label areaDimension;
+		@FXML protected Label pixelCount;
+		@FXML protected Label grayAverage;
 
 		public ResourceController() {
 			this.chooser = new FileChooser();
@@ -36,6 +47,9 @@
 					new FileChooser.ExtensionFilter("PGM", "*.pgm"),
 					new FileChooser.ExtensionFilter("PPM", "*.ppm"),
 					new FileChooser.ExtensionFilter("RAW", "*.raw"));
+			final DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+			symbols.setDecimalSeparator('.');
+			this.decimal = new DecimalFormat("0.000", symbols);
 		}
 
 		@FXML
@@ -60,7 +74,8 @@
 					})
 					.ifPresentOrElse(image -> {
 						final WritableImage wImage = ImageTool.getImageForDisplay(image);
-						ImageTool.displayImage(wImage);
+						final ImageView view = ImageTool.displayImage(wImage);
+						augment(view, image);
 					}, () -> {
 						System.out.println("No se pudo abrir la imagen.");
 					});
@@ -83,5 +98,30 @@
 				}, () -> {
 					System.out.println("No se pudo guardar la imagen.");
 				});
+		}
+
+		protected void augment(final ImageView view, final Image image) {
+			view.setUserData(new ImageState(view, image));
+			view.setOnMouseMoved(event -> {
+				mouseLocation.setText("Location (x, y) = ("
+						+ (int) event.getX() + ", " + (int) event.getY() + ")");
+			});
+			view.setOnMousePressed(event -> {
+				((ImageState) view.getUserData())
+					.setStartArea(event.getX(), event.getY());
+			});
+			view.setOnMouseReleased(event -> {
+				final ImageState state = (ImageState) view.getUserData();
+				state.setEndArea(event.getX(), event.getY());
+				areaDimension.setText("Area (width, height) = ("
+						+ state.getXArea() + ", " + state.getYArea() + ")");
+				pixelCount.setText("Pixel Count: " + state.pixelCount());
+				final double [] avg = state.getRGBAverageOnArea();
+				grayAverage.setText("Average (R, G, B) = (" +
+						decimal.format(avg[0]) + ", " +
+						decimal.format(avg[1]) + ", " +
+						decimal.format(avg[2]) + ")");
+				state.resetArea();
+			});
 		}
 	}

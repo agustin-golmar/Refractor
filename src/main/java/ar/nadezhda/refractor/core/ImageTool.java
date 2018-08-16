@@ -2,12 +2,12 @@
 	package ar.nadezhda.refractor.core;
 
 	import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelWriter;
+	import javafx.scene.image.ImageView;
+	import javafx.scene.image.PixelWriter;
 	import javafx.scene.image.WritableImage;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
+	import javafx.scene.layout.StackPane;
+	import javafx.scene.paint.Color;
+	import javafx.stage.Stage;
 
 	public class ImageTool {
 
@@ -71,7 +71,7 @@ import javafx.stage.Stage;
 			return wImage;
 		}
 
-		public static void displayImage(final WritableImage image) {
+		public static ImageView displayImage(final WritableImage image) {
 			final ImageView view = new ImageView();
 			final Stage stage = new Stage();
 			final StackPane root = new StackPane();
@@ -81,6 +81,7 @@ import javafx.stage.Stage;
 			stage.setScene(scene);
 			view.setImage(image);
 			stage.show();
+			return view;
 		}
 
 		public static int ARGB(final Image image, final int w, final int h) {

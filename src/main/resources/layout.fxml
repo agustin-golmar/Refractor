@@ -2,24 +2,37 @@
 <!-- Imports -->
 <?import java.net.URL?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import org.controlsfx.control.*?>
 <!-- Layout -->
 <GridPane xmlns:fx = "http://javafx.com/fxml" fx:controller = "ar.nadezhda.refractor.controller.ResourceController">
 	<stylesheets>
 		<URL value = "@style.css"/>
 	</stylesheets>
-	<HBox spacing = "10">
+	<HBox GridPane.columnIndex = "0" GridPane.rowIndex = "0" spacing = "10">
 		<VBox spacing = "10">
-			<Button GridPane.columnIndex = "0" GridPane.rowIndex = "0" text = "Open" onAction = "#open"/>
-			<Button GridPane.columnIndex = "0" GridPane.rowIndex = "1" text = "Save" onAction = "#save"/>
+			<Button text = "Open" onAction = "#open"/>
+			<Button text = "Save" onAction = "#save"/>
 		</VBox>
 		<VBox spacing = "5">
-			<CheckBox GridPane.columnIndex = "1" GridPane.rowIndex = "0" fx:id = "useConfigForLoad" text = "Use config for load"/>
+			<CheckBox fx:id = "useConfigForLoad" text = "Use config for load"/>
 		</VBox>
 	</HBox>
-
-	<!--<Button GridPane.columnIndex = "0" GridPane.rowIndex = "0" text = "White Square" onAction = "#whiteSquare"/>
-	<Button GridPane.columnIndex = "0" GridPane.rowIndex = "1" text = "BARCO" onAction = "#loadBarco"/>
-	<Button GridPane.columnIndex = "1" GridPane.rowIndex = "1" text = "LOADPGM" onAction = "#loadPGM"/>
-	<Button GridPane.columnIndex = "2" GridPane.rowIndex = "2" text = "Button-4" onAction = "#clickButton"/>-->
+	<HBox GridPane.columnIndex = "0" GridPane.rowIndex = "1">
+		<VBox>
+			<Label fx:id = "mouseLocation" maxWidth = "1000">
+				Location (x, y) = (0, 0)
+			</Label>
+			<Label fx:id = "areaDimension" maxWidth = "1000">
+				Area (width, height) = (0, 0)
+			</Label>
+			<Label fx:id = "pixelCount" maxWidth = "1000">
+				Pixel Count: 0
+			</Label>
+			<Label fx:id = "grayAverage" maxWidth = "1000">
+				Average (R, G, B) = (0.0, 0.0, 0.0)
+			</Label>
+		</VBox>
+	</HBox>
 </GridPane>
