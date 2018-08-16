@@ -17,6 +17,7 @@
     import javax.imageio.ImageIO;
     import java.io.*;
     import java.util.Arrays;
+    import java.util.Scanner;
 
     public class Navigation {
 
@@ -144,6 +145,49 @@
 
         @FXML
         protected void loadPGM (final ActionEvent event) {
+            try (FileInputStream fs = new FileInputStream("src/main/resources/TEST.PGM")){
+                Scanner sc = new Scanner(fs);
+                if (!sc.next().equals("P5")) {
+                    throw new IllegalArgumentException();
+                }
+                int width = sc.nextInt();
+                int height = sc.nextInt();
+                int maxVal = sc.nextInt();
+                byte[] imageBytes = new byte[width*height];
+                System.out.println("Lei: "+fs.read(imageBytes));
+                WritableImage image = new WritableImage(width,height);
+
+                int k=0;
+                //System.out.println(imageBytes.length);
+                //System.out.println(Arrays.toString(imageBytes));
+                for (int h=0;h<height;h++){
+                    for (int w=0;w<width;w++){
+
+                        image.getPixelWriter().setColor(w,h,Color.grayRgb(Byte.toUnsignedInt(imageBytes[k])));
+                        k++;
+                    }
+                }
+
+                ImageView imageView = new ImageView();
+                imageView.setImage(image);
+
+                imageView.setOnMousePressed(e -> {
+                    System.out.println("Rect Start: "+e.getX() + " " + e.getY());
+                    startX=e.getX();
+                    startY=e.getY();
+                    //System.out.println("B: "+image.getPixelReader().getColor((int)e.getX(),(int)e.getY()).getBlue());
+                });
+
+                getAvgColors(image, imageView);
+                StackPane root = new StackPane();
+                root.getChildren().add(imageView);
+                Scene scene = new Scene(root, width, height);
+                Stage stage = new Stage();
+                stage.setScene(scene);
+                stage.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         }
 	}
