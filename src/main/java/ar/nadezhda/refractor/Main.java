@@ -19,7 +19,8 @@
 	@EnableConfigurationProperties(RefractorProperties.class)
 	public class Main extends Application {
 
-		protected static ConfigurableApplicationContext context;
+		public static ConfigurableApplicationContext context;
+		public static RefractorProperties config;
 
 		public static void main(final String ... arguments) {
 			try {
@@ -35,8 +36,9 @@
 		@Override
 		public void start(final Stage stage)
 				throws Exception {
+			config = context.getBean(RefractorProperties.class);
 			stage.setScene(context.getBean(Scene.class));
-			stage.setTitle(context.getBean(RefractorProperties.class).getTitle());
+			stage.setTitle(config.getTitle());
 			stage.show();
 		}
 	}
