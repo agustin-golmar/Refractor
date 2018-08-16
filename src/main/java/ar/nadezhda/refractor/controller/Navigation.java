@@ -17,6 +17,7 @@
     import javax.imageio.ImageIO;
     import java.io.*;
     import java.util.Arrays;
+    import java.util.Scanner;
 
     public class Navigation {
 
@@ -59,24 +60,7 @@
                 //System.out.println("B: "+image.getPixelReader().getColor((int)e.getX(),(int)e.getY()).getBlue());
             });
 
-            imageView.setOnMouseReleased(e -> {
-                System.out.println("Rect Finish: "+e.getX() + " " + e.getY());
-                double area = Math.abs(e.getX()-startX)*Math.abs(e.getY()-startY);
-                System.out.println("Area: "+area);
-                double totalR=0;
-                double totalG=0;
-                double totalB=0;
-                for (int x = (int)Math.min(e.getX(),startX);x<Math.max(e.getX(),startX);x++) {
-                    for (int y = (int)Math.min(e.getY(),startY);y<Math.max(e.getY(),startY);y++) {
-                        totalR+=image.getPixelReader().getColor(x,y).getRed();
-                        totalG+=image.getPixelReader().getColor(x,y).getGreen();
-                        totalB+=image.getPixelReader().getColor(x,y).getBlue();
-                    }
-                }
-                System.out.println("Avg red: "+totalR/area);
-                System.out.println("Avg green: "+totalG/area);
-                System.out.println("Avg blue: "+totalB/area);
-            });
+            getAvgColors(image, imageView);
 
             // Display image on screen
             StackPane root = new StackPane();
@@ -87,7 +71,22 @@
             Stage stage = new Stage();
             stage.setScene(scene);
             stage.show();
+            writePGM(image);
 
+        }
+
+        private void writePGM(WritableImage image) {
+            try (RandomAccessFile rf = new RandomAccessFile("src/main/resources/SQUARE.PGM","rw")) {
+                rf.setLength(0);
+                rf.writeBytes("P5\n300 300\n 255\n");
+                for (int h=0;h<300;h++) {
+                    for (int w=0;w<300;w++) {
+                        rf.writeByte((int)image.getPixelReader().getColor(w,h).getBlue()*255);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         @FXML
@@ -124,24 +123,7 @@
                     //System.out.println("B: "+image.getPixelReader().getColor((int)e.getX(),(int)e.getY()).getBlue());
                 });
 
-                imageView.setOnMouseReleased(e -> {
-                    System.out.println("Rect Finish: "+e.getX() + " " + e.getY());
-                    double area = Math.abs(e.getX()-startX)*Math.abs(e.getY()-startY);
-                    System.out.println("Area: "+area);
-                    double totalR=0;
-                    double totalG=0;
-                    double totalB=0;
-                    for (int x = (int)Math.min(e.getX(),startX);x<Math.max(e.getX(),startX);x++) {
-                        for (int y = (int)Math.min(e.getY(),startY);y<Math.max(e.getY(),startY);y++) {
-                            totalR+=image.getPixelReader().getColor(x,y).getRed();
-                            totalG+=image.getPixelReader().getColor(x,y).getGreen();
-                            totalB+=image.getPixelReader().getColor(x,y).getBlue();
-                        }
-                    }
-                    System.out.println("Avg red: "+totalR/area);
-                    System.out.println("Avg green: "+totalG/area);
-                    System.out.println("Avg blue: "+totalB/area);
-                });
+                getAvgColors(image, imageView);
                 StackPane root = new StackPane();
                 root.getChildren().add(imageView);
                 Scene scene = new Scene(root, 290, 207);
@@ -149,6 +131,81 @@
                 stage.setScene(scene);
                 stage.show();
 
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        private void getAvgColors(WritableImage image, ImageView imageView) {
+            imageView.setOnMouseReleased(e -> {
+                System.out.println("Rect Finish: "+e.getX() + " " + e.getY());
+                double area = Math.abs(e.getX()-startX)*Math.abs(e.getY()-startY);
+                System.out.println("Area: "+area);
+                double totalR=0;
+                double totalG=0;
+                double totalB=0;
+                for (int x = (int)Math.min(e.getX(),startX);x<Math.max(e.getX(),startX);x++) {
+                    for (int y = (int)Math.min(e.getY(),startY);y<Math.max(e.getY(),startY);y++) {
+                        totalR+=image.getPixelReader().getColor(x,y).getRed();
+                        totalG+=image.getPixelReader().getColor(x,y).getGreen();
+                        totalB+=image.getPixelReader().getColor(x,y).getBlue();
+                    }
+                }
+                System.out.println("Avg red: "+totalR/area);
+                System.out.println("Avg green: "+totalG/area);
+                System.out.println("Avg blue: "+totalB/area);
+            });
+        }
+
+        @FXML
+        protected void loadPGM (final ActionEvent event) {
+            try (RandomAccessFile rf = new RandomAccessFile("src/main/resources/TEST.PGM","r")){
+
+
+                if (!rf.readLine().equals("P5")) {
+                    throw new IllegalArgumentException();
+                }
+
+                String[] widthHeight = rf.readLine().split(" ");
+                int width = Integer.parseInt(widthHeight[0]);
+                int height = Integer.parseInt(widthHeight[1]);
+
+
+                System.out.println(width + "x" + height);
+                String maxVal = rf.readLine();
+                byte[] imageBytes = new byte[width*height];
+                System.out.println("Lei: "+rf.read(imageBytes));
+                WritableImage image = new WritableImage(width,height);
+
+                int k=0;
+                //System.out.println(imageBytes.length);
+                //System.out.println(Arrays.toString(imageBytes));
+                for (int h=0;h<height;h++){
+                    for (int w=0;w<width;w++){
+
+                        image.getPixelWriter().setColor(w,h,Color.grayRgb(Byte.toUnsignedInt(imageBytes[k])));
+                        k++;
+                    }
+                }
+
+                ImageView imageView = new ImageView();
+                imageView.setImage(image);
+
+                imageView.setOnMousePressed(e -> {
+                    System.out.println("Rect Start: "+e.getX() + " " + e.getY());
+                    startX=e.getX();
+                    startY=e.getY();
+                    //System.out.println("B: "+image.getPixelReader().getColor((int)e.getX(),(int)e.getY()).getBlue());
+                });
+
+                getAvgColors(image, imageView);
+                StackPane root = new StackPane();
+                root.getChildren().add(imageView);
+                Scene scene = new Scene(root, width, height);
+                Stage stage = new Stage();
+                stage.setScene(scene);
+                stage.show();
             } catch (Exception e) {
                 e.printStackTrace();
             }
