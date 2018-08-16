@@ -145,16 +145,22 @@
 
         @FXML
         protected void loadPGM (final ActionEvent event) {
-            try (FileInputStream fs = new FileInputStream("src/main/resources/TEST.PGM")){
-                Scanner sc = new Scanner(fs);
-                if (!sc.next().equals("P5")) {
+            try (RandomAccessFile rf = new RandomAccessFile("src/main/resources/TEST.PGM","r")){
+
+
+                if (!rf.readLine().equals("P5")) {
                     throw new IllegalArgumentException();
                 }
-                int width = sc.nextInt();
-                int height = sc.nextInt();
-                int maxVal = sc.nextInt();
+
+                String[] widthHeight = rf.readLine().split(" ");
+                int width = Integer.parseInt(widthHeight[0]);
+                int height = Integer.parseInt(widthHeight[1]);
+
+
+                System.out.println(width + "x" + height);
+                String maxVal = rf.readLine();
                 byte[] imageBytes = new byte[width*height];
-                System.out.println("Lei: "+fs.read(imageBytes));
+                System.out.println("Lei: "+rf.read(imageBytes));
                 WritableImage image = new WritableImage(width,height);
 
                 int k=0;
