@@ -21,6 +21,7 @@
 
 		public static ConfigurableApplicationContext context;
 		public static RefractorProperties config;
+		public static Stage stage;
 
 		public static void main(final String ... arguments) {
 			try {

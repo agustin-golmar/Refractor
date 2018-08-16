@@ -3,21 +3,22 @@
 
 	public class Image {
 
+		public static int GRAY = 0;
 		public static int RED = 0;
 		public static int GREEN = 1;
 		public static int BLUE = 2;
 
-		// Con el formato [channel][x][y]:
+		// Con el formato [channel][w][h]:
 		public final double [][][] data;
 		public final byte [][][] rawData;
 
 		public Image(final byte [][][] raw) {
 			this.data = new double [raw.length][raw[0].length][raw[0][0].length];
 			this.rawData = raw;
-			for (int i = 0; i < getChannels(); ++i)
-				for (int j = 0; j < getWidth(); ++j)
-					for (int k = 0; k < getHeight(); ++k)
-						this.data[i][j][k] = Byte.toUnsignedInt(raw[i][j][k]);
+			for (int h = 0; h < getHeight(); ++h)
+				for (int w = 0; w < getWidth(); ++w)
+					for (int c = 0; c < getChannels(); ++c)
+						this.data[c][w][h] = Byte.toUnsignedInt(raw[c][w][h]);
 		}
 
 		public Image(final int channels, final int width, final int height) {
@@ -37,6 +38,10 @@
 			return data[0][0].length;
 		}
 
+		public double [][] gray() {
+			return data[GRAY];
+		}
+
 		public double [][] red() {
 			return data[RED];
 		}
@@ -47,6 +52,10 @@
 
 		public double [][] blue() {
 			return data[BLUE];
+		}
+
+		public byte [][] rawGray() {
+			return rawData[GRAY];
 		}
 
 		public byte [][] rawRed() {

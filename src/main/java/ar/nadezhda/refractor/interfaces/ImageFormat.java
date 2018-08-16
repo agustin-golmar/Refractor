@@ -1,6 +1,7 @@
 
 	package ar.nadezhda.refractor.interfaces;
 
+	import ar.nadezhda.refractor.core.Image;
 	import java.io.IOException;
 
 	public interface ImageFormat {
@@ -12,4 +13,7 @@
 
 		public String getExtension();
 		public int getSupportedChannels();
+
+		public ImageFormat save(final Image image, final String path)
+				throws IOException;
 	}

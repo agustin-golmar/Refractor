@@ -3,6 +3,7 @@
 
 	import ar.nadezhda.refractor.config.RefractorProperties;
 	import ar.nadezhda.refractor.interfaces.ImageFormat;
+	import ar.nadezhda.refractor.support.Tool;
 	import java.io.IOException;
 	import java.util.HashMap;
 	import java.util.List;
@@ -24,20 +25,19 @@
 			this.config = config;
 			this.formats = new HashMap<>();
 			availableFormats.forEach(format -> {
-				System.out.println("Formats: " + format);
 				this.formats.put(format.getExtension(), format);
 			});
 		}
 
 		public Optional<Image> loadImageUsingConfig(final String path) {
 			final Optional<Integer> index = config
-					.findImage(getFilename(path).toLowerCase());
+					.findImage(Tool.getFilename(path).toLowerCase());
 			if (index.isPresent()) {
 				final int i = index.get();
 				final int width = config.getDimensions()[i][0];
 				final int height = config.getDimensions()[i][1];
 				return Optional
-					.ofNullable(formats.get(getExtension(path)))
+					.ofNullable(formats.get(Tool.getExtension(path)))
 					.map(format -> {
 						try {
 							return format.getBytes(path, width, height);
@@ -55,7 +55,7 @@
 
 		public Optional<Image> loadImage(final String path) {
 			return Optional
-				.ofNullable(formats.get(getExtension(path)))
+				.ofNullable(formats.get(Tool.getExtension(path)))
 				.map(format -> {
 					try {
 						return format.getBytes(path);
@@ -69,21 +69,18 @@
 				.map(Image::new);
 		}
 
-		public static String getExtension(final String filename) {
-			final int index = filename.lastIndexOf(".");
-			if (0 <= index && index < filename.length()) {
-				return filename
-						.toLowerCase()
-						.substring(1 + index);
-			}
-			else return "";
-		}
-
-		public static String getFilename(final String path) {
-			final int index = path.lastIndexOf("/");
-			if (0 <= index && index < path.length()) {
-				return path.substring(1 + index);
-			}
-			else return path;
+		public Workspace saveImage(final Image image, final String path) {
+			Optional
+				.ofNullable(formats.getOrDefault(
+						Tool.getExtension(path), formats.get("bmp")))
+				.ifPresent(format -> {
+					try {
+						format.save(image, path);
+					}
+					catch (final IOException exception) {
+						exception.printStackTrace();
+					}
+				});
+			return this;
 		}
 	}

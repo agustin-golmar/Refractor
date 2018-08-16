@@ -1,16 +1,27 @@
 
 	package ar.nadezhda.refractor.core;
 
+	import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
+	import javafx.scene.image.WritableImage;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+
 	public class ImageTool {
 
 		public static byte [][][] rawToImageMatrix(
 				final byte [] data, final int offset,
 				final int channels, final int width, final int height) {
 			final byte [][][] image = new byte [channels][width][height];
-			for (int i = 0; i < height; ++i)
-				for (int j = 0; j < width; ++j)
-					for (int k = 0; k < channels; ++k)
-						image[k][j][i] = data[offset + i * width + channels * j + k];
+			int k = 0;
+			for (int h = 0; h < height; ++h)
+				for (int w = 0; w < width; ++w)
+					for (int c = 0; c < channels; ++c) {
+						image[channels - c - 1][w][h] = data[offset + k];
+						++k;
+					}
 			return image;
 		}
 
@@ -34,5 +45,48 @@
 			metadata[2] = Integer.parseInt(values[2]);
 			metadata[3] = Integer.parseInt(values[3]);
 			return metadata;
+		}
+
+		public static Color rawRGB(final Image image, final int x, final int y) {
+			if (image.getChannels() == 1) {
+				return Color.grayRgb(Byte.toUnsignedInt(image.rawGray()[x][y]));
+			}
+			else if (image.getChannels() == 3) {
+				return Color.rgb(
+					Byte.toUnsignedInt(image.rawRed()[x][y]),
+					Byte.toUnsignedInt(image.rawGreen()[x][y]),
+					Byte.toUnsignedInt(image.rawBlue()[x][y]));
+			}
+			else return Color.BLACK;
+		}
+
+		public static WritableImage getImageForDisplay(final Image image) {
+			final WritableImage wImage
+				= new WritableImage(image.getWidth(), image.getHeight());
+			final PixelWriter pixel = wImage.getPixelWriter();
+			for (int h = 0; h < image.getHeight(); ++h)
+				for (int w = 0; w < image.getWidth(); ++w) {
+					pixel.setColor(w, h, rawRGB(image, w, h));
+				}
+			return wImage;
+		}
+
+		public static void displayImage(final WritableImage image) {
+			final ImageView view = new ImageView();
+			final Stage stage = new Stage();
+			final StackPane root = new StackPane();
+			final Scene scene
+				= new Scene(root, image.getWidth(), image.getHeight());
+			root.getChildren().add(view);
+			stage.setScene(scene);
+			view.setImage(image);
+			stage.show();
+		}
+
+		public static int ARGB(final Image image, final int w, final int h) {
+			final int red = Byte.toUnsignedInt(image.rawRed()[w][h]);
+			final int green = Byte.toUnsignedInt(image.rawGreen()[w][h]);
+			final int blue = Byte.toUnsignedInt(image.rawBlue()[w][h]);
+			return (red << 16) | (green << 8) | (blue);
 		}
 	}

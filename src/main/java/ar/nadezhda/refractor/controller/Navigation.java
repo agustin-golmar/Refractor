@@ -63,7 +63,7 @@
             getAvgColors(image, imageView);
 
             // Display image on screen
-            StackPane root = new StackPane();
+   /***/         StackPane root = new StackPane();
             root.getChildren().add(imageView);
             Scene scene = new Scene(root, 300, 300);
             //Scene scene= ((Node)event.getSource()).getScene();

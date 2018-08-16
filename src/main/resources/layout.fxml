@@ -1,15 +1,25 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <!-- Imports -->
 <?import java.net.URL?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <!-- Layout -->
-<GridPane xmlns:fx = "http://javafx.com/fxml" fx:controller = "ar.nadezhda.refractor.controller.Navigation">
+<GridPane xmlns:fx = "http://javafx.com/fxml" fx:controller = "ar.nadezhda.refractor.controller.ResourceController">
 	<stylesheets>
 		<URL value = "@style.css"/>
 	</stylesheets>
-	<Button GridPane.columnIndex = "0" GridPane.rowIndex = "0" text = "White Square" onAction = "#whiteSquare"/>
+	<HBox spacing = "10">
+		<VBox spacing = "10">
+			<Button GridPane.columnIndex = "0" GridPane.rowIndex = "0" text = "Open" onAction = "#open"/>
+			<Button GridPane.columnIndex = "0" GridPane.rowIndex = "1" text = "Save" onAction = "#save"/>
+		</VBox>
+		<VBox spacing = "5">
+			<CheckBox GridPane.columnIndex = "1" GridPane.rowIndex = "0" fx:id = "useConfigForLoad" text = "Use config for load"/>
+		</VBox>
+	</HBox>
+
+	<!--<Button GridPane.columnIndex = "0" GridPane.rowIndex = "0" text = "White Square" onAction = "#whiteSquare"/>
 	<Button GridPane.columnIndex = "0" GridPane.rowIndex = "1" text = "BARCO" onAction = "#loadBarco"/>
 	<Button GridPane.columnIndex = "1" GridPane.rowIndex = "1" text = "LOADPGM" onAction = "#loadPGM"/>
-	<Button GridPane.columnIndex = "2" GridPane.rowIndex = "2" text = "Button-4" onAction = "#clickButton"/>
+	<Button GridPane.columnIndex = "2" GridPane.rowIndex = "2" text = "Button-4" onAction = "#clickButton"/>-->
 </GridPane>

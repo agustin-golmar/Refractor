@@ -1,6 +1,7 @@
 
 	package ar.nadezhda.refractor.format;
 
+	import ar.nadezhda.refractor.core.Image;
 	import ar.nadezhda.refractor.core.ImageTool;
 	import ar.nadezhda.refractor.interfaces.ImageFormat;
 	import java.awt.image.BufferedImage;
@@ -38,5 +39,19 @@
 		@Override
 		public int getSupportedChannels() {
 			return 3;
+		}
+
+		@Override
+		public ImageFormat save(final Image image, final String path)
+				throws IOException {
+			final BufferedImage buffer = new BufferedImage(
+					image.getWidth(), image.getHeight(),
+					BufferedImage.TYPE_INT_RGB);
+			for (int h = 0; h < image.getHeight(); ++h)
+				for (int w = 0; w < image.getWidth(); ++w) {
+					buffer.setRGB(w, h, ImageTool.ARGB(image, w, h));
+				}
+			ImageIO.write(buffer, getExtension(), new File(path));
+			return this;
 		}
 	}
