@@ -1,6 +1,8 @@
 
 	package ar.nadezhda.refractor.core;
 
+	import java.awt.image.BufferedImage;
+
 	import javafx.scene.Scene;
 	import javafx.scene.image.ImageView;
 	import javafx.scene.image.PixelWriter;
@@ -22,6 +24,20 @@
 						image[channels - c - 1][w][h] = data[offset + k];
 						++k;
 					}
+			return image;
+		}
+
+		public static byte [][][] rawToImageMatrix(final BufferedImage buffer) {
+			final int width = buffer.getWidth();
+			final int height = buffer.getHeight();
+			final byte [][][] image = new byte [3][width][height];
+			for (int h = 0; h < buffer.getHeight(); ++h)
+				for (int w = 0; w < buffer.getWidth(); ++w) {
+					final int rgb = buffer.getRGB(w, h);
+					image[0][w][h] = (byte) (rgb >> 16 & 0xFF);
+					image[1][w][h] = (byte) (rgb >> 8 & 0xFF);
+					image[2][w][h] = (byte) (rgb & 0xFF);
+				}
 			return image;
 		}
 

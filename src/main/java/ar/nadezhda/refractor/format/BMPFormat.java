@@ -5,7 +5,6 @@
 	import ar.nadezhda.refractor.core.ImageTool;
 	import ar.nadezhda.refractor.interfaces.ImageFormat;
 	import java.awt.image.BufferedImage;
-	import java.awt.image.DataBufferByte;
 	import java.io.File;
 	import java.io.IOException;
 	import javax.imageio.ImageIO;
@@ -17,12 +16,7 @@
 				throws IOException {
 			final BufferedImage image = ImageIO
 					.read(new File(path));
-			final DataBufferByte buffer = (DataBufferByte) image
-					.getRaster()
-					.getDataBuffer();
-			return ImageTool.rawToImageMatrix(
-					buffer.getData(), 0,
-					getSupportedChannels(), image.getWidth(), image.getHeight());
+			return ImageTool.rawToImageMatrix(image);
 		}
 
 		@Override

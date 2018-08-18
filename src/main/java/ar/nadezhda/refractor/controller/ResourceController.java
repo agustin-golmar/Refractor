@@ -44,9 +44,14 @@
 			this.chooser.getExtensionFilters().addAll(
 					new FileChooser.ExtensionFilter("All files", "*.*"),
 					new FileChooser.ExtensionFilter("BMP", "*.bmp"),
+					new FileChooser.ExtensionFilter("GIF", "*.gif"),
+					new FileChooser.ExtensionFilter("JPG", "*.jpg"),
 					new FileChooser.ExtensionFilter("PGM", "*.pgm"),
+					new FileChooser.ExtensionFilter("PNG", "*.png"),
 					new FileChooser.ExtensionFilter("PPM", "*.ppm"),
-					new FileChooser.ExtensionFilter("RAW", "*.raw"));
+					new FileChooser.ExtensionFilter("RAW", "*.raw"),
+					new FileChooser.ExtensionFilter("TIF", "*.tif"),
+					new FileChooser.ExtensionFilter("WBMP", "*.wbmp"));
 			final DecimalFormatSymbols symbols = new DecimalFormatSymbols();
 			symbols.setDecimalSeparator('.');
 			this.decimal = new DecimalFormat("0.000", symbols);
