@@ -21,10 +21,6 @@
 
 		/**
 		* <p>Controlador encargado de entrada y salida de imágenes.</p>
-		*
-		* @see <a href = "https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/file-chooser.htm">
-		* 	File Chooser</a>
-		* @see <a href = "http://tutorials.jenkov.com/javafx/fxml.html">Jenkov on FXML</a>
 		*/
 
 	public class ResourceController {

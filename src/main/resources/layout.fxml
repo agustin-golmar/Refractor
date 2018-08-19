@@ -1,38 +1,44 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <!-- Imports -->
 <?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import org.controlsfx.control.*?>
 <!-- Layout -->
-<GridPane xmlns:fx = "http://javafx.com/fxml" fx:controller = "ar.nadezhda.refractor.controller.ResourceController">
+<BorderPane xmlns:fx = "http://javafx.com/fxml" fx:controller = "ar.nadezhda.refractor.controller.ResourceController">
 	<stylesheets>
 		<URL value = "@style.css"/>
 	</stylesheets>
-	<HBox GridPane.columnIndex = "0" GridPane.rowIndex = "0" spacing = "10">
-		<VBox spacing = "10">
+	<top>
+		<HBox spacing = "5">
+			<padding>
+				<Insets top = "5" right = "5" bottom = "5" left = "5"/>
+			</padding>
 			<Button text = "Open" onAction = "#open"/>
 			<Button text = "Save" onAction = "#save"/>
-		</VBox>
+		</HBox>
+	</top>
+	<left>
 		<VBox spacing = "5">
+			<padding>
+				<Insets top = "5" right = "5" bottom = "5" left = "5"/>
+			</padding>
 			<CheckBox fx:id = "useConfigForLoad" text = "Use config for load"/>
 		</VBox>
-	</HBox>
-	<HBox GridPane.columnIndex = "0" GridPane.rowIndex = "1">
-		<VBox>
-			<Label fx:id = "mouseLocation" maxWidth = "1000">
-				Location (x, y) = (0, 0)
-			</Label>
-			<Label fx:id = "areaDimension" maxWidth = "1000">
-				Area (width, height) = (0, 0)
-			</Label>
-			<Label fx:id = "pixelCount" maxWidth = "1000">
-				Pixel Count: 0
-			</Label>
-			<Label fx:id = "grayAverage" maxWidth = "1000">
-				Average (R, G, B) = (0.0, 0.0, 0.0)
-			</Label>
+	</left>
+	<center></center>
+	<right></right>
+	<bottom>
+		<VBox spacing = "5">
+			<padding>
+				<Insets top = "5" right = "5" bottom = "5" left = "5"/>
+			</padding>
+			<Label fx:id = "mouseLocation" text = "Location (x, y) = (0, 0)"/>
+			<Label fx:id = "areaDimension" text = "Area (width, height) = (0, 0)"/>
+			<Label fx:id = "pixelCount" text = "Pixel Count: 0"/>
+			<Label fx:id = "grayAverage" text = "Average (R, G, B) = (0.0, 0.0, 0.0)"/>
 		</VBox>
-	</HBox>
-</GridPane>
+	</bottom>
+</BorderPane>

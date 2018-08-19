@@ -1,29 +1,29 @@
 
-	/*
-		https://docs.oracle.com/javase/8/javafx/get-started-tutorial/fxml_tutorial.htm
-
-		@see https://docs.oracle.com/javase/8/javafx/api/javafx/scene/doc-files/cssref.html
-		@see https://stackoverflow.com/questions/25754524/javafx-buttons-with-same-size
-	*/
-
+	/* Root Element */
 	.root {
 		-fx-background-color : orange;
-		/*-fx-grid-lines-visible : true;*/
-		-fx-hgap : 10px;
-		-fx-vgap : 10px;
-		-fx-padding : 20px;
+		-fx-faint-focus-color : transparent;
+		-fx-focus-color : transparent;
+		-fx-grid-lines-visible : true;
 	}
 
-	.hbox {
-		-fx-padding : 10px;
+	/* Layout Classes */
+	.hbox {}
+	.vbox {}
+
+	/* GUI Components */
+	.button, .button:focused, .button:hover, .button:active {
+		-fx-background-color : rgba(35, 35, 35, 1.0);
+		-fx-background-insets : 0 0 0 0;
+		-fx-background-radius : 0;
+		-fx-border-color : rgba(35, 35, 35, 1.0);
+		-fx-border-radius : 0;
+		-fx-border-width : 1px;
+		-fx-font-size : 11px;
+		-fx-pref-height : 16px;
+		-fx-pref-width : 80px;
+		-fx-text-fill : white;
 	}
 
-	.vbox {
-		-fx-padding : 10px;
-	}
-
-	.button {
-		-fx-background-radius : 0 0 0 0;
-		-fx-border-radius : 0 0 0 0;
-		-fx-pref-width : 64px;
-	}
+	.checkbox {}
+	.label {}
