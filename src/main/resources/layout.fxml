@@ -18,6 +18,8 @@
 			</padding>
 			<Button text = "Open" onAction = "#open"/>
 			<Button text = "Save" onAction = "#save"/>
+			<Button text = "Remove" onAction = "#remove"/>
+			<Button text = "Display" onAction = "#display"/>
 		</HBox>
 	</top>
 	<left>
@@ -25,11 +27,24 @@
 			<padding>
 				<Insets top = "5" right = "5" bottom = "5" left = "5"/>
 			</padding>
-			<CheckBox fx:id = "useConfigForLoad" text = "Use config for load"/>
 		</VBox>
 	</left>
-	<center></center>
-	<right></right>
+	<center>
+		<VBox spacing = "5">
+			<padding>
+				<Insets top = "5" right = "5" bottom = "5" left = "5"/>
+			</padding>
+			<ListView fx:id = "openImages" minWidth = "480"/>
+		</VBox>
+	</center>
+	<right>
+		<VBox spacing = "5">
+			<padding>
+				<Insets top = "5" right = "10" bottom = "5" left = "5"/>
+			</padding>
+			<CheckBox fx:id = "useConfigForLoad" text = "Use config for load"/>
+		</VBox>
+	</right>
 	<bottom>
 		<VBox spacing = "5">
 			<padding>

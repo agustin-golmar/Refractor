@@ -8,18 +8,12 @@ refractor:
     width: 640
     height: 480
     images: [
-        "barco.raw",
-        "fractal.raw",
-        "girl.raw",
-        "girl2.raw",
-        "lena.raw",
-        "lenax.raw"
+        "barco.raw", "fractal.raw",
+        "girl.raw", "girl2.raw",
+        "lena.raw", "lenax.raw"
     ]
     dimensions: [
-        [290, 207],
-        [200, 200],
-        [389, 164],
-        [256, 256],
-        [256, 256],
-        [256, 256]
+        [290, 207], [200, 200],
+        [389, 164], [256, 256],
+        [256, 256], [256, 256]
     ]

@@ -18,6 +18,14 @@
 			this.endArea = new Point(0, 0);
 		}
 
+		public ImageView getView() {
+			return view;
+		}
+
+		public Image getImage() {
+			return image;
+		}
+
 		public ImageState setStartArea(final double x, final double y) {
 			startArea.setLocation(x, y);
 			return this;

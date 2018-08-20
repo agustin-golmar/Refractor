@@ -12,7 +12,10 @@
 		public final double [][][] data;
 		public final byte [][][] rawData;
 
-		public Image(final byte [][][] raw) {
+		protected final String source;
+
+		public Image(final String source, final byte [][][] raw) {
+			this.source = source;
 			this.data = new double [raw.length][raw[0].length][raw[0][0].length];
 			this.rawData = raw;
 			for (int h = 0; h < getHeight(); ++h)
@@ -22,7 +25,10 @@
 					}
 		}
 
-		public Image(final int channels, final int width, final int height) {
+		public Image(
+				final String source, final int channels,
+				final int width, final int height) {
+			this.source = source;
 			this.data = new double [channels][width][height];
 			this.rawData = new byte [channels][width][height];
 		}
@@ -69,5 +75,9 @@
 
 		public byte [][] rawBlue() {
 			return rawData[BLUE];
+		}
+
+		public String getSource() {
+			return source;
 		}
 	}

@@ -2,7 +2,6 @@
 	package ar.nadezhda.refractor.core;
 
 	import java.awt.image.BufferedImage;
-
 	import javafx.scene.Scene;
 	import javafx.scene.image.ImageView;
 	import javafx.scene.image.PixelWriter;
@@ -88,16 +87,26 @@
 		}
 
 		public static ImageView displayImage(final WritableImage image) {
-			final ImageView view = new ImageView();
+			final ImageView view = new ImageView(image);
+			return displayImageView(view);
+		}
+
+		public static ImageView displayImageView(final ImageView view) {
+			final javafx.scene.image.Image image = view.getImage();
 			final Stage stage = new Stage();
 			final StackPane root = new StackPane();
-			final Scene scene
-				= new Scene(root, image.getWidth(), image.getHeight());
+			final Scene scene = new Scene(root,
+					image.getWidth(), image.getHeight());
 			root.getChildren().add(view);
 			stage.setScene(scene);
-			view.setImage(image);
+			stage.setTitle((int) image.getWidth() + "x" + (int) image.getHeight());
 			stage.show();
 			return view;
+		}
+
+		public static void closeImageView(final ImageView view) {
+			final Stage stage = (Stage) view.getScene().getWindow();
+			stage.close();
 		}
 
 		public static int ARGB(final Image image, final int w, final int h) {

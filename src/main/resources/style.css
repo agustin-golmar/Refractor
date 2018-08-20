@@ -8,8 +8,8 @@
 	}
 
 	/* Layout Classes */
-	.hbox {}
-	.vbox {}
+	.h-box {}
+	.v-box {}
 
 	/* GUI Components */
 	.button, .button:focused, .button:hover, .button:active {
@@ -25,5 +25,16 @@
 		-fx-text-fill : white;
 	}
 
-	.checkbox {}
+	.box {
+		-fx-background-color : white;
+		-fx-background-insets : 0 0 0 0;
+		-fx-background-radius : 0;
+		-fx-border-color : rgba(35, 35, 35, 1.0);
+		-fx-border-radius : 0;
+		-fx-border-width : 1px;
+	}
+
+	.check-box {}
 	.label {}
+	.list-cell {}
+	.list-view {}

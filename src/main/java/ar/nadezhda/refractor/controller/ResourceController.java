@@ -8,13 +8,19 @@
 	import ar.nadezhda.refractor.core.Workspace;
 	import java.io.File;
 	import java.io.IOException;
+	import java.net.URL;
 	import java.text.DecimalFormat;
 	import java.text.DecimalFormatSymbols;
 	import java.util.Optional;
+	import java.util.ResourceBundle;
+	import javafx.collections.ObservableList;
 	import javafx.event.ActionEvent;
 	import javafx.fxml.FXML;
+	import javafx.fxml.Initializable;
 	import javafx.scene.control.CheckBox;
 	import javafx.scene.control.Label;
+	import javafx.scene.control.ListView;
+	import javafx.scene.control.SelectionMode;
 	import javafx.scene.image.ImageView;
 	import javafx.scene.image.WritableImage;
 	import javafx.stage.FileChooser;
@@ -23,11 +29,12 @@
 		* <p>Controlador encargado de entrada y salida de imágenes.</p>
 		*/
 
-	public class ResourceController {
+	public class ResourceController implements Initializable {
 
 		protected final FileChooser chooser;
 		protected final DecimalFormat decimal;
 
+		@FXML protected ListView<String> openImages;
 		@FXML protected CheckBox useConfigForLoad;
 		@FXML protected Label mouseLocation;
 		@FXML protected Label areaDimension;
@@ -53,15 +60,24 @@
 			this.decimal = new DecimalFormat("0.000", symbols);
 		}
 
+		@Override
+		public void initialize(final URL url, final ResourceBundle resources) {
+			openImages.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		}
+
 		@FXML
 		protected void open(final ActionEvent event) {
 			final Workspace workspace = Main.context.getBean(Workspace.class);
 			chooser.setTitle("Refractor: Open an image...");
-			Optional.ofNullable(chooser.showOpenDialog(Main.stage))
-					.flatMap(file -> {
+			Optional.ofNullable(chooser.showOpenMultipleDialog(Main.stage))
+				.ifPresent(files -> files.stream()
+					.map(file -> {
 						try {
 							final String path = file.getCanonicalPath();
-							if (useConfigForLoad.isSelected()) {
+							if (workspace.getState(path).isPresent()) {
+								System.out.println("La imagen ya se encuentra en el workspace!");
+							}
+							else if (useConfigForLoad.isSelected()) {
 								return workspace.loadImageUsingConfig(path);
 							}
 							else {
@@ -70,39 +86,85 @@
 						}
 						catch (final IOException exception) {
 							exception.printStackTrace();
-							return Optional.empty();
 						}
+						return Optional.<Image>empty();
 					})
-					.ifPresentOrElse(image -> {
+					.filter(Optional::isPresent)
+					.map(Optional::get)
+					.forEach(image -> {
 						final WritableImage wImage = ImageTool.getImageForDisplay(image);
 						final ImageView view = ImageTool.displayImage(wImage);
-						augment(view, image);
-					}, () -> {
-						System.out.println("No se pudo abrir la imagen.");
-					});
+						final ImageState state = augment(view, image);
+						openImages.getItems().add(image.getSource());
+						workspace.addState(image.getSource(), state);
+					}));
 		}
 
 		@FXML
 		protected void save(final ActionEvent event) {
 			final Workspace workspace = Main.context.getBean(Workspace.class);
-			chooser.setTitle("Refractor: Save an image...");
-			Optional.ofNullable(chooser.showSaveDialog(Main.stage))
-				.ifPresentOrElse(file -> {
-					try {
-						final String path = file.getCanonicalPath();
-						workspace.saveImage(workspace.loadImage("res/image/lalala.bmp").get(), path);
-						// Qué imagen almacena?
-					}
-					catch (final IOException exception) {
-						exception.printStackTrace();
-					}
-				}, () -> {
-					System.out.println("No se pudo guardar la imagen.");
-				});
+			final ObservableList<String> selectedImages = openImages
+					.getSelectionModel()
+					.getSelectedItems();
+			if (selectedImages.size() == 1) {
+				System.out.println("Seleccionó: " + selectedImages.get(0));
+				chooser.setTitle("Refractor: Save an image...");
+				Optional.ofNullable(chooser.showSaveDialog(Main.stage))
+					.ifPresentOrElse(file -> {
+						try {
+							final String path = file.getCanonicalPath();
+							workspace.saveImage(workspace
+									.getState(selectedImages.get(0)).get()
+									.getImage(), path);
+						}
+						catch (final IOException exception) {
+							exception.printStackTrace();
+						}
+					}, () -> {
+						System.out.println("No se pudo guardar la imagen.");
+					});
+			}
+			else if (selectedImages.size() == 0) {
+				System.out.println("No ha seleccionado ninguna imagen para guardar.");
+			}
+			else {
+				System.out.println("Seleccione solo una imagen. No más.");
+			}
 		}
 
-		protected void augment(final ImageView view, final Image image) {
-			view.setUserData(new ImageState(view, image));
+		@FXML
+		protected void remove(final ActionEvent event) {
+			final Workspace workspace = Main.context.getBean(Workspace.class);
+			final ObservableList<String> selected = openImages
+					.getSelectionModel()
+					.getSelectedItems();
+			selected.forEach(key -> {
+				ImageTool.closeImageView(workspace
+						.getState(key).get().getView());
+				workspace.removeState(key);
+			});
+			openImages.getItems().removeAll(selected);
+		}
+
+		@FXML
+		protected void display(final ActionEvent event) {
+			final Workspace workspace = Main.context.getBean(Workspace.class);
+			openImages
+					.getSelectionModel()
+					.getSelectedItems()
+					.stream()
+					.map(workspace::getState)
+					.filter(Optional::isPresent)
+					.map(Optional::get)
+					.forEach(state -> {
+						ImageTool.closeImageView(state.getView());
+						ImageTool.displayImageView(state.getView());
+					});
+		}
+
+		protected ImageState augment(final ImageView view, final Image image) {
+			final ImageState state = new ImageState(view, image);
+			view.setUserData(state);
 			view.setOnMouseMoved(event -> {
 				mouseLocation.setText("Location (x, y) = ("
 						+ (int) event.getX() + ", " + (int) event.getY() + ")");
@@ -112,7 +174,6 @@
 					.setStartArea(event.getX(), event.getY());
 			});
 			view.setOnMouseReleased(event -> {
-				final ImageState state = (ImageState) view.getUserData();
 				state.setEndArea(event.getX(), event.getY());
 				areaDimension.setText("Area (width, height) = ("
 						+ state.getXArea() + ", " + state.getYArea() + ")");
@@ -124,5 +185,6 @@
 						decimal.format(avg[2]) + ")");
 				state.resetArea();
 			});
+			return state;
 		}
 	}

@@ -17,6 +17,7 @@
 
 		protected final RefractorProperties config;
 		protected final Map<String, ImageFormat> formats;
+		protected final Map<String, ImageState> images;
 
 		@Inject
 		public Workspace(
@@ -24,9 +25,24 @@
 				final List<ImageFormat> availableFormats) {
 			this.config = config;
 			this.formats = new HashMap<>();
+			this.images = new HashMap<>();
 			availableFormats.forEach(format -> {
 				this.formats.put(format.getExtension(), format);
 			});
+		}
+
+		public Workspace addState(final String key, final ImageState state) {
+			images.put(key, state);
+			return this;
+		}
+
+		public Optional<ImageState> getState(final String key) {
+			return Optional.ofNullable(images.get(key));
+		}
+
+		public Workspace removeState(final String key) {
+			images.remove(key);
+			return this;
 		}
 
 		public Optional<Image> loadImageUsingConfig(final String path) {
@@ -48,7 +64,7 @@
 						}
 					})
 					.filter(raw -> raw != null)
-					.map(Image::new);
+					.map(data -> new Image(path, data));
 			}
 			return Optional.empty();
 		}
@@ -66,7 +82,7 @@
 					}
 				})
 				.filter(raw -> raw != null)
-				.map(Image::new);
+				.map(data -> new Image(path, data));
 		}
 
 		public Workspace saveImage(final Image image, final String path) {
