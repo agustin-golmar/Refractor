@@ -74,13 +74,27 @@
 			return (int) area.getHeight();
 		}
 
-		public int pixelCount() {
+		public int getPixelCount() {
 			return getXArea() * getYArea();
+		}
+
+		public Image getSelectedImage() {
+			final byte [][][] raw = new byte [image.getChannels()][getXArea()][getYArea()];
+			final int x = (int) area.getX();
+			final int y = (int) area.getY();
+			final int wEnd = (int) (x + area.getWidth());
+			final int hEnd = (int) (y + area.getHeight());
+			for (int c = 0; c < image.getChannels(); ++c)
+				for (int h = y; h < hEnd; ++h)
+					for (int w = x; w < wEnd; ++w) {
+						raw[c][w - x][h - y] = image.rawData[c][w][h];
+					}
+			return new Image(image.getSource(), raw);
 		}
 
 		public double [] getRGBAverageOnArea() {
 			final double [] avg = {0, 0, 0};
-			final double area = pixelCount();
+			final double area = getPixelCount();
 			final int x = (int) this.area.getX();
 			final int y = (int) this.area.getY();
 			final int wEnd = (int) (x + this.area.getWidth());

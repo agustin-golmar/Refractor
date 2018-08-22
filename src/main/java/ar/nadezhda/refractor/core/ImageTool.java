@@ -2,7 +2,9 @@
 	package ar.nadezhda.refractor.core;
 
 	import java.awt.image.BufferedImage;
-	import javafx.geometry.Pos;
+
+import ar.nadezhda.refractor.support.Tool;
+import javafx.geometry.Pos;
 	import javafx.scene.Scene;
 	import javafx.scene.image.ImageView;
 	import javafx.scene.image.PixelWriter;
@@ -122,5 +124,18 @@
 			final int green = Byte.toUnsignedInt(image.rawGreen()[w][h]);
 			final int blue = Byte.toUnsignedInt(image.rawBlue()[w][h]);
 			return (red << 16) | (green << 8) | (blue);
+		}
+
+		public static String buildKey(final String action,
+				final String srcImageKey, final Image destImage) {
+			System.out.println("Full: " + srcImageKey);
+			System.out.println("Tool: " + Tool.getFilename(srcImageKey));
+			return new StringBuilder()
+					.append(action)
+					.append("(")
+					.append(Tool.getFilename(srcImageKey))
+					.append("):")
+					.append(destImage.hashCode())
+					.toString();
 		}
 	}

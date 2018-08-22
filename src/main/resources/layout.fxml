@@ -27,6 +27,9 @@
 			<padding>
 				<Insets top = "5" right = "5" bottom = "5" left = "5"/>
 			</padding>
+			<Button text = "Copy" onAction = "#copy"/>
+			<Button text = "RGB Split" onAction = "#rgbSplit"/>
+			<!-- More functions... -->
 		</VBox>
 	</left>
 	<center>

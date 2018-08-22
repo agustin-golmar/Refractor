@@ -91,13 +91,7 @@
 					})
 					.filter(Optional::isPresent)
 					.map(Optional::get)
-					.forEach(image -> {
-						final WritableImage wImage = ImageTool.getImageForDisplay(image);
-						final ImageState state = ImageTool.displayNewImage(wImage, image);
-						augment(state);
-						openImages.getItems().add(image.getSource());
-						workspace.addState(image.getSource(), state);
-					}));
+					.forEach(image -> addImageState(image.getSource(), image)));
 		}
 
 		@FXML
@@ -162,6 +156,48 @@
 					});
 		}
 
+		@FXML
+		protected void copy(final ActionEvent event) {
+			final Workspace workspace = Main.context.getBean(Workspace.class);
+			final ObservableList<String> selectedImages = openImages
+					.getSelectionModel()
+					.getSelectedItems();
+			if (selectedImages.size() == 1) {
+				final String selectedKey = selectedImages.get(0);
+				final ImageState state = workspace.getState(selectedKey).get();
+				if (0 < state.getPixelCount()) {
+					final Image image = state.getSelectedImage();
+					final String key = ImageTool.buildKey("copy", selectedKey, image);
+					addImageState(key, image);
+				}
+				else {
+					System.out.println("El área seleccionada no contiene píxeles.");
+				}
+			}
+			else if (selectedImages.size() == 0) {
+				System.out.println("No ha seleccionado ninguna imagen para guardar.");
+			}
+			else {
+				System.out.println("Seleccione solo una imagen. No más.");
+			}
+		}
+
+		@FXML
+		protected void rgbSplit(final ActionEvent event) {
+			// Extraer 3 imágenes de cada banda RGB y generar imágenes nuevas.
+			// Usar el código de 'copy'. Generalizar.
+		}
+
+		protected ImageState addImageState(final String key, final Image image) {
+			final Workspace workspace = Main.context.getBean(Workspace.class);
+			final WritableImage wImage = ImageTool.getImageForDisplay(image);
+			final ImageState state = ImageTool.displayNewImage(wImage, image);
+			augment(state);
+			openImages.getItems().add(key);
+			workspace.addState(key, state);
+			return state;
+		}
+
 		protected ImageState augment(final ImageState state) {
 			final ImageView view = state.getView();
 			view.setOnMouseMoved(event -> {
@@ -180,7 +216,7 @@
 				state.updateArea(event.getX(), event.getY());
 				areaDimension.setText("Area (width, height) = ("
 						+ state.getXArea() + ", " + state.getYArea() + ")");
-				pixelCount.setText("Pixel Count: " + state.pixelCount());
+				pixelCount.setText("Pixel Count: " + state.getPixelCount());
 				final double [] avg = state.getRGBAverageOnArea();
 				grayAverage.setText("Average (R, G, B) = (" +
 						decimal.format(avg[0]) + ", " +
