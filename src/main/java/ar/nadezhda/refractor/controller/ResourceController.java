@@ -93,8 +93,8 @@
 					.map(Optional::get)
 					.forEach(image -> {
 						final WritableImage wImage = ImageTool.getImageForDisplay(image);
-						final ImageView view = ImageTool.displayImage(wImage);
-						final ImageState state = augment(view, image);
+						final ImageState state = ImageTool.displayNewImage(wImage, image);
+						augment(state);
 						openImages.getItems().add(image.getSource());
 						workspace.addState(image.getSource(), state);
 					}));
@@ -140,7 +140,7 @@
 					.getSelectedItems();
 			selected.forEach(key -> {
 				ImageTool.closeImageView(workspace
-						.getState(key).get().getView());
+						.getState(key).get());
 				workspace.removeState(key);
 			});
 			openImages.getItems().removeAll(selected);
@@ -157,14 +157,13 @@
 					.filter(Optional::isPresent)
 					.map(Optional::get)
 					.forEach(state -> {
-						ImageTool.closeImageView(state.getView());
-						ImageTool.displayImageView(state.getView());
+						ImageTool.closeImageView(state);
+						ImageTool.displayImageView(state);
 					});
 		}
 
-		protected ImageState augment(final ImageView view, final Image image) {
-			final ImageState state = new ImageState(view, image);
-			view.setUserData(state);
+		protected ImageState augment(final ImageState state) {
+			final ImageView view = state.getView();
 			view.setOnMouseMoved(event -> {
 				mouseLocation.setText("Location (x, y) = ("
 						+ (int) event.getX() + ", " + (int) event.getY() + ")");
@@ -173,8 +172,12 @@
 				((ImageState) view.getUserData())
 					.setStartArea(event.getX(), event.getY());
 			});
+			view.setOnMouseDragged(event -> {
+				((ImageState) view.getUserData())
+					.updateArea(event.getX(), event.getY());
+			});
 			view.setOnMouseReleased(event -> {
-				state.setEndArea(event.getX(), event.getY());
+				state.updateArea(event.getX(), event.getY());
 				areaDimension.setText("Area (width, height) = ("
 						+ state.getXArea() + ", " + state.getYArea() + ")");
 				pixelCount.setText("Pixel Count: " + state.pixelCount());
@@ -183,7 +186,6 @@
 						decimal.format(avg[0]) + ", " +
 						decimal.format(avg[1]) + ", " +
 						decimal.format(avg[2]) + ")");
-				state.resetArea();
 			});
 			return state;
 		}

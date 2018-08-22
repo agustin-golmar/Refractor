@@ -2,6 +2,7 @@
 	package ar.nadezhda.refractor.core;
 
 	import java.awt.image.BufferedImage;
+	import javafx.geometry.Pos;
 	import javafx.scene.Scene;
 	import javafx.scene.image.ImageView;
 	import javafx.scene.image.PixelWriter;
@@ -86,27 +87,34 @@
 			return wImage;
 		}
 
-		public static ImageView displayImage(final WritableImage image) {
-			final ImageView view = new ImageView(image);
-			return displayImageView(view);
-		}
-
-		public static ImageView displayImageView(final ImageView view) {
-			final javafx.scene.image.Image image = view.getImage();
+		public static ImageState displayNewImage(final WritableImage wImage, final Image image) {
+			final ImageView view = new ImageView(wImage);
 			final Stage stage = new Stage();
 			final StackPane root = new StackPane();
 			final Scene scene = new Scene(root,
 					image.getWidth(), image.getHeight());
+			root.setAlignment(Pos.TOP_LEFT);
 			root.getChildren().add(view);
 			stage.setScene(scene);
-			stage.setTitle((int) image.getWidth() + "x" + (int) image.getHeight());
+			stage.setTitle(image.getWidth() + "x" + image.getHeight());
+			final ImageState state = new ImageState(view, image);
+			view.setUserData(state);
 			stage.show();
-			return view;
+			return state;
 		}
 
-		public static void closeImageView(final ImageView view) {
-			final Stage stage = (Stage) view.getScene().getWindow();
-			stage.close();
+		public static ImageState displayImageView(final ImageState state) {
+			final Image image = state.getImage();
+			final Stage stage = new Stage();
+			stage.setScene(state.getRoot().getScene());
+			stage.setTitle(image.getWidth() + "x" + image.getHeight());
+			stage.show();
+			return state;
+		}
+
+		public static ImageState closeImageView(final ImageState state) {
+			((Stage) state.getView().getScene().getWindow()).close();
+			return state;
 		}
 
 		public static int ARGB(final Image image, final int w, final int h) {
