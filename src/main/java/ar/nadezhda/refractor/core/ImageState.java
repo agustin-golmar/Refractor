@@ -127,4 +127,40 @@
 			}
 			return avg;
 		}
+
+		public Image sum(ImageState other) {
+		    if (this.image.getHeight() != other.image.getHeight() ||
+            this.image.getWidth() != other.image.getWidth() ||
+            this.image.getChannels()!= other.image.getChannels()) {
+		        throw new IllegalArgumentException("Mismo tamaño por favor");
+            }
+            double minData = this.image.data[0][0][0]+other.image.data[0][0][0];
+		    double maxData = minData;
+		    Image res = new Image(this.image.source+"_"+other.image.source,this.image.getChannels(),this.image.getWidth(),
+                    this.image.getHeight());
+		    for (int c=0;c<this.image.getChannels();c++) {
+		        for (int w=0;w<this.image.getWidth();w++) {
+		            for (int h = 0; h<this.image.getHeight();h++) {
+		                res.data[c][w][h] = this.image.data[c][w][h]+other.image.data[c][w][h];
+		                if (res.data[c][w][h]>maxData)
+		                    maxData = res.data[c][w][h];
+		                else if (res.data[c][w][h]<minData)
+		                    minData = res.data[c][w][h];
+                    }
+                }
+            }
+
+            for (int c=0;c<this.image.getChannels();c++) {
+                for (int w=0;w<this.image.getWidth();w++) {
+                    for (int h = 0; h<this.image.getHeight();h++) {
+                        res.data[c][w][h] = (res.data[c][w][h]-minData)/(maxData-minData)*255;
+                        res.rawData[c][w][h] = (byte)res.data[c][w][h];
+                        //System.out.println(res.data[c][w][h]);
+                    }
+                }
+            }
+
+            return res;
+
+        }
 	}

@@ -126,6 +126,24 @@
 			}
 		}
 
+		@FXML protected void sum(final ActionEvent event) {
+            final Workspace workspace = Main.context.getBean(Workspace.class);
+            final ObservableList<String> selectedImages = openImages
+                    .getSelectionModel()
+                    .getSelectedItems();
+            if (selectedImages.size() != 2) {
+                System.out.println("2 imagenes, ni 3 ni 1");
+            } else {
+                final Image image = workspace.getState(selectedImages.get(0)).get().sum(workspace.getState
+                        (selectedImages.get(1)).get());
+                final String key = ImageTool.buildKey("sum", selectedImages.get(0), image);
+                addImageState(key,image);
+
+
+            }
+
+        }
+
 		@FXML
 		protected void remove(final ActionEvent event) {
 			final Workspace workspace = Main.context.getBean(Workspace.class);
