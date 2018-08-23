@@ -182,12 +182,6 @@
 			}
 		}
 
-		@FXML
-		protected void rgbSplit(final ActionEvent event) {
-			// Extraer 3 imágenes de cada banda RGB y generar imágenes nuevas.
-			// Usar el código de 'copy'. Generalizar.
-		}
-
 		protected ImageState addImageState(final String key, final Image image) {
 			final Workspace workspace = Main.context.getBean(Workspace.class);
 			final WritableImage wImage = ImageTool.getImageForDisplay(image);

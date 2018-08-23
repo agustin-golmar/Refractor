@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import org.controlsfx.control.*?>
 <!-- Layout -->
-<BorderPane xmlns:fx = "http://javafx.com/fxml" fx:controller = "ar.nadezhda.refractor.controller.ResourceController">
+<BorderPane xmlns:fx = "http://javafx.com/fxml" fx:controller = "ar.nadezhda.refractor.controller.FrontController">
 	<stylesheets>
 		<URL value = "@style.css"/>
 	</stylesheets>
@@ -28,7 +28,7 @@
 				<Insets top = "5" right = "5" bottom = "5" left = "5"/>
 			</padding>
 			<Button text = "Copy" onAction = "#copy"/>
-			<Button text = "RGB Split" onAction = "#rgbSplit"/>
+			<Button fx:id = "rgbSplit" text = "RGB Split" onAction = "#control"/>
 			<!-- More functions... -->
 		</VBox>
 	</left>
