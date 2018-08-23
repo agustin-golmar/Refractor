@@ -20,7 +20,9 @@
 			<Button text = "Save" onAction = "#save"/>
 			<Button text = "Remove" onAction = "#remove"/>
 			<Button text = "Display" onAction = "#display"/>
-            <Button text = "Sum" onAction = "#sum"/>
+            <Button text = "+" onAction = "#sum"/>
+            <Button text = "-" onAction = "#diff"/>
+            <Button text = "*" onAction = "#prod"/>
 		</HBox>
 	</top>
 	<left>

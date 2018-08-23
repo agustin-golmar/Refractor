@@ -2,7 +2,9 @@
 	package ar.nadezhda.refractor.core;
 
 	import java.awt.Point;
-	import javafx.scene.image.ImageView;
+    import java.util.function.DoubleBinaryOperator;
+
+    import javafx.scene.image.ImageView;
 	import javafx.scene.layout.Pane;
 	import javafx.scene.paint.Color;
 	import javafx.scene.shape.Rectangle;
@@ -128,7 +130,7 @@
 			return avg;
 		}
 
-		public Image sum(ImageState other) {
+		public Image operate(ImageState other, DoubleBinaryOperator op) {
 		    if (this.image.getHeight() != other.image.getHeight() ||
             this.image.getWidth() != other.image.getWidth() ||
             this.image.getChannels()!= other.image.getChannels()) {
@@ -141,7 +143,7 @@
 		    for (int c=0;c<this.image.getChannels();c++) {
 		        for (int w=0;w<this.image.getWidth();w++) {
 		            for (int h = 0; h<this.image.getHeight();h++) {
-		                res.data[c][w][h] = this.image.data[c][w][h]+other.image.data[c][w][h];
+		                res.data[c][w][h] = op.applyAsDouble(this.image.data[c][w][h],other.image.data[c][w][h]);
 		                if (res.data[c][w][h]>maxData)
 		                    maxData = res.data[c][w][h];
 		                else if (res.data[c][w][h]<minData)

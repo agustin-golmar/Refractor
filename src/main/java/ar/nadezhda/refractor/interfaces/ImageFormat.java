@@ -6,14 +6,14 @@
 
 	public interface ImageFormat {
 
-		public byte [][][] getBytes(final String path)
+		byte [][][] getBytes(final String path)
 				throws IOException;
-		public byte [][][] getBytes(final String path, final int width, final int height)
+		byte [][][] getBytes(final String path, final int width, final int height)
 				throws IOException;
 
-		public String getExtension();
-		public int getSupportedChannels();
+		String getExtension();
+		int getSupportedChannels();
 
-		public ImageFormat save(final Image image, final String path)
+		ImageFormat save(final Image image, final String path)
 				throws IOException;
 	}
