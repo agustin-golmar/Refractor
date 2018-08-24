@@ -5,5 +5,5 @@
 
 	public interface Controller {
 
-		public void control(final ActionEvent event);
+		void control(final ActionEvent event);
 	}

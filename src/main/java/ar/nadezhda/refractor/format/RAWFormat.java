@@ -12,8 +12,7 @@
 	public class RAWFormat implements ImageFormat {
 
 		@Override
-		public byte [][][] getBytes(final String path)
-				throws IOException {
+		public byte [][][] getBytes(final String path) {
 			throw new UnsupportedOperationException();
 		}
 
