@@ -27,6 +27,7 @@
 			try {
 				FX.initialize();
 				context = SpringApplication.run(Main.class, arguments);
+				config = context.getBean(RefractorProperties.class);
 				launch(arguments);
 			}
 			catch (final UnsatisfiedDependencyException exception) {
@@ -37,7 +38,6 @@
 		@Override
 		public void start(final Stage stage)
 				throws Exception {
-			config = context.getBean(RefractorProperties.class);
 			stage.setScene(context.getBean(Scene.class));
 			stage.setTitle(config.getTitle());
 			stage.show();

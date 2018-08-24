@@ -14,8 +14,10 @@
 		protected final Image image;
 		protected final Pane root;
 		protected final Point anchor;
+		protected final String key;
 
-		public ImageState(final ImageView view, final Image image) {
+		public ImageState(final String key, final ImageView view, final Image image) {
+			this.key = key;
 			this.anchor = new Point(0, 0);
 			this.area = new Rectangle();
 			this.area.setMouseTransparent(true);
@@ -27,6 +29,10 @@
 			this.root.getChildren().add(area);
 			this.view = view;
 			this.image = image;
+		}
+
+		public String getKey() {
+			return key;
 		}
 
 		public ImageView getView() {

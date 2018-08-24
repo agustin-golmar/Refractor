@@ -16,11 +16,10 @@
 			<padding>
 				<Insets top = "5" right = "5" bottom = "5" left = "5"/>
 			</padding>
-			<Button text = "Open" onAction = "#open"/>
-			<Button text = "Save" onAction = "#save"/>
-			<Button text = "Remove" onAction = "#remove"/>
-			<Button text = "Display" onAction = "#display"/>
-            <Button text = "Sum" onAction = "#sum"/>
+			<Button fx:id = "open" text = "Open" onAction = "#control"/>
+			<Button fx:id = "save" text = "Save" onAction = "#control"/>
+			<Button fx:id = "remove" text = "Remove" onAction = "#control"/>
+			<Button fx:id = "display" text = "Display" onAction = "#control"/>
 		</HBox>
 	</top>
 	<left>
@@ -28,8 +27,9 @@
 			<padding>
 				<Insets top = "5" right = "5" bottom = "5" left = "5"/>
 			</padding>
-			<Button text = "Copy" onAction = "#copy"/>
+			<Button fx:id = "copy" text = "Copy" onAction = "#control"/>
 			<Button fx:id = "rgbSplit" text = "RGB Split" onAction = "#control"/>
+			<Button fx:id = "sum" text = "Sum" onAction = "#control"/>
 			<!-- More functions... -->
 		</VBox>
 	</left>
@@ -38,7 +38,7 @@
 			<padding>
 				<Insets top = "5" right = "5" bottom = "5" left = "5"/>
 			</padding>
-			<ListView fx:id = "openImages" minWidth = "480"/>
+			<ListView fx:id = "keys" minWidth = "480"/>
 		</VBox>
 	</center>
 	<right>

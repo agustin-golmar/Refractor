@@ -10,18 +10,30 @@
 	import ar.nadezhda.refractor.format.RAWFormat;
 	import ar.nadezhda.refractor.format.TIFFormat;
 	import ar.nadezhda.refractor.format.WBMPFormat;
+	import ar.nadezhda.refractor.handler.CopyHandler;
+	import ar.nadezhda.refractor.handler.DisplayHandler;
+	import ar.nadezhda.refractor.handler.OpenHandler;
+	import ar.nadezhda.refractor.handler.RGBSplitHandler;
+	import ar.nadezhda.refractor.handler.RemoveHandler;
+	import ar.nadezhda.refractor.handler.SaveHandler;
+	import ar.nadezhda.refractor.handler.SumHandler;
+	import ar.nadezhda.refractor.interfaces.Handler;
 	import ar.nadezhda.refractor.interfaces.ImageFormat;
 	import javafx.fxml.FXMLLoader;
 	import javafx.scene.Parent;
 	import javafx.scene.Scene;
+	import javafx.stage.FileChooser.ExtensionFilter;
 	import java.io.IOException;
 	import java.util.ArrayList;
+	import java.util.HashMap;
 	import java.util.List;
+	import java.util.Map;
 	import javax.inject.Inject;
 	import org.springframework.beans.factory.annotation.Value;
 	import org.springframework.context.annotation.Bean;
 	import org.springframework.context.annotation.ComponentScan;
 	import org.springframework.context.annotation.Configuration;
+	import org.springframework.context.annotation.Lazy;
 	import org.springframework.core.io.Resource;
 
 	@Configuration
@@ -39,19 +51,34 @@
 			this.layout = layout;
 		}
 
-		@Bean
+		@Bean @Lazy
 		public Parent parent()
 				throws IOException {
 			return FXMLLoader.load(layout.getURL());
 		}
 
-		@Bean
+		@Bean @Lazy
 		public Scene scene(final Parent root) {
 			return new Scene(root, properties.getWidth(), properties.getHeight());
 		}
 
+		@Bean("router") @Lazy
+		public Map<String, Handler> router() {
+			// Se pueden cargar por reflection?
+			final Map<String, Handler> router = new HashMap<>();
+			router.put("open", new OpenHandler());
+			router.put("save", new SaveHandler());
+			router.put("copy", new CopyHandler());
+			router.put("remove", new RemoveHandler());
+			router.put("display", new DisplayHandler());
+			router.put("rgbSplit", new RGBSplitHandler());
+			router.put("sum", new SumHandler());
+			return router;
+		}
+
 		@Bean
 		public List<ImageFormat> availableFormats() {
+			// Se pueden cargar por reflection?
 			final List<ImageFormat> formats = new ArrayList<>();
 			formats.add(new BMPFormat());
 			formats.add(new GIFFormat());
@@ -63,5 +90,18 @@
 			formats.add(new TIFFormat());
 			formats.add(new WBMPFormat());
 			return formats;
+		}
+
+		@Bean("filters")
+		public ExtensionFilter [] filters(final List<ImageFormat> formats) {
+			final ExtensionFilter [] filters = new ExtensionFilter [1 + formats.size()];
+			filters[0] = new ExtensionFilter("All files", "*.*");
+			for (int i = 1; i < filters.length; ++i) {
+				final ImageFormat format = formats.get(i - 1);
+				filters[i] = new ExtensionFilter(
+					format.getExtension().toUpperCase(),
+					"*." + format.getExtension().toLowerCase());
+			}
+			return filters;
 		}
 	}

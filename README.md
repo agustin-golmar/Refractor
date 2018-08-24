@@ -35,7 +35,7 @@ In the root folder (after build), type:
 $ java -jar target/refractor-1.0-SNAPSHOT.jar
 ```
 
-## Designer
+## Designers
 
 This project has been built, designed and maintained by:
 

@@ -1,10 +1,9 @@
 
 	package ar.nadezhda.refractor.core;
 
+	import ar.nadezhda.refractor.support.Tool;
 	import java.awt.image.BufferedImage;
-
-import ar.nadezhda.refractor.support.Tool;
-import javafx.geometry.Pos;
+	import javafx.geometry.Pos;
 	import javafx.scene.Scene;
 	import javafx.scene.image.ImageView;
 	import javafx.scene.image.PixelWriter;
@@ -89,7 +88,8 @@ import javafx.geometry.Pos;
 			return wImage;
 		}
 
-		public static ImageState displayNewImage(final WritableImage wImage, final Image image) {
+		public static ImageState displayNewImage(final String key,
+				final WritableImage wImage, final Image image) {
 			final ImageView view = new ImageView(wImage);
 			final Stage stage = new Stage();
 			final StackPane root = new StackPane();
@@ -99,7 +99,7 @@ import javafx.geometry.Pos;
 			root.getChildren().add(view);
 			stage.setScene(scene);
 			stage.setTitle(image.getWidth() + "x" + image.getHeight());
-			final ImageState state = new ImageState(view, image);
+			final ImageState state = new ImageState(key, view, image);
 			view.setUserData(state);
 			stage.show();
 			return state;
@@ -128,8 +128,6 @@ import javafx.geometry.Pos;
 
 		public static String buildKey(final String action,
 				final String srcImageKey, final Image destImage) {
-			System.out.println("Full: " + srcImageKey);
-			System.out.println("Tool: " + Tool.getFilename(srcImageKey));
 			return new StringBuilder()
 					.append(action)
 					.append("(")
