@@ -13,10 +13,12 @@
 	import ar.nadezhda.refractor.handler.CopyHandler;
 	import ar.nadezhda.refractor.handler.DisplayHandler;
 	import ar.nadezhda.refractor.handler.OpenHandler;
+	import ar.nadezhda.refractor.handler.ProductHandler;
 	import ar.nadezhda.refractor.handler.RGBSplitHandler;
 	import ar.nadezhda.refractor.handler.RemoveHandler;
 	import ar.nadezhda.refractor.handler.SaveHandler;
-	import ar.nadezhda.refractor.handler.SumHandler;
+	import ar.nadezhda.refractor.handler.SubHandler;
+	import ar.nadezhda.refractor.handler.AddHandler;
 	import ar.nadezhda.refractor.interfaces.Handler;
 	import ar.nadezhda.refractor.interfaces.ImageFormat;
 	import javafx.fxml.FXMLLoader;
@@ -72,7 +74,9 @@
 			router.put("remove", new RemoveHandler());
 			router.put("display", new DisplayHandler());
 			router.put("rgbSplit", new RGBSplitHandler());
-			router.put("sum", new SumHandler());
+			router.put("add", new AddHandler());
+			router.put("sub", new SubHandler());
+			router.put("product", new ProductHandler());
 			return router;
 		}
 

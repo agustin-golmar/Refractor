@@ -36,8 +36,7 @@
 		}
 
 		@Override
-		public void start(final Stage stage)
-				throws Exception {
+		public void start(final Stage stage) {
 			stage.setScene(context.getBean(Scene.class));
 			stage.setTitle(config.getTitle());
 			stage.show();
