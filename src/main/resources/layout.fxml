@@ -16,10 +16,26 @@
 			<padding>
 				<Insets top = "5" right = "5" bottom = "5" left = "5"/>
 			</padding>
-			<Button fx:id = "open" text = "Open" onAction = "#control"/>
-			<Button fx:id = "save" text = "Save" onAction = "#control"/>
-			<Button fx:id = "remove" text = "Remove" onAction = "#control"/>
-			<Button fx:id = "display" text = "Display" onAction = "#control"/>
+			<Button fx:id = "open" text = "Open" onAction = "#control">
+				<tooltip>
+					<Tooltip text = "You can open multiple images at once."/>
+				</tooltip>
+			</Button>
+			<Button fx:id = "save" text = "Save" onAction = "#control">
+				<tooltip>
+					<Tooltip text = "Save the selected image in the format you like."/>
+				</tooltip>
+			</Button>
+			<Button fx:id = "remove" text = "Remove" onAction = "#control">
+				<tooltip>
+					<Tooltip text = "Completely remove an image from the workspace."/>
+				</tooltip>
+			</Button>
+			<Button fx:id = "display" text = "Display" onAction = "#control">
+				<tooltip>
+					<Tooltip text = "See again an image you close."/>
+				</tooltip>
+			</Button>
 		</HBox>
 	</top>
 	<left>
@@ -27,11 +43,27 @@
 			<padding>
 				<Insets top = "5" right = "5" bottom = "5" left = "5"/>
 			</padding>
-			<Button fx:id = "copy" text = "Copy" onAction = "#control"/>
+			<Button fx:id = "copy" text = "Copy" onAction = "#control">
+				<tooltip>
+					<Tooltip text = "Copy the selected area in an image, and create a new one."/>
+				</tooltip>
+			</Button>
 			<Button fx:id = "rgbSplit" text = "RGB Split" onAction = "#control"/>
-			<Button fx:id = "add" text = "+ (add)" onAction = "#control"/>
-			<Button fx:id = "sub" text = "- (sub)" onAction = "#control"/>
-			<Button fx:id = "product" text = "* (product)" onAction = "#control"/>
+			<Button fx:id = "add" text = "+ (add)" onAction = "#control">
+				<tooltip>
+					<Tooltip text = "Add 2 images. It uses linear compression."/>
+				</tooltip>
+			</Button>
+			<Button fx:id = "sub" text = "- (sub)" onAction = "#control">
+				<tooltip>
+					<Tooltip text = "Substract 2 images. It uses linear compression."/>
+				</tooltip>
+			</Button>
+			<Button fx:id = "product" text = "* (product)" onAction = "#control">
+				<tooltip>
+					<Tooltip text = "Multiply 2 images. It uses dynamic-range compression."/>
+				</tooltip>
+			</Button>
 			<!-- More functions... -->
 		</VBox>
 	</left>
@@ -48,8 +80,16 @@
 			<padding>
 				<Insets top = "5" right = "10" bottom = "5" left = "5"/>
 			</padding>
-			<CheckBox fx:id = "useConfigForLoad" text = "Use config for load."/>
-			<CheckBox fx:id = "reverseImageOrder" text = "Reverse image order."/>
+			<CheckBox fx:id = "useConfigForLoad" text = "Use config for load.">
+				<tooltip>
+					<Tooltip text = "For *.raw images, use the pre-configured dimensions."/>
+				</tooltip>
+			</CheckBox>
+			<CheckBox fx:id = "reverseImageOrder" text = "Reverse image order.">
+				<tooltip>
+					<Tooltip text = "Reverses the application order. Useful in non-commutative operations."/>
+				</tooltip>
+			</CheckBox>
 		</VBox>
 	</right>
 	<bottom>
