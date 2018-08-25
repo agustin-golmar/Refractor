@@ -10,16 +10,8 @@
 	import ar.nadezhda.refractor.format.RAWFormat;
 	import ar.nadezhda.refractor.format.TIFFormat;
 	import ar.nadezhda.refractor.format.WBMPFormat;
-	import ar.nadezhda.refractor.handler.CopyHandler;
-	import ar.nadezhda.refractor.handler.DisplayHandler;
-	import ar.nadezhda.refractor.handler.OpenHandler;
-	import ar.nadezhda.refractor.handler.ProductHandler;
-	import ar.nadezhda.refractor.handler.RGBSplitHandler;
-	import ar.nadezhda.refractor.handler.RemoveHandler;
-	import ar.nadezhda.refractor.handler.SaveHandler;
-	import ar.nadezhda.refractor.handler.SubHandler;
-	import ar.nadezhda.refractor.handler.AddHandler;
-	import ar.nadezhda.refractor.interfaces.Handler;
+    import ar.nadezhda.refractor.handler.*;
+    import ar.nadezhda.refractor.interfaces.Handler;
 	import ar.nadezhda.refractor.interfaces.ImageFormat;
 	import javafx.fxml.FXMLLoader;
 	import javafx.scene.Parent;
@@ -77,6 +69,8 @@
 			router.put("add", new AddHandler());
 			router.put("sub", new SubHandler());
 			router.put("product", new ProductHandler());
+			router.put("scalarprod", new ScalarProdHandler());
+			router.put("negative",new NegativeHandler());
 			return router;
 		}
 

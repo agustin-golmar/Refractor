@@ -64,6 +64,10 @@
 					<Tooltip text = "Multiply 2 images. It uses dynamic-range compression."/>
 				</tooltip>
 			</Button>
+            <Button fx:id = "scalarprod" text = "Scalar Product" onAction = "#control">
+            </Button>
+            <Button fx:id = "negative" text = "Negative" onAction = "#control"/>
+
 			<!-- More functions... -->
 		</VBox>
 	</left>
@@ -90,6 +94,7 @@
 					<Tooltip text = "Reverses the application order. Useful in non-commutative operations."/>
 				</tooltip>
 			</CheckBox>
+            <TextField fx:id = "scalar" text = "Scalar Product"/>
 		</VBox>
 	</right>
 	<bottom>
