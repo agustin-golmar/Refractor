@@ -178,12 +178,19 @@ public class ImageState {
     }
 
     public Image unaryOp(DoubleUnaryOperator op, boolean dynamicRange) {
-        double maxData = op.applyAsDouble(255.0);
+        //double maxData = op.applyAsDouble(255.0);
+        double[] maxData2 = new double[image.getChannels()];
+        for (int i=0;i<image.getChannels();i++) {
+            maxData2[i]=op.applyAsDouble(image.data[i][0][0]);
+        }
         Image res = new Image(this.image.source, this.image.getChannels(), this.image.getWidth(), this.image.getHeight());
         for (int c = 0; c < image.getChannels(); c++) {
             for (int w = 0; w < image.getWidth(); w++) {
                 for (int h = 0; h < image.getHeight(); h++) {
                     res.data[c][w][h] = op.applyAsDouble(image.data[c][w][h]);
+                    //if (res.data[c][w][h]>maxData
+                    if (res.data[c][w][h]>maxData2[c])
+                        maxData2[c]=res.data[c][w][h];
                 }
             }
         }
@@ -192,7 +199,8 @@ public class ImageState {
             for (int w = 0; w < this.image.getWidth(); w++) {
                 for (int h = 0; h < this.image.getHeight(); h++) {
                     if (dynamicRange)
-                        res.data[c][w][h] = (255) / Math.log(maxData + 1) * Math.log(res.data[c][w][h] + 1);
+                        //res.data[c][w][h] = (255) / Math.log(maxData + 1) * Math.log(res.data[c][w][h] + 1);
+                        res.data[c][w][h] = (255) / Math.log(maxData2[c] + 1) * Math.log(res.data[c][w][h] + 1);
                     res.rawData[c][w][h] = (byte) res.data[c][w][h];
                 }
             }
