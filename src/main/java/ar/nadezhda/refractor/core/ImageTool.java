@@ -3,6 +3,8 @@
 
 	import ar.nadezhda.refractor.support.Tool;
 	import java.awt.image.BufferedImage;
+	import java.util.stream.Collectors;
+	import java.util.stream.Stream;
 	import javafx.geometry.Pos;
 	import javafx.scene.Scene;
 	import javafx.scene.image.ImageView;
@@ -13,6 +15,9 @@
 	import javafx.stage.Stage;
 
 	public class ImageTool {
+
+		// For UUIs (Universal Unique Identifiers):
+		protected static int id = 0;
 
 		public static byte [][][] rawToImageMatrix(
 				final byte [] data, final int offset,
@@ -126,14 +131,16 @@
 			return (red << 16) | (green << 8) | (blue);
 		}
 
-		public static String buildKey(final String action,
-				final String srcImageKey, final Image destImage) {
+		public static String buildKey(final String action, final Image result,
+				final String ... srcImageKeys) {
+			final String srcs = Stream.of(srcImageKeys)
+					.map(Tool::getFilename)
+					.map(Tool::getUUI)
+					.collect(Collectors.joining(", "));
 			return new StringBuilder()
+					.append("[").append(id++).append("] = ")
 					.append(action)
-					.append("(")
-					.append(Tool.getFilename(srcImageKey))
-					.append("):")
-					.append(destImage.hashCode())
+					.append("(").append(srcs).append(")")
 					.toString();
 		}
 	}

@@ -30,8 +30,8 @@
 				return result;
 			}
 			final Image image = states.get(0).operate(states.get(1), operation);
-			final String key = ImageTool.buildKey(action,
-					states.get(0).getKey() + ", " + states.get(1).getKey(), image);
+			final String key = ImageTool.buildKey(action, image,
+					states.get(0).getKey(), states.get(1).getKey());
 			result.put(key, image);
 			return result;
 		}

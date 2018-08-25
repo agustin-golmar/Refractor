@@ -48,7 +48,8 @@
 			<padding>
 				<Insets top = "5" right = "10" bottom = "5" left = "5"/>
 			</padding>
-			<CheckBox fx:id = "useConfigForLoad" text = "Use config for load"/>
+			<CheckBox fx:id = "useConfigForLoad" text = "Use config for load."/>
+			<CheckBox fx:id = "reverseImageOrder" text = "Reverse image order."/>
 		</VBox>
 	</right>
 	<bottom>

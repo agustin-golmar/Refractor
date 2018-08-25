@@ -11,6 +11,7 @@
 	import java.net.URL;
 	import java.text.DecimalFormat;
 	import java.text.DecimalFormatSymbols;
+	import java.util.Collections;
 	import java.util.List;
 	import java.util.Map;
 	import java.util.Optional;
@@ -21,6 +22,7 @@
 	import javafx.fxml.FXML;
 	import javafx.fxml.Initializable;
 	import javafx.scene.Node;
+	import javafx.scene.control.CheckBox;
 	import javafx.scene.control.Label;
 	import javafx.scene.control.SelectionMode;
 	import javafx.scene.image.ImageView;
@@ -31,6 +33,7 @@
 		implements Controller, Initializable {
 
 		@FXML protected ListView<String> keys;
+		@FXML protected CheckBox reverseImageOrder;
 		@FXML protected Label mouseLocation;
 		@FXML protected Label areaDimension;
 		@FXML protected Label pixelCount;
@@ -54,7 +57,11 @@
 			final Node node = (Node) event.getSource();
 			Optional.ofNullable(router.get(node.getId()))
 				.ifPresent(handler -> {
-					handler.handle(getSelectedStates(), node)
+					final List<ImageState> states = getSelectedStates();
+					if (reverseImageOrder.isSelected()) {
+						Collections.reverse(states);
+					}
+					handler.handle(states, node)
 						.forEach((key, image) -> {
 							addImage(key, image);
 						});

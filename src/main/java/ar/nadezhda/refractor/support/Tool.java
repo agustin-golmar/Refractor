@@ -21,4 +21,9 @@
 			}
 			else return path;
 		}
+
+		public static String getUUI(final String key) {
+			final int index = key.indexOf(" =");
+			return index < 0? key : key.substring(0, index);
+		}
 	}

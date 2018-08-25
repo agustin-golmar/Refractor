@@ -22,7 +22,7 @@
 			final ImageState state = states.get(0);
 			if (0 < state.getPixelCount()) {
 				final Image image = state.getSelectedImage();
-				final String key = ImageTool.buildKey("copy", state.getKey(), image);
+				final String key = ImageTool.buildKey("copy", image, state.getKey());
 				result.put(key, image);
 			}
 			else {
