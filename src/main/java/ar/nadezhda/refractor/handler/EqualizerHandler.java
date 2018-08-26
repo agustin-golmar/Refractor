@@ -3,7 +3,7 @@
 
 	import ar.nadezhda.refractor.core.Image;
 	import ar.nadezhda.refractor.core.ImageState;
-	//import ar.nadezhda.refractor.core.ImageTool;
+	import ar.nadezhda.refractor.core.ImageTool;
 	import ar.nadezhda.refractor.interfaces.Handler;
 	import java.util.HashMap;
 	import java.util.List;
@@ -17,9 +17,9 @@
 			final Map<String, Image> result = new HashMap<>();
 			states.stream()
 				.forEachOrdered(state -> {
-					/*final Image image = state.getImage().getEqualized();
+					final Image image = state.getImage().getEqualized();
 					final String key = ImageTool.buildKey("equalized", image, state.getKey());
-					result.put(key, image);*/
+					result.put(key, image);
 				});
 			return result;
 		}

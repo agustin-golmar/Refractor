@@ -104,6 +104,26 @@
 			return histogram;
 		}
 
+		public double [][] getNormalizedHistogram() {
+			final int [][] histogram = getRawHistogram();
+			final double [][] normalized = new double [getChannels()][GRAY_LEVELS];
+			final double N = getSize();
+			for (int g = 0; g < GRAY_LEVELS; ++g)
+				for (int c = 0; c < getChannels(); ++c) {
+					normalized[c][g] = histogram[c][g] / N;
+				}
+			return normalized;
+		}
+
+		public double [][] getCummulativeHistogram() {
+			final double [][] normalized = getNormalizedHistogram();
+			for (int g = 1; g < GRAY_LEVELS; ++g)
+				for (int c = 0; c < getChannels(); ++c) {
+					normalized[c][g] += normalized[c][g - 1];
+				}
+			return normalized;
+		}
+
 		public Image getGrayscale() {
 			final byte [][][] raw = new byte [1][getWidth()][getHeight()];
 			if (getChannels() == 3) {
@@ -121,6 +141,27 @@
 					for (int w = 0; w < getWidth(); ++w)
 						raw[0][w][h] = rawGray()[w][h];
 			}
+			return new Image(source, raw);
+		}
+
+		public Image getEqualized() {
+			final byte [][][] raw = new byte [getChannels()][getWidth()][getHeight()];
+			final double [][] cum = getCummulativeHistogram();
+			final double [] cumMin = new double [getChannels()];
+			for (int c = 0; c < getChannels(); ++c)
+				for (int g = 0; g < GRAY_LEVELS; ++g) {
+					if (0 < cum[c][g]) {
+						cumMin[c] = cum[c][g];
+						break;
+					}
+				}
+			for (int h = 0; h < getHeight(); ++h)
+				for (int w = 0; w < getWidth(); ++w)
+					for (int c = 0; c < getChannels(); ++c) {
+						final int gray = Byte.toUnsignedInt(rawData[c][w][h]);
+						final double eqGray = (cum[c][gray] - cumMin[c]) / (1.0 - cumMin[c]);
+						raw[c][w][h] = (byte) Math.floor(0.5 + eqGray * (GRAY_LEVELS - 1));
+					}
 			return new Image(source, raw);
 		}
 	}
