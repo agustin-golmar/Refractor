@@ -22,12 +22,9 @@
 	import javafx.fxml.FXML;
 	import javafx.fxml.Initializable;
 	import javafx.scene.Node;
-	import javafx.scene.control.CheckBox;
-	import javafx.scene.control.Label;
-	import javafx.scene.control.SelectionMode;
-	import javafx.scene.image.ImageView;
-	import javafx.scene.control.ListView;
-	import javafx.scene.image.WritableImage;
+    import javafx.scene.control.*;
+    import javafx.scene.image.ImageView;
+    import javafx.scene.image.WritableImage;
 
 	public class FrontController
 		implements Controller, Initializable {
@@ -38,6 +35,7 @@
 		@FXML protected Label areaDimension;
 		@FXML protected Label pixelCount;
 		@FXML protected Label grayAverage;
+		@FXML protected TextField scalar;
 
 		protected final Map<String, Handler> router;
 		protected final Workspace workspace;

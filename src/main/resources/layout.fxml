@@ -78,6 +78,10 @@
 					<Tooltip text = "Applies an equalization process to enhance the image."/>
 				</tooltip>
 			</Button>
+            <Button fx:id = "scalarprod" text = "Scalar Product" onAction = "#control">
+            </Button>
+            <Button fx:id = "negative" text = "Negative" onAction = "#control"/>
+
 			<!-- More functions... -->
 		</VBox>
 	</left>
@@ -109,6 +113,7 @@
 					<Tooltip text = "Normalizes the histogram between 0 and 1. Otherwise just counts the gray-levels."/>
 				</tooltip>
 			</CheckBox>
+			<TextField fx:id = "scalar" text = "Scalar Product"/>
 		</VBox>
 	</right>
 	<bottom>

@@ -1,26 +1,8 @@
 
 	package ar.nadezhda.refractor.config;
 
-	import ar.nadezhda.refractor.format.BMPFormat;
-	import ar.nadezhda.refractor.format.GIFFormat;
-	import ar.nadezhda.refractor.format.JPGFormat;
-	import ar.nadezhda.refractor.format.PGMFormat;
-	import ar.nadezhda.refractor.format.PNGFormat;
-	import ar.nadezhda.refractor.format.PPMFormat;
-	import ar.nadezhda.refractor.format.RAWFormat;
-	import ar.nadezhda.refractor.format.TIFFormat;
-	import ar.nadezhda.refractor.format.WBMPFormat;
-	import ar.nadezhda.refractor.handler.CopyHandler;
-	import ar.nadezhda.refractor.handler.DisplayHandler;
-	import ar.nadezhda.refractor.handler.EqualizerHandler;
-	import ar.nadezhda.refractor.handler.HistogramHandler;
-	import ar.nadezhda.refractor.handler.OpenHandler;
-	import ar.nadezhda.refractor.handler.ProductHandler;
-	import ar.nadezhda.refractor.handler.GrayscaleHandler;
-	import ar.nadezhda.refractor.handler.RemoveHandler;
-	import ar.nadezhda.refractor.handler.SaveHandler;
-	import ar.nadezhda.refractor.handler.SubHandler;
-	import ar.nadezhda.refractor.handler.AddHandler;
+	import ar.nadezhda.refractor.format.*;
+	import ar.nadezhda.refractor.handler.*;
 	import ar.nadezhda.refractor.interfaces.Handler;
 	import ar.nadezhda.refractor.interfaces.ImageFormat;
 	import javafx.fxml.FXMLLoader;
@@ -81,6 +63,8 @@
 			router.put("product", new ProductHandler());
 			router.put("histogram", new HistogramHandler());
 			router.put("equalizer", new EqualizerHandler());
+			router.put("scalarprod", new ScalarProdHandler());
+			router.put("negative",new NegativeHandler());
 			return router;
 		}
 
