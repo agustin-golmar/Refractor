@@ -14,7 +14,7 @@
 	<top>
 		<HBox spacing = "5">
 			<padding>
-				<Insets top = "5" right = "5" bottom = "5" left = "5"/>
+				<Insets top = "5" right = "5" bottom = "0" left = "5"/>
 			</padding>
 			<Button fx:id = "open" text = "Open" onAction = "#control">
 				<tooltip>
@@ -23,17 +23,17 @@
 			</Button>
 			<Button fx:id = "save" text = "Save" onAction = "#control">
 				<tooltip>
-					<Tooltip text = "Save the selected image in the format you like."/>
+					<Tooltip text = "Saves the selected image in the format you like."/>
 				</tooltip>
 			</Button>
 			<Button fx:id = "remove" text = "Remove" onAction = "#control">
 				<tooltip>
-					<Tooltip text = "Completely remove an image from the workspace."/>
+					<Tooltip text = "Completely removes an image from the workspace."/>
 				</tooltip>
 			</Button>
 			<Button fx:id = "display" text = "Display" onAction = "#control">
 				<tooltip>
-					<Tooltip text = "See again an image you close."/>
+					<Tooltip text = "Sees again an image you closed."/>
 				</tooltip>
 			</Button>
 		</HBox>
@@ -41,27 +41,41 @@
 	<left>
 		<VBox spacing = "5">
 			<padding>
-				<Insets top = "5" right = "5" bottom = "5" left = "5"/>
+				<Insets top = "5" right = "0" bottom = "5" left = "5"/>
 			</padding>
 			<Button fx:id = "copy" text = "Copy" onAction = "#control">
 				<tooltip>
-					<Tooltip text = "Copy the selected area in an image, and create a new one."/>
+					<Tooltip text = "Copies the selected area in an image, and create a new one."/>
 				</tooltip>
 			</Button>
-			<Button fx:id = "rgbSplit" text = "RGB Split" onAction = "#control"/>
+			<Button fx:id = "grayscale" text = "Grayscale" onAction = "#control">
+				<tooltip>
+					<Tooltip text = "Generates the grayscale of the image using their brightness/value (HSB/HSV model)."/>
+				</tooltip>
+			</Button>
 			<Button fx:id = "add" text = "+ (add)" onAction = "#control">
 				<tooltip>
-					<Tooltip text = "Add 2 images. It uses linear compression."/>
+					<Tooltip text = "Adds 2 images. It uses linear compression."/>
 				</tooltip>
 			</Button>
 			<Button fx:id = "sub" text = "- (sub)" onAction = "#control">
 				<tooltip>
-					<Tooltip text = "Substract 2 images. It uses linear compression."/>
+					<Tooltip text = "Subtracts 2 images. It uses linear compression."/>
 				</tooltip>
 			</Button>
 			<Button fx:id = "product" text = "* (product)" onAction = "#control">
 				<tooltip>
-					<Tooltip text = "Multiply 2 images. It uses dynamic-range compression."/>
+					<Tooltip text = "Multiplies 2 images. It uses dynamic-range compression."/>
+				</tooltip>
+			</Button>
+			<Button fx:id = "histogram" text = "Histogram" onAction = "#control">
+				<tooltip>
+					<Tooltip text = "Computes the histogram of an image."/>
+				</tooltip>
+			</Button>
+			<Button fx:id = "equalizer" text = "Equalize" onAction = "#control">
+				<tooltip>
+					<Tooltip text = "Applies an equalization process to enhance the image."/>
 				</tooltip>
 			</Button>
 			<!-- More functions... -->
@@ -78,7 +92,7 @@
 	<right>
 		<VBox spacing = "5">
 			<padding>
-				<Insets top = "5" right = "10" bottom = "5" left = "5"/>
+				<Insets top = "5" right = "10" bottom = "5" left = "0"/>
 			</padding>
 			<CheckBox fx:id = "useConfigForLoad" text = "Use config for load.">
 				<tooltip>
@@ -90,12 +104,17 @@
 					<Tooltip text = "Reverses the application order. Useful in non-commutative operations."/>
 				</tooltip>
 			</CheckBox>
+			<CheckBox fx:id = "normalizeHistogram" text = "Normalize histogram.">
+				<tooltip>
+					<Tooltip text = "Normalizes the histogram between 0 and 1. Otherwise just counts the gray-levels."/>
+				</tooltip>
+			</CheckBox>
 		</VBox>
 	</right>
 	<bottom>
 		<VBox spacing = "5">
 			<padding>
-				<Insets top = "5" right = "5" bottom = "5" left = "5"/>
+				<Insets top = "0" right = "5" bottom = "5" left = "5"/>
 			</padding>
 			<Label fx:id = "mouseLocation" text = "Location (x, y) = (0, 0)"/>
 			<Label fx:id = "areaDimension" text = "Area (width, height) = (0, 0)"/>

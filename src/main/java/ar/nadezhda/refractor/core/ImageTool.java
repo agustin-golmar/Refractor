@@ -6,6 +6,7 @@
 	import java.util.stream.Collectors;
 	import java.util.stream.Stream;
 	import javafx.geometry.Pos;
+	import javafx.scene.Node;
 	import javafx.scene.Scene;
 	import javafx.scene.image.ImageView;
 	import javafx.scene.image.PixelWriter;
@@ -93,28 +94,42 @@
 			return wImage;
 		}
 
+		public static void display(final Node node, final String title,
+				final int width, final int height) {
+			final Stage stage = new Stage();
+			final StackPane root = new StackPane();
+			final Scene scene = new Scene(root, width, height);
+			root.setAlignment(Pos.TOP_LEFT);
+			root.getChildren().add(node);
+			stage.setScene(scene);
+			stage.setTitle(title);
+			stage.show();
+		}
+
 		public static ImageState displayNewImage(final String key,
 				final WritableImage wImage, final Image image) {
 			final ImageView view = new ImageView(wImage);
-			final Stage stage = new Stage();
-			final StackPane root = new StackPane();
-			final Scene scene = new Scene(root,
-					image.getWidth(), image.getHeight());
-			root.setAlignment(Pos.TOP_LEFT);
-			root.getChildren().add(view);
-			stage.setScene(scene);
-			stage.setTitle(image.getWidth() + "x" + image.getHeight());
+			final String title = new StringBuilder()
+					.append(key)
+					.append(" : ")
+					.append(image.getWidth()).append("x").append(image.getHeight())
+					.toString();
+			display(view, title, image.getWidth(), image.getHeight());
 			final ImageState state = new ImageState(key, view, image);
 			view.setUserData(state);
-			stage.show();
 			return state;
 		}
 
 		public static ImageState displayImageView(final ImageState state) {
 			final Image image = state.getImage();
 			final Stage stage = new Stage();
+			final String title = new StringBuilder()
+					.append(state.getKey())
+					.append(" : ")
+					.append(image.getWidth()).append("x").append(image.getHeight())
+					.toString();
 			stage.setScene(state.getRoot().getScene());
-			stage.setTitle(image.getWidth() + "x" + image.getHeight());
+			stage.setTitle(title);
 			stage.show();
 			return state;
 		}

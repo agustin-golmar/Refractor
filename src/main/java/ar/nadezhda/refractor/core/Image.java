@@ -1,12 +1,21 @@
 
 	package ar.nadezhda.refractor.core;
 
+	import java.awt.Color;
+
 	public class Image {
 
+		public static int GRAY_LEVELS = 256;
+
+		// Channels:
 		public static int GRAY = 0;
 		public static int RED = 0;
+		public static int HUE = 0;
 		public static int GREEN = 1;
+		public static int SATURATION = 1;
 		public static int BLUE = 2;
+		public static int BRIGHTNESS = 2;
+		public static int VALUE = 2;
 
 		// Con el formato [channel][w][h]:
 		public final double [][][] data;
@@ -45,6 +54,10 @@
 			return data[0][0].length;
 		}
 
+		public int getSize() {
+			return getWidth() * getHeight();
+		}
+
 		public double [][] gray() {
 			return data[GRAY];
 		}
@@ -79,5 +92,35 @@
 
 		public String getSource() {
 			return source;
+		}
+
+		public int [][] getRawHistogram() {
+			final int [][] histogram = new int [getChannels()][GRAY_LEVELS];
+			for (int h = 0; h < getHeight(); ++h)
+				for (int w = 0; w < getWidth(); ++w)
+					for (int c = 0; c < getChannels(); ++c) {
+						++histogram[c][Byte.toUnsignedInt(rawData[c][w][h])];
+					}
+			return histogram;
+		}
+
+		public Image getGrayscale() {
+			final byte [][][] raw = new byte [1][getWidth()][getHeight()];
+			if (getChannels() == 3) {
+				for (int h = 0; h < getHeight(); ++h)
+					for (int w = 0; w < getWidth(); ++w) {
+						final int red = Byte.toUnsignedInt(rawRed()[w][h]);
+						final int green = Byte.toUnsignedInt(rawGreen()[w][h]);
+						final int blue = Byte.toUnsignedInt(rawBlue()[w][h]);
+						final double brightness = Color.RGBtoHSB(red, green, blue, null)[BRIGHTNESS];
+						raw[0][w][h] = (byte) ((GRAY_LEVELS - 1) * brightness);
+					}
+			}
+			else {
+				for (int h = 0; h < getHeight(); ++h)
+					for (int w = 0; w < getWidth(); ++w)
+						raw[0][w][h] = rawGray()[w][h];
+			}
+			return new Image(source, raw);
 		}
 	}

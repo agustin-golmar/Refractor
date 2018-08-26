@@ -12,9 +12,11 @@
 	import ar.nadezhda.refractor.format.WBMPFormat;
 	import ar.nadezhda.refractor.handler.CopyHandler;
 	import ar.nadezhda.refractor.handler.DisplayHandler;
+	import ar.nadezhda.refractor.handler.EqualizerHandler;
+	import ar.nadezhda.refractor.handler.HistogramHandler;
 	import ar.nadezhda.refractor.handler.OpenHandler;
 	import ar.nadezhda.refractor.handler.ProductHandler;
-	import ar.nadezhda.refractor.handler.RGBSplitHandler;
+	import ar.nadezhda.refractor.handler.GrayscaleHandler;
 	import ar.nadezhda.refractor.handler.RemoveHandler;
 	import ar.nadezhda.refractor.handler.SaveHandler;
 	import ar.nadezhda.refractor.handler.SubHandler;
@@ -73,10 +75,12 @@
 			router.put("copy", new CopyHandler());
 			router.put("remove", new RemoveHandler());
 			router.put("display", new DisplayHandler());
-			router.put("rgbSplit", new RGBSplitHandler());
+			router.put("grayscale", new GrayscaleHandler());
 			router.put("add", new AddHandler());
 			router.put("sub", new SubHandler());
 			router.put("product", new ProductHandler());
+			router.put("histogram", new HistogramHandler());
+			router.put("equalizer", new EqualizerHandler());
 			return router;
 		}
 

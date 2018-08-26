@@ -144,7 +144,7 @@
 			double minData = this.image.data[0][0][0] + other.image.data[0][0][0];
 			double maxData = minData;
 			Image res = new Image(
-					this.image.source + "_" + other.image.source,
+					this.image.source + ", " + other.image.source,
 					this.image.getChannels(),
 					this.image.getWidth(), this.image.getHeight());
 			for (int c = 0; c < this.image.getChannels(); c++) {
