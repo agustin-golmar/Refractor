@@ -25,6 +25,6 @@
 		*	Un mapa con las imágenes generadas y las claves bajo las cuáles se
 		*	deben persistir.
 		*/
-		public Map<String, Image> handle(
-				final List<ImageState> states, final Node node);
+        Map<String, Image> handle(
+                final List<ImageState> states, final Node node);
 	}
