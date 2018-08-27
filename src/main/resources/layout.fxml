@@ -89,6 +89,8 @@
             <Button fx:id = "saltandpepper" text = "S &amp; P" onAction = "#control"/>
             <Button fx:id = "rayleighnoise" text = "Rayleigh Noise" onAction = "#control"/>
             <Button fx:id = "meanfilter" text = "Mean Filter" onAction = "#control"/>
+            <Button fx:id = "gaussfilter" text = "Gauss Filter" onAction = "#control"/>
+
 
 			<!-- More functions... -->
 		</VBox>
@@ -122,6 +124,7 @@
 				</tooltip>
 			</CheckBox>
 			<TextField fx:id = "scalar" text = "Insert Scalar Here"/>
+            <TextField fx:id = "scalar2" text = "Insert Scalar Here"/>
 		</VBox>
 	</right>
 	<bottom>

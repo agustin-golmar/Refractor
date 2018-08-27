@@ -73,6 +73,7 @@
 			router.put("saltandpepper", new SaltAndPepperHandler());
 			router.put("rayleighnoise", new RayleighNoiseHandler());
 			router.put("meanfilter",new MeanFilterHandler());
+			router.put("gaussfilter",new GaussFilterHandler());
 			return router;
 		}
 

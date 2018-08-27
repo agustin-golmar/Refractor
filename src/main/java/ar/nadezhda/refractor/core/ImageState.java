@@ -237,21 +237,41 @@ public class ImageState {
 
     }
 
-    public Image meanFilter(int size){
+    public Image filter(int size, DoubleBinaryOperator matrixFiller){
+        double[][] window = new double[size][size];
+        double sum = 0.0;
+        for (int i=0;i<size;i++) {
+            for (int j=0;j<size;j++) {
+                double val = matrixFiller.applyAsDouble(i-size/2,j-size/2);
+                window[i][j]= val;
+                sum+=val;
+                System.out.print(window[i][j]+ " ");
+            }
+            System.out.println("");
+
+        }
+        for (int i=0;i<size;i++) {
+            for (int j=0;j<size;j++) {
+                window[i][j]/=sum;
+            }
+
+        }
+        System.out.println("------------------------");
         Image res = new Image(this.image.source, this.image.getChannels(), this.image.getWidth(), this.image.getHeight());
         for (int c=0;c<image.getChannels();c++){
             for (int w=0;w<image.getWidth();w++){
                 for (int h=0;h<image.getHeight();h++){
-                    if (w<size/2 || h<size/2 || w+size/2 >= image.getWidth() || h+size/2 >= image.getHeight()) {
-                        res.data[c][w][h] = image.data[c][w][h];
-                    } else {
-                        res.data[c][w][h] = 0;
-                        for (int i=w-size/2;i<=w+size/2;i++) {
-                            for (int j=h-size/2;j<=h+size/2;j++) {
-                                res.data[c][w][h] +=(1.0/(size*size))*image.data[c][i][j];
+                    res.data[c][w][h] = 0;
+                        for (int i=w-size/2,i2=0;i<=w+size/2;i++,i2++) {
+                            for (int j=h-size/2,j2=0;j<=h+size/2;j++,j2++) {
+                                try {
+                                    res.data[c][w][h] += window[i2][j2] * image.data[c][i][j];
+                                } catch(IndexOutOfBoundsException e){
+                                    res.data[c][w][h]+=0;
+                                }
                             }
                         }
-                    }
+
                     res.rawData[c][w][h] = (byte) res.data[c][w][h];
 
                 }
