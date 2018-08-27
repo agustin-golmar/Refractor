@@ -66,6 +66,7 @@
 			router.put("scalarprod", new ScalarProdHandler());
 			router.put("negative",new NegativeHandler());
 			router.put("threshold",new ThresholdHandler());
+			router.put("power", new PowerHandler());
 			return router;
 		}
 

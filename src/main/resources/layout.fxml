@@ -82,6 +82,7 @@
             </Button>
             <Button fx:id = "negative" text = "Negative" onAction = "#control"/>
             <Button fx:id = "threshold" text = "Threshold" onAction = "#control"/>
+            <Button fx:id = "power" text = "Power" onAction = "#control"/>
 
 			<!-- More functions... -->
 		</VBox>

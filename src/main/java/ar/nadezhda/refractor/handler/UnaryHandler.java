@@ -56,6 +56,10 @@ public class UnaryHandler implements Handler {
                 break;
             case "threshold":
                 operation = (n) -> n>scalar?255:0;
+                break;
+            case "power":
+                operation = (n) -> Math.pow(n,scalar);
+                break;
         }
     }
 }
