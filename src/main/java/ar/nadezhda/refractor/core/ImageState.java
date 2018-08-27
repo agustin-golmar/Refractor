@@ -208,14 +208,14 @@ public class ImageState {
         return res;
     }
 
-    public Image increaseContrast() {
+    public Image increaseContrast(double scalar) {
         double[] mean = getMean();
         double[] stdDev = getStdDev();
         Image res = new Image(this.image.source, this.image.getChannels(), this.image.getWidth(), this.image.getHeight());
         for (int c=0;c<image.getChannels();c++){
             for (int w=0;w<image.getWidth();w++){
                 for (int h=0;h<image.getHeight();h++){
-                    res.data[c][w][h] = 255*(image.data[c][w][h]-(mean[c]-stdDev[c]/2))/stdDev[c];
+                    res.data[c][w][h] = 255*(image.data[c][w][h]-(mean[c]-stdDev[c]/scalar))/(2*stdDev[c]/scalar);
                     //System.out.println(res.data[c][w][h]);
                     if (res.data[c][w][h]<0){
                         res.data[c][w][h]=0;
