@@ -54,6 +54,8 @@ public class UnaryHandler implements Handler {
             case "negative":
                 operation = (n) -> 255.0-n;
                 break;
+            case "threshold":
+                operation = (n) -> n>scalar?255:0;
         }
     }
 }

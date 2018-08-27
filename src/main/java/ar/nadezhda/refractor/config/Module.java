@@ -65,6 +65,7 @@
 			router.put("equalizer", new EqualizerHandler());
 			router.put("scalarprod", new ScalarProdHandler());
 			router.put("negative",new NegativeHandler());
+			router.put("threshold",new ThresholdHandler());
 			return router;
 		}
 

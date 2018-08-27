@@ -81,6 +81,7 @@
             <Button fx:id = "scalarprod" text = "Scalar Product" onAction = "#control">
             </Button>
             <Button fx:id = "negative" text = "Negative" onAction = "#control"/>
+            <Button fx:id = "threshold" text = "Threshold" onAction = "#control"/>
 
 			<!-- More functions... -->
 		</VBox>
@@ -113,7 +114,7 @@
 					<Tooltip text = "Normalizes the histogram between 0 and 1. Otherwise just counts the gray-levels."/>
 				</tooltip>
 			</CheckBox>
-			<TextField fx:id = "scalar" text = "Scalar Product"/>
+			<TextField fx:id = "scalar" text = "Insert Scalar Here"/>
 		</VBox>
 	</right>
 	<bottom>
