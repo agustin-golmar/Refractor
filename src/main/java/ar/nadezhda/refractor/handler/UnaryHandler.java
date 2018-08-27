@@ -59,7 +59,7 @@ public abstract class UnaryHandler implements Handler {
                 operation = (n) -> n>scalar?255:0;
                 break;
             case "power":
-                operation = (n) -> Math.pow(n,scalar);
+                operation = (n) -> Math.pow(255,1-scalar)*Math.pow(n,scalar);
                 break;
         }
     }
