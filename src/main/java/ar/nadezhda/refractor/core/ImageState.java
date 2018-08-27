@@ -1,6 +1,7 @@
 package ar.nadezhda.refractor.core;
 
 import java.awt.Point;
+import java.util.Arrays;
 import java.util.function.DoubleBinaryOperator;
 import java.util.function.DoubleUnaryOperator;
 
@@ -234,6 +235,29 @@ public class ImageState {
         }
         return res;
 
+    }
+
+    public Image meanFilter(int size){
+        Image res = new Image(this.image.source, this.image.getChannels(), this.image.getWidth(), this.image.getHeight());
+        for (int c=0;c<image.getChannels();c++){
+            for (int w=0;w<image.getWidth();w++){
+                for (int h=0;h<image.getHeight();h++){
+                    if (w<size/2 || h<size/2 || w+size/2 >= image.getWidth() || h+size/2 >= image.getHeight()) {
+                        res.data[c][w][h] = image.data[c][w][h];
+                    } else {
+                        res.data[c][w][h] = 0;
+                        for (int i=w-size/2;i<=w+size/2;i++) {
+                            for (int j=h-size/2;j<=h+size/2;j++) {
+                                res.data[c][w][h] +=(1.0/(size*size))*image.data[c][i][j];
+                            }
+                        }
+                    }
+                    res.rawData[c][w][h] = (byte) res.data[c][w][h];
+
+                }
+            }
+        }
+        return res;
     }
 
     public double[] getMean(){

@@ -72,6 +72,7 @@
 			router.put("exponentialnoise",new ExponentialNoiseHandler());
 			router.put("saltandpepper", new SaltAndPepperHandler());
 			router.put("rayleighnoise", new RayleighNoiseHandler());
+			router.put("meanfilter",new MeanFilterHandler());
 			return router;
 		}
 

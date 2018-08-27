@@ -68,13 +68,13 @@ public abstract class UnaryHandler implements Handler {
                 operation = (n) -> n+random.nextGaussian()*255*scalar;
                 break;
             case "exponentialnoise":
-                operation = (n) -> n*Math.log(random.nextDouble()/255)*(-1/scalar);
+                operation = (n) -> n*Math.log(random.nextDouble())*(-1/scalar);
                 break;
             case "saltandpepper":
                 operation = (n) -> random.nextDouble()<scalar?(random.nextDouble()>0.5?255:0):n;
                 break;
             case "rayleighnoise":
-                operation = (n) ->n*scalar*Math.sqrt(-2*Math.log((1-random.nextDouble())/255));
+                operation = (n) ->n*scalar*Math.sqrt(-2*Math.log((1-random.nextDouble())));
                 break;
         }
     }
