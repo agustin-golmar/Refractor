@@ -179,8 +179,10 @@ public class ImageState {
     public Image unaryOp(DoubleUnaryOperator op, boolean normalize) {
         //double maxData = op.applyAsDouble(255.0);
         double[] maxData2 = new double[image.getChannels()];
+        double[] minData2 = new double[image.getChannels()];
         for (int i=0;i<image.getChannels();i++) {
-            maxData2[i]=op.applyAsDouble(image.data[i][0][0]);
+            maxData2[i]=255;
+            minData2[i]=0;
         }
         Image res = new Image(this.image.source, this.image.getChannels(), this.image.getWidth(), this.image.getHeight());
         for (int c = 0; c < image.getChannels(); c++) {
@@ -190,6 +192,8 @@ public class ImageState {
                     //if (res.data[c][w][h]>maxData
                     if (res.data[c][w][h]>maxData2[c])
                         maxData2[c]=res.data[c][w][h];
+                    else if (res.data[c][w][h]<minData2[c])
+                        minData2[c]=res.data[c][w][h];
                 }
             }
         }
@@ -198,7 +202,7 @@ public class ImageState {
                 for (int h = 0; h < this.image.getHeight(); h++) {
 
                     if (normalize)
-                        res.data[c][w][h] = 255 * res.data[c][w][h]/maxData2[c];
+                        res.data[c][w][h] = 255 * (res.data[c][w][h]-minData2[c])/(maxData2[c]-minData2[c]);
                     res.rawData[c][w][h] = (byte) res.data[c][w][h];
                 }
             }

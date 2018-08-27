@@ -84,6 +84,10 @@
             <Button fx:id = "threshold" text = "Threshold" onAction = "#control"/>
             <Button fx:id = "power" text = "Power" onAction = "#control"/>
             <Button fx:id = "increasecontrast" text = "Increase Contrast" onAction = "#control"/>
+            <Button fx:id = "gaussiannoise" text = "Gaussian Noise" onAction = "#control"/>
+            <Button fx:id = "exponentialnoise" text = "Exponential Noise" onAction = "#control"/>
+            <Button fx:id = "saltandpepper" text = "S &amp; P" onAction = "#control"/>
+            <Button fx:id = "rayleighnoise" text = "Rayleigh Noise" onAction = "#control"/>
 
 			<!-- More functions... -->
 		</VBox>

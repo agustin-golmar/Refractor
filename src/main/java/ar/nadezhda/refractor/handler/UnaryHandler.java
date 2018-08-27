@@ -10,10 +10,12 @@ import javafx.scene.control.TextField;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.function.DoubleUnaryOperator;
 
 public abstract class UnaryHandler implements Handler {
     protected final String action;
+    private final Random random;
     protected DoubleUnaryOperator operation;
     protected boolean normalize;
     protected double scalar;
@@ -21,6 +23,7 @@ public abstract class UnaryHandler implements Handler {
     public UnaryHandler(final String action, boolean normalize) {
         this.action = action;
         this.normalize= normalize;
+        this.random = new Random();
     }
 
     @Override
@@ -60,6 +63,18 @@ public abstract class UnaryHandler implements Handler {
                 break;
             case "power":
                 operation = (n) -> Math.pow(255,1-scalar)*Math.pow(n,scalar);
+                break;
+            case "gaussiannoise":
+                operation = (n) -> n+random.nextGaussian()*255*scalar;
+                break;
+            case "exponentialnoise":
+                operation = (n) -> n*Math.log(random.nextDouble()/255)*(-1/scalar);
+                break;
+            case "saltandpepper":
+                operation = (n) -> random.nextDouble()<scalar?(random.nextDouble()>0.5?255:0):n;
+                break;
+            case "rayleighnoise":
+                operation = (n) ->n*scalar*Math.sqrt(-2*Math.log((1-random.nextDouble())/255));
                 break;
         }
     }

@@ -68,6 +68,10 @@
 			router.put("threshold",new ThresholdHandler());
 			router.put("power", new PowerHandler());
 			router.put("increasecontrast",new IncreaseContrastHandler());
+			router.put("gaussiannoise", new GaussianNoiseHandler());
+			router.put("exponentialnoise",new ExponentialNoiseHandler());
+			router.put("saltandpepper", new SaltAndPepperHandler());
+			router.put("rayleighnoise", new RayleighNoiseHandler());
 			return router;
 		}
 
