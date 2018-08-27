@@ -176,7 +176,7 @@ public class ImageState {
         return res;
     }
 
-    public Image unaryOp(DoubleUnaryOperator op, boolean dynamicRange) {
+    public Image unaryOp(DoubleUnaryOperator op, boolean normalize) {
         //double maxData = op.applyAsDouble(255.0);
         double[] maxData2 = new double[image.getChannels()];
         for (int i=0;i<image.getChannels();i++) {
@@ -193,13 +193,12 @@ public class ImageState {
                 }
             }
         }
-
         for (int c = 0; c < this.image.getChannels(); c++) {
             for (int w = 0; w < this.image.getWidth(); w++) {
                 for (int h = 0; h < this.image.getHeight(); h++) {
-                    if (dynamicRange)
-                        //res.data[c][w][h] = (255) / Math.log(maxData + 1) * Math.log(res.data[c][w][h] + 1);
-                        res.data[c][w][h] = (255) / Math.log(maxData2[c] + 1) * Math.log(res.data[c][w][h] + 1);
+
+                    if (normalize)
+                        res.data[c][w][h] = 255 * res.data[c][w][h]/maxData2[c];
                     res.rawData[c][w][h] = (byte) res.data[c][w][h];
                 }
             }
@@ -207,5 +206,37 @@ public class ImageState {
 
 
         return res;
+    }
+
+    public Image increaseContrast() {
+        double[] mean = getMean();
+        double[] stdDev = getStdDev();
+        Image res = new Image(this.image.source, this.image.getChannels(), this.image.getWidth(), this.image.getHeight());
+        for (int c=0;c<image.getChannels();c++){
+            for (int w=0;w<image.getWidth();w++){
+                for (int h=0;h<image.getHeight();h++){
+                    res.data[c][w][h] = 255*(image.data[c][w][h]-(mean[c]-stdDev[c]/2))/stdDev[c];
+                    //System.out.println(res.data[c][w][h]);
+                    if (res.data[c][w][h]<0){
+                        res.data[c][w][h]=0;
+                    }
+
+                    else if (res.data[c][w][h]>255){
+                        res.data[c][w][h]=255;
+                    }
+                    res.rawData[c][w][h] = (byte) res.data[c][w][h];
+                }
+            }
+        }
+        return res;
+
+    }
+
+    public double[] getMean(){
+        return image.getMean();
+    }
+
+    public double[] getStdDev() {
+        return image.getStdDev();
     }
 }

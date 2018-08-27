@@ -22,8 +22,10 @@
 		public final byte [][][] rawData;
 
 		protected final String source;
+        private double[] mean;
+        private double[] stdDev;
 
-		public Image(final String source, final byte [][][] raw) {
+        public Image(final String source, final byte [][][] raw) {
 			this.source = source;
 			this.data = new double [raw.length][raw[0].length][raw[0][0].length];
 			this.rawData = raw;
@@ -164,4 +166,33 @@
 					}
 			return new Image(source, raw);
 		}
+
+		public double[] getMean() {
+		    double [] mean = new double[getChannels()];
+		    for (int c=0;c<getChannels();c++) {
+		        for (int w=0;w<getWidth();w++) {
+		            for (int h=0;h<getHeight();h++){
+		                mean[c]+=data[c][w][h];
+                    }
+                }
+                mean[c]/=getHeight()*getWidth();
+            }
+            this.mean=mean;
+            return mean;
+        }
+
+        public double[] getStdDev() {
+		    double [] stdDev = new double[getChannels()];
+		    for (int c=0;c<getChannels();c++) {
+                for (int w=0;w<getWidth();w++) {
+                    for (int h=0;h<getHeight();h++){
+                        stdDev[c]+=Math.pow(data[c][w][h]-mean[c],2);
+                    }
+                }
+                stdDev[c]/=getHeight()*getWidth();
+                stdDev[c]=Math.sqrt(stdDev[c]);
+            }
+            this.stdDev = stdDev;
+            return stdDev;
+        }
 	}

@@ -67,6 +67,7 @@
 			router.put("negative",new NegativeHandler());
 			router.put("threshold",new ThresholdHandler());
 			router.put("power", new PowerHandler());
+			router.put("increasecontrast",new IncreaseContrastHandler());
 			return router;
 		}
 

@@ -12,15 +12,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.DoubleUnaryOperator;
 
-public class UnaryHandler implements Handler {
+public abstract class UnaryHandler implements Handler {
     protected final String action;
     protected DoubleUnaryOperator operation;
-    protected boolean dynamicRange;
+    protected boolean normalize;
     protected double scalar;
 
-    public UnaryHandler(final String action, boolean dynamicRange) {
+    public UnaryHandler(final String action, boolean normalize) {
         this.action = action;
-        this.dynamicRange = dynamicRange;
+        this.normalize= normalize;
     }
 
     @Override
@@ -36,10 +36,11 @@ public class UnaryHandler implements Handler {
             System.out.println("Not a number");
             return result;
         }
+        ImageState imageState = states.get(0);
         generateOperation();
 
 
-        final Image image = states.get(0).unaryOp(operation, dynamicRange);
+        final Image image = imageState.unaryOp(operation, normalize);
         final String key = ImageTool.buildKey(action, image,
                 states.get(0).getKey());
         result.put(key, image);
@@ -49,7 +50,7 @@ public class UnaryHandler implements Handler {
     private void generateOperation() {
         switch (action) {
             case "scalarprod":
-                operation = (n) -> n*scalar;
+                operation = (n) -> Math.log(n*scalar+1);
                 break;
             case "negative":
                 operation = (n) -> 255.0-n;
