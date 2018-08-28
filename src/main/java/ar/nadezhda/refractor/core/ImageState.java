@@ -240,26 +240,30 @@ public class ImageState {
 
     }
 
-    public Image filter(int size, DoubleBinaryOperator matrixFiller){
+    public Image filter(int size, DoubleBinaryOperator matrixFiller, boolean normalize){
         double[][] window = new double[size][size];
         double sum = 0.0;
         for (int i=0;i<size;i++) {
             for (int j=0;j<size;j++) {
                 double val = matrixFiller.applyAsDouble(i-size/2,j-size/2);
                 window[i][j]= val;
+                System.out.print(window[i][j]+ " ");
                 sum+=val;
                 
             }
+            System.out.println("");
 
 
         }
-        for (int i=0;i<size;i++) {
-            for (int j=0;j<size;j++) {
-                window[i][j]/=sum;
-                System.out.print(window[i][j]+ " ");
-            }
-            System.out.println("");
+        if (normalize) {
+            for (int i = 0; i < size; i++) {
+                for (int j = 0; j < size; j++) {
+                    window[i][j] /= sum;
 
+                }
+
+
+            }
         }
         System.out.println("------------------------");
         Image res = new Image(this.image.source, this.image.getChannels(), this.image.getWidth(), this.image.getHeight());

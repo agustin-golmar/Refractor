@@ -91,6 +91,7 @@
             <Button fx:id = "meanfilter" text = "Mean Filter" onAction = "#control"/>
             <Button fx:id = "gaussfilter" text = "Gauss Filter" onAction = "#control"/>
             <Button fx:id = "medianfilter" text = "Median Filter" onAction = "#control"/>
+            <Button fx:id = "highpassfilter" text = "Highpass Filter" onAction = "#control"/>
 
 
 			<!-- More functions... -->

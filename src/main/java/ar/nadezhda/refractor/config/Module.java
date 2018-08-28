@@ -75,6 +75,7 @@
 			router.put("meanfilter",new MeanFilterHandler());
 			router.put("gaussfilter",new GaussFilterHandler());
 			router.put("medianfilter",new MedianFilterHandler());
+			router.put("highpassfilter",new HighpassFilterHandler());
 			return router;
 		}
 
