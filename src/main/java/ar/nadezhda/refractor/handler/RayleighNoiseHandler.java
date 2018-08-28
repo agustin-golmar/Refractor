@@ -2,6 +2,6 @@ package ar.nadezhda.refractor.handler;
 
 public class RayleighNoiseHandler extends UnaryHandler {
     public RayleighNoiseHandler() {
-        super("rayleighnoise", true);
+        super("rayleighnoise", false,true);
     }
 }

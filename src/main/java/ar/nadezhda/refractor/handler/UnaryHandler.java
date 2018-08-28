@@ -16,13 +16,15 @@ import java.util.function.DoubleUnaryOperator;
 public abstract class UnaryHandler implements Handler {
     protected final String action;
     private final Random random;
+    private final boolean lognorm;
     protected DoubleUnaryOperator operation;
     protected boolean normalize;
     protected double scalar;
 
-    public UnaryHandler(final String action, boolean normalize) {
+    public UnaryHandler(final String action, boolean normalize, boolean lognorm) {
         this.action = action;
         this.normalize= normalize;
+        this.lognorm = lognorm;
         this.random = new Random();
     }
 
@@ -43,7 +45,7 @@ public abstract class UnaryHandler implements Handler {
         generateOperation();
 
 
-        final Image image = imageState.unaryOp(operation, normalize);
+        final Image image = imageState.unaryOp(operation, normalize, lognorm);
         final String key = ImageTool.buildKey(action, image,
                 states.get(0).getKey());
         result.put(key, image);
@@ -53,7 +55,7 @@ public abstract class UnaryHandler implements Handler {
     private void generateOperation() {
         switch (action) {
             case "scalarprod":
-                operation = (n) -> Math.log(n*scalar+1);
+                operation = (n) -> n*scalar;
                 break;
             case "negative":
                 operation = (n) -> 255.0-n;
