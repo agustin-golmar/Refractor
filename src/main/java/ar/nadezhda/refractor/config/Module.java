@@ -74,6 +74,7 @@
 			router.put("rayleighnoise", new RayleighNoiseHandler());
 			router.put("meanfilter",new MeanFilterHandler());
 			router.put("gaussfilter",new GaussFilterHandler());
+			router.put("medianfilter",new MedianFilterHandler());
 			return router;
 		}
 

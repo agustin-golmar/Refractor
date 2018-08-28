@@ -292,4 +292,28 @@ public class ImageState {
     public double[] getStdDev() {
         return image.getStdDev();
     }
+
+    public Image medianFilter(int dimension) {
+        double[] window = new double[dimension*dimension];
+
+        Image res = new Image(this.image.source, this.image.getChannels(), this.image.getWidth(), this.image.getHeight());
+        for (int c=0;c<image.getChannels();c++){
+            for (int w=dimension/2;w<image.getWidth()-dimension/2;w++){
+                for (int h=dimension/2;h<image.getHeight()-dimension/2;h++){
+                    int i2=0;
+                    for (int i=w-dimension/2;i<=w+dimension/2;i++) {
+                        for (int j=h-dimension/2;j<=h+dimension/2;j++) {
+                            window[i2++]= image.data[c][i][j];
+                        }
+                    }
+                    Arrays.sort(window);
+                    res.data[c][w][h]=window[window.length/2];
+
+                    res.rawData[c][w][h] = (byte) res.data[c][w][h];
+
+                }
+            }
+        }
+        return res;
+    }
 }
