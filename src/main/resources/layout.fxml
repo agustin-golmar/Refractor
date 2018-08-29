@@ -128,6 +128,7 @@
             <CheckBox fx:id = "dynamicRange" text = "Dynamic Range Compression"/>
             <CheckBox fx:id = "linearCompression" text = "Linear Compression"/>
             <CheckBox fx:id = "truncate" text = "Truncate"/>
+            <CheckBox fx:id = "ponderateMedian" text = "Ponderate Median"/>
 			<TextField fx:id = "scalar" text = "Insert Scalar Here"/>
             <TextField fx:id = "scalar2" text = "Insert Scalar Here"/>
 		</VBox>

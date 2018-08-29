@@ -5,6 +5,7 @@ import ar.nadezhda.refractor.core.ImageState;
 import ar.nadezhda.refractor.core.ImageTool;
 import ar.nadezhda.refractor.interfaces.Handler;
 import javafx.scene.Node;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 
 import java.util.HashMap;
@@ -20,6 +21,8 @@ public class MedianFilterHandler implements Handler {
         }
         int dimension;
         TextField textField = (TextField) node.getScene().lookup("#scalar");
+        CheckBox checkBox = (CheckBox) node.getScene().lookup("#ponderateMedian");
+        boolean ponderate = checkBox.isSelected();
         try {
             dimension = Integer.parseInt(textField.getText());
         } catch (NumberFormatException e) {
@@ -30,8 +33,12 @@ public class MedianFilterHandler implements Handler {
             System.out.println("Solo impar");
             return result;
         }
+        if (ponderate && dimension!=3){
+            System.out.println("Ponderado solo tamaño 3");
+            return result;
+        }
         ImageState imageState = states.get(0);
-        final Image image = imageState.medianFilter(dimension);
+        final Image image = imageState.medianFilter(dimension, ponderate);
         final String key = ImageTool.buildKey("medianfilter", image,
                 states.get(0).getKey());
         result.put(key, image);

@@ -300,8 +300,12 @@ public class ImageState {
         return image.getStdDev();
     }
 
-    public Image medianFilter(int dimension) {
-        double[] window = new double[dimension*dimension];
+    public Image medianFilter(int dimension, boolean ponderate) {
+        double[] window;
+        if (!ponderate)
+            window = new double[dimension*dimension];
+        else
+            window = new double[16];
 
         Image res = new Image(this.image.source, this.image.getChannels(), this.image.getWidth(), this.image.getHeight());
         for (int c=0;c<image.getChannels();c++){
@@ -311,10 +315,17 @@ public class ImageState {
                     for (int i=w-dimension/2;i<=w+dimension/2;i++) {
                         for (int j=h-dimension/2;j<=h+dimension/2;j++) {
                             window[i2++]= image.data[c][i][j];
+                            if (ponderate && (i==w || j==h))
+                                window[i2++]= image.data[c][i][j];
+                            if (ponderate && i==w && j==h) {
+                                window[i2++]= image.data[c][i][j];
+                                window[i2++]= image.data[c][i][j];
+                            }
                         }
                     }
+                    //System.out.println(Arrays.toString(window));
                     Arrays.sort(window);
-                    res.data[c][w][h]=window[window.length/2];
+                    res.data[c][w][h]=window.length%2==1?window[window.length/2]:window[window.length/2]/2+window[window.length/2+1]/2;
 
                     res.rawData[c][w][h] = (byte) res.data[c][w][h];
 
