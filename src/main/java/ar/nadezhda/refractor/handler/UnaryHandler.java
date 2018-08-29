@@ -5,6 +5,7 @@ import ar.nadezhda.refractor.core.ImageState;
 import ar.nadezhda.refractor.core.ImageTool;
 import ar.nadezhda.refractor.interfaces.Handler;
 import javafx.scene.Node;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 
 import java.util.HashMap;
@@ -16,10 +17,11 @@ import java.util.function.DoubleUnaryOperator;
 public abstract class UnaryHandler implements Handler {
     protected final String action;
     private final Random random;
-    private final boolean lognorm;
+    private boolean lognorm;
     protected DoubleUnaryOperator operation;
     protected boolean normalize;
     protected double scalar;
+    private boolean truncate;
 
     public UnaryHandler(final String action, boolean normalize, boolean lognorm) {
         this.action = action;
@@ -35,6 +37,13 @@ public abstract class UnaryHandler implements Handler {
             System.out.println("Una imagen solo");
         }
         TextField textField = (TextField) node.getScene().lookup("#scalar");
+        CheckBox lognormBox = (CheckBox) node.getScene().lookup("#dynamicRange");
+        CheckBox linearBox = (CheckBox) node.getScene().lookup("#linearCompression");
+        CheckBox truncBox = (CheckBox) node.getScene().lookup("#truncate");
+
+        lognorm = lognormBox.isSelected();
+        normalize = linearBox.isSelected();
+        truncate = truncBox.isSelected();
         try {
             scalar = Double.parseDouble(textField.getText());
         } catch (NumberFormatException e) {
@@ -45,7 +54,7 @@ public abstract class UnaryHandler implements Handler {
         generateOperation();
 
 
-        final Image image = imageState.unaryOp(operation, normalize, lognorm);
+        final Image image = imageState.unaryOp(operation, normalize, lognorm,truncate);
         final String key = ImageTool.buildKey(action, image,
                 states.get(0).getKey());
         result.put(key, image);

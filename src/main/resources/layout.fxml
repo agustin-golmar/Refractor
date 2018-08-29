@@ -125,6 +125,9 @@
 					<Tooltip text = "Normalizes the histogram between 0 and 1. Otherwise just counts the gray-levels."/>
 				</tooltip>
 			</CheckBox>
+            <CheckBox fx:id = "dynamicRange" text = "Dynamic Range Compression"/>
+            <CheckBox fx:id = "linearCompression" text = "Linear Compression"/>
+            <CheckBox fx:id = "truncate" text = "Truncate"/>
 			<TextField fx:id = "scalar" text = "Insert Scalar Here"/>
             <TextField fx:id = "scalar2" text = "Insert Scalar Here"/>
 		</VBox>

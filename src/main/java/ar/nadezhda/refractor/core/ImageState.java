@@ -177,7 +177,7 @@ public class ImageState {
         return res;
     }
 
-    public Image unaryOp(DoubleUnaryOperator op, boolean normalize, boolean lognorm) {
+    public Image unaryOp(DoubleUnaryOperator op, boolean normalize, boolean lognorm, boolean truncate) {
         //double maxData = op.applyAsDouble(255.0);
         double[] maxData2 = new double[image.getChannels()];
         double[] minData2 = new double[image.getChannels()];
@@ -201,6 +201,9 @@ public class ImageState {
         for (int c = 0; c < this.image.getChannels(); c++) {
             for (int w = 0; w < this.image.getWidth(); w++) {
                 for (int h = 0; h < this.image.getHeight(); h++) {
+                    if (truncate && res.data[c][w][h]>255){
+                        res.data[c][w][h] = 255;
+                    }
 
                     if (lognorm)
                         res.data[c][w][h] = 255/Math.log(1+maxData2[c])*Math.log(1+res.data[c][w][h]);
