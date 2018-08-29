@@ -1,10 +1,14 @@
 
 	/* Root Element */
 	.root {
+		-fx-background-image : url("assets/background.jpg");
+		-fx-background-repeat : repeat;
+		-fx-background-size : 1920 1200;
+		-fx-background-position : top left;
 		-fx-background-color : orange;
 		-fx-faint-focus-color : transparent;
 		-fx-focus-color : transparent;
-		-fx-grid-lines-visible : true;
+		-fx-grid-lines-visible : false;
 	}
 
 	/* Layout Classes */
@@ -12,7 +16,7 @@
 	.v-box {}
 
 	/* GUI Components */
-	.button, .button:focused, .button:hover, .button:active {
+	.button, .button:focused, .button:hover, .button:pressed {
 		-fx-background-color : rgba(35, 35, 35, 1.0);
 		-fx-background-insets : 0 0 0 0;
 		-fx-background-radius : 0;
@@ -21,8 +25,19 @@
 		-fx-border-width : 1px;
 		-fx-font-size : 11px;
 		-fx-pref-height : 16px;
-		-fx-pref-width : 80px;
+		-fx-pref-width : 100px;
 		-fx-text-fill : white;
+		-fx-text-inner-color : white;
+	}
+
+	.button:hover {
+		-fx-background-color : red;
+	}
+
+	.button:pressed {
+		-fx-background-color : rgba(255, 200, 15, 1.0);
+		-fx-text-fill : black;
+		-fx-text-inner-color : black;
 	}
 
 	.box {
@@ -34,7 +49,37 @@
 		-fx-border-width : 1px;
 	}
 
-	.check-box {}
-	.label {}
+	.box:hover {
+		-fx-background-color : rgba(255, 200, 15, 1.0);
+	}
+
+	.check-box {
+
+	}
+
+	.label {
+		-fx-text-fill : white;
+		-fx-text-inner-color : white;
+	}
+
 	.list-cell {}
 	.list-view {}
+
+	.slider {
+		-fx-pref-width : 300px;
+		-fx-show-tick-labels : true;
+		-fx-show-tick-marks : true;
+	}
+
+	.slider .axis {
+		-fx-tick-label-fill : white;
+	}
+
+	/* Custom Classes */
+	.check-box, .overlay {
+		-fx-background-color : rgba(35, 35, 35, 1.0);
+		-fx-background-radius : 5px;
+		-fx-padding : 5px;
+		-fx-text-fill : white;
+		-fx-text-inner-color : white;
+	}

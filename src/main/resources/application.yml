@@ -5,8 +5,8 @@
 refractor:
     title: "(2018) Refractor v1.0"
     layout: "classpath:layout.fxml"
-    width: 864
-    height: 480
+    width: 1100
+    height: 550
     images: [
         "barco.raw", "fractal.raw",
         "girl.raw", "girl2.raw",

@@ -3,7 +3,7 @@ package ar.nadezhda.refractor.handler;
 public class MeanFilterHandler extends FilterHandler {
 
     public MeanFilterHandler(){
-        super("meanfilter",true);
+        super("meanFilter",true);
     }
 
 }

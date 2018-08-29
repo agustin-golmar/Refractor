@@ -10,6 +10,7 @@
 	import java.util.Map;
 	import java.util.function.DoubleBinaryOperator;
 	import javafx.scene.Node;
+	import javafx.scene.control.Alert.AlertType;
 
 	public class BinaryHandler implements Handler {
 
@@ -26,7 +27,11 @@
 		public Map<String, Image> handle(final List<ImageState> states, final Node node) {
 			final Map<String, Image> result = new HashMap<>();
 			if (states.size() != 2) {
-				System.out.println("Solo 2 imágenes, ni 3 ni 1.");
+				ImageTool.popup(AlertType.WARNING, "Warning!", new StringBuilder()
+						.append("You must select exactly 2 images to apply the '")
+						.append(action)
+						.append("' action.")
+						.toString());
 				return result;
 			}
 			final Image image = states.get(0).operate(states.get(1), operation);

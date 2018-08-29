@@ -4,6 +4,7 @@
 	import ar.nadezhda.refractor.Main;
 	import ar.nadezhda.refractor.core.Image;
 	import ar.nadezhda.refractor.core.ImageState;
+	import ar.nadezhda.refractor.core.ImageTool;
 	import ar.nadezhda.refractor.core.Workspace;
 	import ar.nadezhda.refractor.interfaces.Handler;
 	import java.io.File;
@@ -16,6 +17,7 @@
 	import java.util.stream.Collectors;
 	import javafx.scene.Node;
 	import javafx.scene.control.CheckBox;
+	import javafx.scene.control.Alert.AlertType;
 	import javafx.stage.FileChooser;
 	import javafx.stage.FileChooser.ExtensionFilter;
 
@@ -25,7 +27,7 @@
 
 		public OpenHandler() {
 			this.chooser = new FileChooser();
-			this.chooser.setInitialDirectory(new File("res/image")); // Dejar en '.'
+			this.chooser.setInitialDirectory(new File("."));
 			this.chooser.setTitle("Refractor: Open an image...");
 			this.chooser.getExtensionFilters()
 				.addAll((ExtensionFilter []) Main.context.getBean("filters"));
@@ -44,7 +46,8 @@
 							try {
 								final String path = file.getCanonicalPath();
 								if (workspace.getState(path).isPresent()) {
-									System.out.println("La imagen ya se encuentra en el workspace!");
+									ImageTool.popup(AlertType.INFORMATION, "Information",
+										"The image is already in the workspace.");
 								}
 								else if (useConfigForLoad.isSelected()) {
 									return workspace.loadImageUsingConfig(path);

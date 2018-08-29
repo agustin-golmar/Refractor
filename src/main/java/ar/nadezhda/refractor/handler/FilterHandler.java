@@ -6,6 +6,7 @@ import ar.nadezhda.refractor.core.ImageTool;
 import ar.nadezhda.refractor.interfaces.Handler;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +27,12 @@ public abstract class FilterHandler implements Handler {
     public Map<String, Image> handle(List<ImageState> states, Node node) {
         Map<String, Image> result = new HashMap<>();
         if (states.size()!=1){
-            System.out.println("Una imagen solo");
+        	ImageTool.popup(AlertType.WARNING, "Warning!", new StringBuilder()
+					.append("You must select only 1 image to apply the '")
+					.append(action)
+					.append("' action.")
+					.toString());
+        	return result;
         }
         int dimension;
         double stdDev;
@@ -36,11 +42,11 @@ public abstract class FilterHandler implements Handler {
             dimension = Integer.parseInt(textField.getText());
             stdDev = Double.parseDouble(textField2.getText());
         } catch (NumberFormatException e) {
-            System.out.println("Not a number");
+        	ImageTool.popup(AlertType.ERROR, "Error!", "The parameters aren't numbers.");
             return result;
         }
         if (dimension%2==0) {
-            System.out.println("Solo impar");
+        	ImageTool.popup(AlertType.ERROR, "Error!", "The dimension must be even.");
             return result;
         }
         generateOperation(stdDev,dimension);
@@ -54,14 +60,14 @@ public abstract class FilterHandler implements Handler {
 
     private void generateOperation(double stdDev, int dimension) {
         switch (action) {
-            case "meanfilter":
+            case "meanFilter":
                 operation = (i,j)->1.0;
                 break;
-            case "gaussfilter":
+            case "gaussFilter":
                 operation = (i,j)->(1.0/(2*Math.PI*Math.pow(stdDev,2)))*
                         Math.exp(-(Math.pow(i,2)+Math.pow(j,2))/Math.pow(stdDev,2));
                 break;
-            case "highpassfilter":
+            case "highpassFilter":
                 operation = (i,j)->(i==0&&j==0?(dimension*dimension-1.0)/(dimension*dimension):-1.0/(dimension*dimension));
                 break;
         }

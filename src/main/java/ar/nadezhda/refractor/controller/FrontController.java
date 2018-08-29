@@ -35,7 +35,6 @@
 		@FXML protected Label areaDimension;
 		@FXML protected Label pixelCount;
 		@FXML protected Label grayAverage;
-		@FXML protected TextField scalar;
 
 		protected final Map<String, Handler> router;
 		protected final Workspace workspace;

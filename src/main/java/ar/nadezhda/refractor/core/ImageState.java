@@ -201,14 +201,16 @@ public class ImageState {
         for (int c = 0; c < this.image.getChannels(); c++) {
             for (int w = 0; w < this.image.getWidth(); w++) {
                 for (int h = 0; h < this.image.getHeight(); h++) {
-                    if (truncate && res.data[c][w][h]>255){
-                        res.data[c][w][h] = 255;
+                    if (truncate && res.data[c][w][h]>255.0){
+                        res.data[c][w][h] = 255.0;
                     }
-
-                    if (lognorm)
-                        res.data[c][w][h] = 255/Math.log(1+maxData2[c])*Math.log(1+res.data[c][w][h]);
+                    else if (truncate && res.data[c][w][h]<0.0){
+                        res.data[c][w][h] = 0.0;
+                    }
+                    else if (lognorm)
+                        res.data[c][w][h] = 255.0/Math.log(1+maxData2[c])*Math.log(1+res.data[c][w][h]);
                     else if (normalize)
-                        res.data[c][w][h] = 255/(maxData2[c]-minData2[c])*(res.data[c][w][h]-minData2[c]);
+                        res.data[c][w][h] = 255.0/(maxData2[c]-minData2[c])*(res.data[c][w][h]-minData2[c]);
                     res.rawData[c][w][h] = (byte) res.data[c][w][h];
                     //System.out.println(res.data[c][w][h]+"->"+res.rawData[c][w][h]);
                 }
@@ -268,7 +270,7 @@ public class ImageState {
 
             }
         }
-        System.out.println("------------------------");
+        //System.out.println("------------------------");
         Image res = new Image(this.image.source, this.image.getChannels(), this.image.getWidth(), this.image.getHeight());
         for (int c=0;c<image.getChannels();c++){
             for (int w=0;w<image.getWidth();w++){

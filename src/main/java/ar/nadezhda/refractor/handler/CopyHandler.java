@@ -9,6 +9,7 @@
 	import java.util.List;
 	import java.util.Map;
 	import javafx.scene.Node;
+	import javafx.scene.control.Alert.AlertType;
 
 	public class CopyHandler implements Handler {
 
@@ -16,7 +17,8 @@
 		public Map<String, Image> handle(final List<ImageState> states, final Node node) {
 			final Map<String, Image> result = new HashMap<>();
 			if (states.size() != 1) {
-				System.out.println("Seleccione solo una imagen. No más.");
+				ImageTool.popup(AlertType.WARNING, "Warning!",
+					"You must select only 1 image to apply the 'copy' action.");
 				return result;
 			}
 			final ImageState state = states.get(0);
@@ -26,7 +28,8 @@
 				result.put(key, image);
 			}
 			else {
-				System.out.println("El área seleccionada no contiene píxeles.");
+				ImageTool.popup(AlertType.WARNING, "Warning!",
+					"The selected area has no pixels.");
 			}
 			return result;
 		}

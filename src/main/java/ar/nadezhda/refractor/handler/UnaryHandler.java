@@ -7,6 +7,7 @@ import ar.nadezhda.refractor.interfaces.Handler;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +35,12 @@ public abstract class UnaryHandler implements Handler {
     public Map<String, Image> handle(List<ImageState> states, Node node) {
         Map<String, Image> result = new HashMap<>();
         if (states.size()!=1){
-            System.out.println("Una imagen solo");
+        	ImageTool.popup(AlertType.WARNING, "Warning!", new StringBuilder()
+					.append("You must select only 1 image to apply the '")
+					.append(action)
+					.append("' action.")
+					.toString());
+        	return result;
         }
         TextField textField = (TextField) node.getScene().lookup("#scalar");
         CheckBox lognormBox = (CheckBox) node.getScene().lookup("#dynamicRange");
@@ -47,7 +53,7 @@ public abstract class UnaryHandler implements Handler {
         try {
             scalar = Double.parseDouble(textField.getText());
         } catch (NumberFormatException e) {
-            System.out.println("Not a number");
+        	ImageTool.popup(AlertType.ERROR, "Error!", "The parameter isn't a number.");
             return result;
         }
         ImageState imageState = states.get(0);
@@ -63,7 +69,7 @@ public abstract class UnaryHandler implements Handler {
 
     private void generateOperation() {
         switch (action) {
-            case "scalarprod":
+            case "scalarProd":
                 operation = (n) -> n*scalar;
                 break;
             case "negative":
@@ -75,16 +81,16 @@ public abstract class UnaryHandler implements Handler {
             case "power":
                 operation = (n) -> Math.pow(255,1-scalar)*Math.pow(n,scalar);
                 break;
-            case "gaussiannoise":
+            case "gaussianNoise":
                 operation = (n) -> n+random.nextGaussian()*255*scalar;
                 break;
-            case "exponentialnoise":
+            case "exponentialNoise":
                 operation = (n) -> n*Math.log(random.nextDouble())*(-1/scalar);
                 break;
-            case "saltandpepper":
+            case "saltAndPepper":
                 operation = (n) -> random.nextDouble()<scalar?(random.nextDouble()>0.5?255:0):n;
                 break;
-            case "rayleighnoise":
+            case "rayleighNoise":
                 operation = (n) ->n*scalar*Math.sqrt(-2*Math.log((1-random.nextDouble())));
                 break;
         }

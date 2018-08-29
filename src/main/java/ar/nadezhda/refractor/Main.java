@@ -39,6 +39,7 @@
 		public void start(final Stage stage) {
 			stage.setScene(context.getBean(Scene.class));
 			stage.setTitle(config.getTitle());
+			stage.setMaximized(true);
 			stage.show();
 		}
 	}

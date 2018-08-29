@@ -63,19 +63,19 @@
 			router.put("product", new ProductHandler());
 			router.put("histogram", new HistogramHandler());
 			router.put("equalizer", new EqualizerHandler());
-			router.put("scalarprod", new ScalarProdHandler());
+			router.put("scalarProd", new ScalarProdHandler());
 			router.put("negative",new NegativeHandler());
 			router.put("threshold",new ThresholdHandler());
 			router.put("power", new PowerHandler());
-			router.put("increasecontrast",new IncreaseContrastHandler());
-			router.put("gaussiannoise", new GaussianNoiseHandler());
-			router.put("exponentialnoise",new ExponentialNoiseHandler());
-			router.put("saltandpepper", new SaltAndPepperHandler());
-			router.put("rayleighnoise", new RayleighNoiseHandler());
-			router.put("meanfilter",new MeanFilterHandler());
-			router.put("gaussfilter",new GaussFilterHandler());
-			router.put("medianfilter",new MedianFilterHandler());
-			router.put("highpassfilter",new HighpassFilterHandler());
+			router.put("increaseContrast",new IncreaseContrastHandler());
+			router.put("gaussianNoise", new GaussianNoiseHandler());
+			router.put("exponentialNoise",new ExponentialNoiseHandler());
+			router.put("saltAndPepper", new SaltAndPepperHandler());
+			router.put("rayleighNoise", new RayleighNoiseHandler());
+			router.put("meanFilter",new MeanFilterHandler());
+			router.put("gaussFilter",new GaussFilterHandler());
+			router.put("medianFilter",new MedianFilterHandler());
+			router.put("highpassFilter",new HighpassFilterHandler());
 			return router;
 		}
 

@@ -39,68 +39,75 @@
 		</HBox>
 	</top>
 	<left>
-		<VBox spacing = "5">
+		<GridPane>
 			<padding>
 				<Insets top = "5" right = "0" bottom = "5" left = "5"/>
 			</padding>
-			<Button fx:id = "copy" text = "Copy" onAction = "#control">
-				<tooltip>
-					<Tooltip text = "Copies the selected area in an image, and create a new one."/>
-				</tooltip>
-			</Button>
-			<Button fx:id = "grayscale" text = "Grayscale" onAction = "#control">
-				<tooltip>
-					<Tooltip text = "Generates the grayscale of the image using their brightness/value (HSB/HSV model)."/>
-				</tooltip>
-			</Button>
-			<Button fx:id = "add" text = "+ (add)" onAction = "#control">
-				<tooltip>
-					<Tooltip text = "Adds 2 images. It uses linear compression."/>
-				</tooltip>
-			</Button>
-			<Button fx:id = "sub" text = "- (sub)" onAction = "#control">
-				<tooltip>
-					<Tooltip text = "Subtracts 2 images. It uses linear compression."/>
-				</tooltip>
-			</Button>
-			<Button fx:id = "product" text = "* (product)" onAction = "#control">
-				<tooltip>
-					<Tooltip text = "Multiplies 2 images. It uses dynamic-range compression."/>
-				</tooltip>
-			</Button>
-			<Button fx:id = "histogram" text = "Histogram" onAction = "#control">
-				<tooltip>
-					<Tooltip text = "Computes the histogram of an image."/>
-				</tooltip>
-			</Button>
-			<Button fx:id = "equalizer" text = "Equalize" onAction = "#control">
-				<tooltip>
-					<Tooltip text = "Applies an equalization process to enhance the image."/>
-				</tooltip>
-			</Button>
-            <Button fx:id = "scalarprod" text = "Scalar Product" onAction = "#control">
-            </Button>
-            <Button fx:id = "negative" text = "Negative" onAction = "#control"/>
-            <Button fx:id = "threshold" text = "Threshold" onAction = "#control"/>
-            <Button fx:id = "power" text = "Power" onAction = "#control"/>
-            <Button fx:id = "increasecontrast" text = "Increase Contrast" onAction = "#control"/>
-            <Button fx:id = "gaussiannoise" text = "Gaussian Noise" onAction = "#control"/>
-            <Button fx:id = "exponentialnoise" text = "Exponential Noise" onAction = "#control"/>
-            <Button fx:id = "saltandpepper" text = "S &amp; P" onAction = "#control"/>
-            <Button fx:id = "rayleighnoise" text = "Rayleigh Noise" onAction = "#control"/>
-            <Button fx:id = "meanfilter" text = "Mean Filter" onAction = "#control"/>
-            <Button fx:id = "gaussfilter" text = "Gauss Filter" onAction = "#control"/>
-            <Button fx:id = "medianfilter" text = "Median Filter" onAction = "#control"/>
-            <Button fx:id = "highpassfilter" text = "Highpass Filter" onAction = "#control"/>
-
-
-			<!-- More functions... -->
-		</VBox>
+			<VBox GridPane.columnIndex = "0" GridPane.rowIndex = "0" spacing = "5">
+				<padding>
+					<Insets top = "0" right = "5" bottom = "0" left = "0"/>
+				</padding>
+				<Button fx:id = "copy" text = "Copy" onAction = "#control">
+					<tooltip>
+						<Tooltip text = "Copies the selected area in an image, and create a new one."/>
+					</tooltip>
+				</Button>
+				<Button fx:id = "grayscale" text = "Grayscale" onAction = "#control">
+					<tooltip>
+						<Tooltip text = "Generates the grayscale of the image using their brightness/value (HSB/HSV model)."/>
+					</tooltip>
+				</Button>
+				<Button fx:id = "add" text = "+ (add)" onAction = "#control">
+					<tooltip>
+						<Tooltip text = "Adds 2 images. It uses linear compression."/>
+					</tooltip>
+				</Button>
+				<Button fx:id = "sub" text = "- (sub)" onAction = "#control">
+					<tooltip>
+						<Tooltip text = "Subtracts 2 images. It uses linear compression."/>
+					</tooltip>
+				</Button>
+				<Button fx:id = "product" text = "* (product)" onAction = "#control">
+					<tooltip>
+						<Tooltip text = "Multiplies 2 images. It uses dynamic-range compression."/>
+					</tooltip>
+				</Button>
+				<Button fx:id = "histogram" text = "Histogram" onAction = "#control">
+					<tooltip>
+						<Tooltip text = "Computes the histogram of an image."/>
+					</tooltip>
+				</Button>
+				<Button fx:id = "equalizer" text = "Equalize" onAction = "#control">
+					<tooltip>
+						<Tooltip text = "Applies an equalization process to enhance the image."/>
+					</tooltip>
+				</Button>
+			</VBox>
+			<VBox GridPane.columnIndex = "1" GridPane.rowIndex = "0" spacing = "5">
+				<padding>
+					<Insets top = "0" right = "5" bottom = "0" left = "0"/>
+				</padding>
+				<Button fx:id = "scalarProd" text = "Scalar Product" onAction = "#control"></Button>
+				<Button fx:id = "negative" text = "Negative" onAction = "#control"></Button>
+				<Button fx:id = "threshold" text = "Threshold" onAction = "#control"></Button>
+				<Button fx:id = "power" text = "Power" onAction = "#control"></Button>
+				<Button fx:id = "increaseContrast" text = "Contrast" onAction = "#control"></Button>
+				<Button fx:id = "gaussianNoise" text = "Gaussian Noise" onAction = "#control"></Button>
+				<Button fx:id = "exponentialNoise" text = "Exp. Noise" onAction = "#control"></Button>
+				<Button fx:id = "rayleighNoise" text = "Rayleigh Noise" onAction = "#control"></Button>
+				<Button fx:id = "saltAndPepper" text = "Salt &amp; Pepper" onAction = "#control"></Button>
+				<Button fx:id = "meanFilter" text = "Mean Filter" onAction = "#control"></Button>
+				<Button fx:id = "gaussFilter" text = "Gauss Filter" onAction = "#control"></Button>
+				<Button fx:id = "medianFilter" text = "Median Filter" onAction = "#control"></Button>
+				<Button fx:id = "highpassFilter" text = "Highpass Filter" onAction = "#control"></Button>
+				<!-- More functions... -->
+			</VBox>
+		</GridPane>
 	</left>
 	<center>
 		<VBox spacing = "5">
 			<padding>
-				<Insets top = "5" right = "5" bottom = "5" left = "5"/>
+				<Insets top = "5" right = "5" bottom = "5" left = "0"/>
 			</padding>
 			<ListView fx:id = "keys" minWidth = "480"/>
 		</VBox>
@@ -125,12 +132,22 @@
 					<Tooltip text = "Normalizes the histogram between 0 and 1. Otherwise just counts the gray-levels."/>
 				</tooltip>
 			</CheckBox>
-            <CheckBox fx:id = "dynamicRange" text = "Dynamic Range Compression"/>
-            <CheckBox fx:id = "linearCompression" text = "Linear Compression"/>
-            <CheckBox fx:id = "truncate" text = "Truncate"/>
-            <CheckBox fx:id = "ponderateMedian" text = "Ponderate Median"/>
-			<TextField fx:id = "scalar" text = "Insert Scalar Here"/>
-            <TextField fx:id = "scalar2" text = "Insert Scalar Here"/>
+			<CheckBox fx:id = "dynamicRange" text = "Dynamic-range compression."></CheckBox>
+			<CheckBox fx:id = "linearCompression" text = "Linear compression."></CheckBox>
+			<CheckBox fx:id = "truncate" text = "Truncate."></CheckBox>
+			<CheckBox fx:id = "ponderateMedian" text = "Weighted median."></CheckBox>
+			<HBox alignment = "center" spacing = "5">
+				<Label text = "Scalar 1:"/>
+				<TextField fx:id = "scalar"/>
+			</HBox>
+			<HBox alignment = "center" spacing = "5">
+				<Label text = "Scalar 2:"/>
+				<TextField fx:id = "scalar2"/>
+			</HBox>
+			<HBox alignment = "center" spacing = "5" styleClass = "overlay">
+				<Label text = "Sigma (σ):"/>
+				<Slider fx:id = "sigma" min = "0" max = "100" minorTickCount = "3" majorTickUnit = "10"/>
+			</HBox>
 		</VBox>
 	</right>
 	<bottom>
@@ -138,10 +155,10 @@
 			<padding>
 				<Insets top = "0" right = "5" bottom = "5" left = "5"/>
 			</padding>
-			<Label fx:id = "mouseLocation" text = "Location (x, y) = (0, 0)"/>
-			<Label fx:id = "areaDimension" text = "Area (width, height) = (0, 0)"/>
-			<Label fx:id = "pixelCount" text = "Pixel Count: 0"/>
-			<Label fx:id = "grayAverage" text = "Average (R, G, B) = (0.0, 0.0, 0.0)"/>
+			<Label fx:id = "mouseLocation" text = "Location (x, y) = (0, 0)" styleClass = "overlay"/>
+			<Label fx:id = "areaDimension" text = "Area (width, height) = (0, 0)" styleClass = "overlay"/>
+			<Label fx:id = "pixelCount" text = "Pixel Count: 0" styleClass = "overlay"/>
+			<Label fx:id = "grayAverage" text = "Average (R, G, B) = (0.0, 0.0, 0.0)" styleClass = "overlay"/>
 		</VBox>
 	</bottom>
 </BorderPane>

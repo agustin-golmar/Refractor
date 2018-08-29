@@ -1,13 +1,16 @@
 
 	package ar.nadezhda.refractor.core;
 
-	import ar.nadezhda.refractor.support.Tool;
+	import ar.nadezhda.refractor.Main;
+import ar.nadezhda.refractor.support.Tool;
 	import java.awt.image.BufferedImage;
 	import java.util.stream.Collectors;
 	import java.util.stream.Stream;
 	import javafx.geometry.Pos;
 	import javafx.scene.Node;
 	import javafx.scene.Scene;
+	import javafx.scene.control.Alert;
+	import javafx.scene.control.Alert.AlertType;
 	import javafx.scene.image.ImageView;
 	import javafx.scene.image.PixelWriter;
 	import javafx.scene.image.WritableImage;
@@ -157,5 +160,14 @@
 					.append(action)
 					.append("(").append(srcs).append(")")
 					.toString();
+		}
+
+		public static void popup(final AlertType type,
+				final String header, final String message) {
+			final Alert alert = new Alert(type);
+			alert.setTitle(Main.config.getTitle());
+			alert.setHeaderText(header);
+			alert.setContentText(message);
+			alert.showAndWait();
 		}
 	}

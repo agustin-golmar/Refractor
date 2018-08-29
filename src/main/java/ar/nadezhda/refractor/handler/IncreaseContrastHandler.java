@@ -6,6 +6,7 @@ import ar.nadezhda.refractor.core.ImageTool;
 import ar.nadezhda.refractor.interfaces.Handler;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,19 +17,21 @@ public class IncreaseContrastHandler implements Handler {
     public Map<String, Image> handle(List<ImageState> states, Node node) {
         Map<String, Image> result = new HashMap<>();
         if (states.size()!=1){
-            System.out.println("Una imagen solo");
+        	ImageTool.popup(AlertType.WARNING, "Warning!",
+        		"You must select only 1 image to apply the 'contrast' action.");
+            return result;
         }
         double scalar;
         TextField textField = (TextField) node.getScene().lookup("#scalar");
         try {
             scalar = Double.parseDouble(textField.getText());
         } catch (NumberFormatException e) {
-            System.out.println("Not a number");
+        	ImageTool.popup(AlertType.ERROR, "Error!", "The parameter isn't a number.");
             return result;
         }
         ImageState imageState = states.get(0);
         final Image image = imageState.increaseContrast(scalar);
-        final String key = ImageTool.buildKey("increasecontrast", image,
+        final String key = ImageTool.buildKey("increaseContrast", image,
                 states.get(0).getKey());
         result.put(key, image);
         return result;

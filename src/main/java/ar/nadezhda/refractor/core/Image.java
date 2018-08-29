@@ -23,7 +23,7 @@
 
 		protected final String source;
         private double[] mean;
-        private double[] stdDev;
+        //private double[] stdDev;
 
         public Image(final String source, final byte [][][] raw) {
 			this.source = source;
@@ -192,7 +192,7 @@
                 stdDev[c]/=getHeight()*getWidth();
                 stdDev[c]=Math.sqrt(stdDev[c]);
             }
-            this.stdDev = stdDev;
+            //this.stdDev = stdDev;
             return stdDev;
         }
 	}
