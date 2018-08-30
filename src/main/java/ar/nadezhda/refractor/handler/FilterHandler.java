@@ -5,6 +5,7 @@ import ar.nadezhda.refractor.core.ImageState;
 import ar.nadezhda.refractor.core.ImageTool;
 import ar.nadezhda.refractor.interfaces.Handler;
 import javafx.scene.Node;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
@@ -35,6 +36,11 @@ public abstract class FilterHandler implements Handler {
 					.toString());
         	return result;
         }
+
+
+        CheckBox lognormBox = (CheckBox) node.getScene().lookup("#dynamicRange");
+        CheckBox linearBox = (CheckBox) node.getScene().lookup("#linearCompression");
+        CheckBox truncBox = (CheckBox) node.getScene().lookup("#truncate");
         int dimension;
         double stdDev = ((Slider) node.getScene().lookup("#deviationValue")).getValue();
         TextField textField = (TextField) node.getScene().lookup("#dimensionValue");
@@ -52,7 +58,7 @@ public abstract class FilterHandler implements Handler {
         }
         generateOperation(stdDev,dimension);
         ImageState imageState = states.get(0);
-        final Image image = imageState.filter(dimension, operation,normalize);
+        final Image image = imageState.filter(dimension, operation,normalize, linearBox.isSelected(), truncBox.isSelected(),lognormBox.isSelected());
         final String key = ImageTool.buildKey(action, image,
                 states.get(0).getKey());
         result.put(key, image);

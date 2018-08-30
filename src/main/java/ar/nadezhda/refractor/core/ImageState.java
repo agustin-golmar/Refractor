@@ -198,24 +198,7 @@ public class ImageState {
                 }
             }
         }
-        for (int c = 0; c < this.image.getChannels(); c++) {
-            for (int w = 0; w < this.image.getWidth(); w++) {
-                for (int h = 0; h < this.image.getHeight(); h++) {
-                    if (truncate && res.data[c][w][h]>255.0){
-                        res.data[c][w][h] = 255.0;
-                    }
-                    else if (truncate && res.data[c][w][h]<0.0){
-                        res.data[c][w][h] = 0.0;
-                    }
-                    else if (lognorm)
-                        res.data[c][w][h] = 255.0/Math.log(1+maxData2[c])*Math.log(1+res.data[c][w][h]);
-                    else if (normalize)
-                        res.data[c][w][h] = 255.0/(maxData2[c]-minData2[c])*(res.data[c][w][h]-minData2[c]);
-                    res.rawData[c][w][h] = (byte) res.data[c][w][h];
-                    //System.out.println(res.data[c][w][h]+"->"+res.rawData[c][w][h]);
-                }
-            }
-        }
+        normalize(normalize, truncate, lognorm, maxData2, minData2, res);
 
 
         return res;
@@ -241,22 +224,29 @@ public class ImageState {
                 }
             }
         }
+
         return res;
 
     }
 
-    public Image filter(int size, DoubleBinaryOperator matrixFiller, boolean normalize){
+    public Image filter(int size, DoubleBinaryOperator matrixFiller, boolean normalize, boolean linear, boolean truncate, boolean lognorm){
         double[][] window = new double[size][size];
+        double[] maxData2 = new double[image.getChannels()];
+        double[] minData2 = new double[image.getChannels()];
+        for (int i=0;i<image.getChannels();i++) {
+            maxData2[i]=255;
+            minData2[i]=0;
+        }
         double sum = 0.0;
         for (int i=0;i<size;i++) {
             for (int j=0;j<size;j++) {
                 double val = matrixFiller.applyAsDouble(i-size/2,j-size/2);
                 window[i][j]= val;
-                //System.out.print(window[i][j]+ " ");
+                System.out.print(window[i][j]+ " ");
                 sum+=val;
                 
             }
-            //System.out.println("");
+            System.out.println("");
 
 
         }
@@ -285,13 +275,41 @@ public class ImageState {
                                 }
                             }
                         }
+                    if (res.data[c][w][h]>maxData2[c]){
+                        maxData2[c]=res.data[c][w][h];
+                    }
+                    else if (res.data[c][w][h]<minData2[c]){
+                        minData2[c]=res.data[c][w][h];
+                    }
 
-                    res.rawData[c][w][h] = (byte) res.data[c][w][h];
+                    //res.rawData[c][w][h] = (byte) res.data[c][w][h];
 
                 }
             }
         }
+        normalize(linear, truncate, lognorm, maxData2, minData2, res);
         return res;
+    }
+
+    private void normalize(boolean normalize, boolean truncate, boolean lognorm, double[] maxData2, double[] minData2, Image res) {
+        for (int c = 0; c < this.image.getChannels(); c++) {
+            for (int w = 0; w < this.image.getWidth(); w++) {
+                for (int h = 0; h < this.image.getHeight(); h++) {
+                    if (truncate && res.data[c][w][h]>255.0){
+                        res.data[c][w][h] = 255.0;
+                    }
+                    else if (truncate && res.data[c][w][h]<0.0){
+                        res.data[c][w][h] = 0.0;
+                    }
+                    else if (lognorm)
+                        res.data[c][w][h] = 255.0/Math.log(1+maxData2[c])*Math.log(1+res.data[c][w][h]);
+                    else if (normalize)
+                        res.data[c][w][h] = 255.0/(maxData2[c]-minData2[c])*(res.data[c][w][h]-minData2[c]);
+                    res.rawData[c][w][h] = (byte) res.data[c][w][h];
+                    //System.out.println(res.data[c][w][h]+"->"+res.rawData[c][w][h]);
+                }
+            }
+        }
     }
 
     public double[] getMean(){
