@@ -252,11 +252,11 @@ public class ImageState {
             for (int j=0;j<size;j++) {
                 double val = matrixFiller.applyAsDouble(i-size/2,j-size/2);
                 window[i][j]= val;
-                System.out.print(window[i][j]+ " ");
+                //System.out.print(window[i][j]+ " ");
                 sum+=val;
                 
             }
-            System.out.println("");
+            //System.out.println("");
 
 
         }

@@ -22,7 +22,7 @@ public class IncreaseContrastHandler implements Handler {
             return result;
         }
         double scalar;
-        TextField textField = (TextField) node.getScene().lookup("#scalar");
+        TextField textField = (TextField) node.getScene().lookup("#contrastValue");
         try {
             scalar = Double.parseDouble(textField.getText());
         } catch (NumberFormatException e) {

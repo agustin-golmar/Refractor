@@ -6,6 +6,7 @@ import ar.nadezhda.refractor.core.ImageTool;
 import ar.nadezhda.refractor.interfaces.Handler;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 
@@ -22,6 +23,7 @@ public abstract class UnaryHandler implements Handler {
     protected DoubleUnaryOperator operation;
     protected boolean normalize;
     protected double scalar;
+    protected double mean;
     private boolean truncate;
 
     public UnaryHandler(final String action, boolean normalize, boolean lognorm) {
@@ -42,7 +44,6 @@ public abstract class UnaryHandler implements Handler {
 					.toString());
         	return result;
         }
-        TextField textField = (TextField) node.getScene().lookup("#scalar");
         CheckBox lognormBox = (CheckBox) node.getScene().lookup("#dynamicRange");
         CheckBox linearBox = (CheckBox) node.getScene().lookup("#linearCompression");
         CheckBox truncBox = (CheckBox) node.getScene().lookup("#truncate");
@@ -50,10 +51,41 @@ public abstract class UnaryHandler implements Handler {
         lognorm = lognormBox.isSelected();
         normalize = linearBox.isSelected();
         truncate = truncBox.isSelected();
+
+        // Validate required parameters:
         try {
-            scalar = Double.parseDouble(textField.getText());
-        } catch (NumberFormatException e) {
-        	ImageTool.popup(AlertType.ERROR, "Error!", "The parameter isn't a number.");
+	        if (action.equals("scalarProd")) {
+	        	scalar = Double.parseDouble(((TextField) node.getScene().lookup("#scalarValue")).getText());
+	        }
+	        else if (action.equals("power")) {
+	        	scalar = ((Slider) node.getScene().lookup("#gammaValue")).getValue();
+	        }
+	        else if (action.equals("threshold")) {
+	        	scalar = ((Slider) node.getScene().lookup("#uValue")).getValue();
+	        }
+	        else if (action.equals("exponentialNoise")) {
+	        	scalar = ((Slider) node.getScene().lookup("#lambdaValue")).getValue();
+	        }
+	        else if (action.equals("rayleighNoise")) {
+	        	scalar = ((Slider) node.getScene().lookup("#rayleighValue")).getValue();
+	        }
+	        else if (action.equals("gaussianNoise")) {
+	        	scalar = ((Slider) node.getScene().lookup("#deviationValue")).getValue();
+	        	mean = ((Slider) node.getScene().lookup("#meanValue")).getValue();
+	        }
+	        else if (action.equals("saltAndPepper")) {
+	        	scalar = 0.01 * ((Slider) node.getScene().lookup("#contaminationValue")).getValue();
+	        }
+	        else if (action.equals("negative")) {
+	        	// Negative doesn't need parameters...
+	        }
+	        else {
+	        	ImageTool.popup(AlertType.ERROR, "Error!", "Unknown action: " + action + ".");
+	        	return result;
+	        }
+        }
+	    catch (final NumberFormatException exception) {
+            ImageTool.popup(AlertType.ERROR, "Error!", "The parameter isn't a number.");
             return result;
         }
         ImageState imageState = states.get(0);
@@ -79,10 +111,10 @@ public abstract class UnaryHandler implements Handler {
                 operation = (n) -> n>scalar?255:0;
                 break;
             case "power":
-                operation = (n) -> Math.pow(255,1-scalar)*Math.pow(n,scalar);
+                operation = (n) -> Math.pow(255.0,1.0-scalar)*Math.pow(n,scalar);
                 break;
             case "gaussianNoise":
-                operation = (n) -> n+random.nextGaussian()*255*scalar;
+                operation = (n) -> n+255.0*(random.nextGaussian()*scalar+mean);
                 break;
             case "exponentialNoise":
                 operation = (n) -> n*Math.log(random.nextDouble())*(-1/scalar);

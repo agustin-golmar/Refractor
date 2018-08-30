@@ -5,6 +5,7 @@ import ar.nadezhda.refractor.core.ImageState;
 import ar.nadezhda.refractor.core.ImageTool;
 import ar.nadezhda.refractor.interfaces.Handler;
 import javafx.scene.Node;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 
@@ -35,14 +36,14 @@ public abstract class FilterHandler implements Handler {
         	return result;
         }
         int dimension;
-        double stdDev;
-        TextField textField = (TextField) node.getScene().lookup("#scalar");
-        TextField textField2 = (TextField) node.getScene().lookup("#scalar2");
+        double stdDev = ((Slider) node.getScene().lookup("#deviationValue")).getValue();
+        TextField textField = (TextField) node.getScene().lookup("#dimensionValue");
+        //TextField textField2 = (TextField) node.getScene().lookup("#scalar2");
         try {
             dimension = Integer.parseInt(textField.getText());
-            stdDev = Double.parseDouble(textField2.getText());
+            //stdDev = Double.parseDouble(textField2.getText());
         } catch (NumberFormatException e) {
-        	ImageTool.popup(AlertType.ERROR, "Error!", "The parameters aren't numbers.");
+        	ImageTool.popup(AlertType.ERROR, "Error!", "The dimension isn't an integer number.");
             return result;
         }
         if (dimension%2==0) {

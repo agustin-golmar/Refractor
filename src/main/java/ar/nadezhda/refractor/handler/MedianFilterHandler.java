@@ -23,7 +23,7 @@ public class MedianFilterHandler implements Handler {
         	return result;
         }
         int dimension;
-        TextField textField = (TextField) node.getScene().lookup("#scalar");
+        TextField textField = (TextField) node.getScene().lookup("#dimensionValue");
         CheckBox checkBox = (CheckBox) node.getScene().lookup("#ponderateMedian");
         boolean ponderate = checkBox.isSelected();
         try {
@@ -33,12 +33,12 @@ public class MedianFilterHandler implements Handler {
             return result;
         }
         if (dimension%2==0) {
-        	ImageTool.popup(AlertType.ERROR, "Error!", "The dimension isn't an odd number.");
+        	ImageTool.popup(AlertType.ERROR, "Error!", "The dimension must be even.");
             return result;
         }
         if (ponderate && dimension!=3){
         	ImageTool.popup(AlertType.ERROR, "Error!",
-        		"The weighted median filter only supports a dimension of 3.");
+        		"The weighted median filter only supports a dimension equal to 3.");
             return result;
         }
         ImageState imageState = states.get(0);
