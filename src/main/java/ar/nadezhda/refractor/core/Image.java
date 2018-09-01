@@ -44,6 +44,25 @@
 			this.rawData = new byte [channels][width][height];
 		}
 
+		public Image(final String source, final double [][][] data) {
+			this.source = source;
+			this.data = data;
+			this.rawData = new byte [data.length][data[0].length][data[0][0].length];
+			for (int h = 0; h < getHeight(); ++h)
+				for (int w = 0; w < getWidth(); ++w)
+					for (int c = 0; c < getChannels(); ++c) {
+						this.rawData[c][w][h] = (byte) data[c][w][h];
+					}
+		}
+
+		public double [][][] getEmptyImageSpace() {
+			return new double [getChannels()][getWidth()][getHeight()];
+		}
+
+		public byte [][][] getRawEmptyImageSpace() {
+			return new byte [getChannels()][getWidth()][getHeight()];
+		}
+
 		public int getChannels() {
 			return data.length;
 		}

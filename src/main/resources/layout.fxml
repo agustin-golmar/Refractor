@@ -100,6 +100,7 @@
 				<Button fx:id = "gaussFilter" text = "Gauss Filter" onAction = "#control"></Button>
 				<Button fx:id = "medianFilter" text = "Median Filter" onAction = "#control"></Button>
 				<Button fx:id = "highpassFilter" text = "Highpass Filter" onAction = "#control"></Button>
+				<Button fx:id = "prewitt" text = "Prewitt Detector" onAction = "#control"></Button>
 			</VBox>
 		</GridPane>
 	</left>
@@ -188,7 +189,16 @@
 				<CheckBox fx:id = "linearCompression" text = "Linear compression."></CheckBox>
 				<CheckBox fx:id = "truncate" text = "Truncate."></CheckBox>
 			</VBox>
-			<VBox GridPane.columnIndex = "2" GridPane.rowIndex = "0" spacing = "5">
+			<VBox  GridPane.columnIndex = "2" GridPane.rowIndex = "0" spacing = "5">
+				<fx:define>
+					<ToggleGroup fx:id = "compressor"/>
+				</fx:define>
+				<RadioButton text = "Dynamic Range" toggleGroup = "$compressor"/>
+				<RadioButton text = "Linear" toggleGroup = "$compressor"/>
+				<RadioButton text = "Truncated" toggleGroup = "$compressor"/>
+				<RadioButton text = "Null" toggleGroup = "$compressor" selected = "true"/>
+			</VBox>
+			<VBox GridPane.columnIndex = "3" GridPane.rowIndex = "0" spacing = "5">
 				<padding>
 					<Insets top = "0" right = "5" bottom = "5" left = "5"/>
 				</padding>

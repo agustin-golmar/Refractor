@@ -1,4 +1,4 @@
-package ar.nadezhda.refractor.handler;
+package ar.nadezhda.refractor.handler.filter;
 
 import ar.nadezhda.refractor.core.Image;
 import ar.nadezhda.refractor.core.ImageState;

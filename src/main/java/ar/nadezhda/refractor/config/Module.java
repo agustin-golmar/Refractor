@@ -3,8 +3,15 @@
 
 	import ar.nadezhda.refractor.format.*;
 	import ar.nadezhda.refractor.handler.*;
+	import ar.nadezhda.refractor.handler.binary.*;
+	import ar.nadezhda.refractor.handler.edge.*;
+	import ar.nadezhda.refractor.handler.filter.*;
+	import ar.nadezhda.refractor.handler.noise.*;
+	import ar.nadezhda.refractor.handler.resource.*;
+	import ar.nadezhda.refractor.handler.unary.*;
 	import ar.nadezhda.refractor.interfaces.Handler;
 	import ar.nadezhda.refractor.interfaces.ImageFormat;
+	import javafx.collections.ObservableMap;
 	import javafx.fxml.FXMLLoader;
 	import javafx.scene.Parent;
 	import javafx.scene.Scene;
@@ -28,6 +35,7 @@
 
 		protected final RefractorProperties properties;
 		protected final Resource layout;
+		protected ObservableMap<String, Object> namespace;
 
 		@Inject
 		public Module(
@@ -40,7 +48,10 @@
 		@Bean @Lazy
 		public Parent parent()
 				throws IOException {
-			return FXMLLoader.load(layout.getURL());
+			final FXMLLoader loader = new FXMLLoader(layout.getURL());
+			final Parent parent = loader.load();
+			namespace = loader.getNamespace();
+			return parent;
 		}
 
 		@Bean @Lazy
@@ -76,6 +87,7 @@
 			router.put("gaussFilter",new GaussFilterHandler());
 			router.put("medianFilter",new MedianFilterHandler());
 			router.put("highpassFilter",new HighpassFilterHandler());
+			router.put("prewitt", new PrewittHandler());
 			return router;
 		}
 
@@ -106,5 +118,10 @@
 					"*." + format.getExtension().toLowerCase());
 			}
 			return filters;
+		}
+
+		@Bean("namespace") @Lazy
+		public Map<String, Object> namespace() {
+			return namespace;
 		}
 	}

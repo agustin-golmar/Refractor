@@ -1,5 +1,5 @@
 
-	package ar.nadezhda.refractor.handler;
+	package ar.nadezhda.refractor.handler.resource;
 
 	import ar.nadezhda.refractor.Main;
 	import ar.nadezhda.refractor.core.Image;
