@@ -42,7 +42,6 @@ public abstract class FilterHandler implements Handler {
         CheckBox linearBox = (CheckBox) node.getScene().lookup("#linearCompression");
         CheckBox truncBox = (CheckBox) node.getScene().lookup("#truncate");
         int dimension;
-        double stdDev = ((Slider) node.getScene().lookup("#deviationValue")).getValue();
         TextField textField = (TextField) node.getScene().lookup("#dimensionValue");
         //TextField textField2 = (TextField) node.getScene().lookup("#scalar2");
         try {
@@ -56,7 +55,7 @@ public abstract class FilterHandler implements Handler {
         	ImageTool.popup(AlertType.ERROR, "Error!", "The dimension must be even.");
             return result;
         }
-        generateOperation(stdDev,dimension);
+        generateOperation(dimension/2.0,dimension);
         ImageState imageState = states.get(0);
         final Image image = imageState.filter(dimension, operation,normalize, linearBox.isSelected(), truncBox.isSelected(),lognormBox.isSelected());
         final String key = ImageTool.buildKey(action, image,

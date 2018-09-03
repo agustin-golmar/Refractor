@@ -260,7 +260,7 @@ public class ImageState {
 
             }
         }
-        //System.out.println("------------------------");
+        System.out.println("------------------------");
         Image res = new Image(this.image.source, this.image.getChannels(), this.image.getWidth(), this.image.getHeight());
         for (int c=0;c<image.getChannels();c++){
             for (int w=0;w<image.getWidth();w++){
