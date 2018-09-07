@@ -6,7 +6,6 @@ import ar.nadezhda.refractor.core.ImageTool;
 import ar.nadezhda.refractor.interfaces.Handler;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 
@@ -55,7 +54,7 @@ public abstract class FilterHandler implements Handler {
         	ImageTool.popup(AlertType.ERROR, "Error!", "The dimension must be even.");
             return result;
         }
-        generateOperation(dimension/2.0,dimension);
+        generateOperation((dimension - 1.0)/2.0, dimension);
         ImageState imageState = states.get(0);
         final Image image = imageState.filter(dimension, operation,normalize, linearBox.isSelected(), truncBox.isSelected(),lognormBox.isSelected());
         final String key = ImageTool.buildKey(action, image,
