@@ -1,6 +1,7 @@
 
 	package ar.nadezhda.refractor.core;
 
+	import ar.nadezhda.refractor.support.Matrix;
 	import java.awt.Color;
 
 	public class Image {
@@ -56,7 +57,7 @@
 		}
 
 		public double [][][] getEmptyImageSpace() {
-			return new double [getChannels()][getWidth()][getHeight()];
+			return Matrix.emptySpaceFrom(data);
 		}
 
 		public byte [][][] getRawEmptyImageSpace() {
