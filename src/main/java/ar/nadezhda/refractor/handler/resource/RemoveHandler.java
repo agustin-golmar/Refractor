@@ -11,6 +11,7 @@
 	import java.util.List;
 	import java.util.Map;
 	import javafx.collections.ObservableList;
+	import javafx.event.ActionEvent;
 	import javafx.scene.Node;
 	import javafx.scene.control.ListView;
 
@@ -18,8 +19,9 @@
 
 		@Override
 		@SuppressWarnings("unchecked")
-		public Map<String, Image> handle(final List<ImageState> states, final Node node) {
+		public Map<String, Image> handle(final List<ImageState> states, final ActionEvent action) {
 			final Workspace workspace = Main.context.getBean(Workspace.class);
+			final Node node = (Node) action.getSource();
 			final ObservableList<String> keys = ((ListView<String>) node
 					.getScene()
 					.lookup("#keys"))

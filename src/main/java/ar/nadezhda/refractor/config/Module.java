@@ -87,7 +87,7 @@
 			router.put("gaussFilter",new GaussFilterHandler());
 			router.put("medianFilter",new MedianFilterHandler());
 			router.put("highpassFilter",new HighpassFilterHandler());
-			router.put("prewitt", new PrewittHandler());
+			router.put("gradient", new GradientEdgeDetectorHandler());
 			return router;
 		}
 

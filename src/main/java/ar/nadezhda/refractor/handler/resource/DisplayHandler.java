@@ -8,12 +8,12 @@
 	import java.util.Collections;
 	import java.util.List;
 	import java.util.Map;
-	import javafx.scene.Node;
+	import javafx.event.ActionEvent;
 
 	public class DisplayHandler implements Handler {
 
 		@Override
-		public Map<String, Image> handle(final List<ImageState> states, final Node node) {
+		public Map<String, Image> handle(final List<ImageState> states, final ActionEvent action) {
 			states.forEach(state -> {
 				ImageTool.closeImageView(state);
 				ImageTool.displayImageView(state);

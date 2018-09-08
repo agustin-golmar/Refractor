@@ -8,13 +8,13 @@
 	import java.util.HashMap;
 	import java.util.List;
 	import java.util.Map;
-	import javafx.scene.Node;
+	import javafx.event.ActionEvent;
 	import javafx.scene.control.Alert.AlertType;
 
 	public class CopyHandler implements Handler {
 
 		@Override
-		public Map<String, Image> handle(final List<ImageState> states, final Node node) {
+		public Map<String, Image> handle(final List<ImageState> states, final ActionEvent action) {
 			final Map<String, Image> result = new HashMap<>();
 			if (states.size() != 1) {
 				ImageTool.popup(AlertType.WARNING, "Warning!",

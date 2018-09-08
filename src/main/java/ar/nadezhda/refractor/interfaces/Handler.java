@@ -5,7 +5,7 @@
 	import ar.nadezhda.refractor.core.ImageState;
 	import java.util.List;
 	import java.util.Map;
-	import javafx.scene.Node;
+	import javafx.event.ActionEvent;
 
 	@FunctionalInterface
 	public interface Handler {
@@ -17,14 +17,14 @@
 		* @param states
 		*	La lista de estados de imágenes seleccionadas. Sin ningún orden en
 		*	particular.
-		* @param node
-		*	El nodo de la escena que activó el llamado a este handler
-		*	(<i>i.e.</i>, un botón, un slider, etc.).
+		* @param action
+		*	La acción que activó el llamado a este handler (<i>i.e.</i>, un
+		*	botón, un slider, etc.).
 		*
 		* @return
 		*	Un mapa con las imágenes generadas y las claves bajo las cuáles se
 		*	deben persistir.
 		*/
         Map<String, Image> handle(
-                final List<ImageState> states, final Node node);
+                final List<ImageState> states, final ActionEvent action);
 	}

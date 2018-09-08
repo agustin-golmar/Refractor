@@ -12,31 +12,34 @@
 		<URL value = "@style.css"/>
 	</stylesheets>
 	<top>
-		<HBox spacing = "5">
-			<padding>
-				<Insets top = "5" right = "5" bottom = "0" left = "5"/>
-			</padding>
-			<Button fx:id = "open" text = "Open" onAction = "#control">
-				<tooltip>
-					<Tooltip text = "You can open multiple images at once."/>
-				</tooltip>
-			</Button>
-			<Button fx:id = "save" text = "Save" onAction = "#control">
-				<tooltip>
-					<Tooltip text = "Saves the selected image in the format you like."/>
-				</tooltip>
-			</Button>
-			<Button fx:id = "remove" text = "Remove" onAction = "#control">
-				<tooltip>
-					<Tooltip text = "Completely removes an image from the workspace."/>
-				</tooltip>
-			</Button>
-			<Button fx:id = "display" text = "Display" onAction = "#control">
-				<tooltip>
-					<Tooltip text = "Sees again an image you closed."/>
-				</tooltip>
-			</Button>
-		</HBox>
+		<VBox>
+			<MenuBar>
+				<menus>
+					<Menu text = "File">
+						<items>
+							<MenuItem fx:id = "open" text = "Open..." onAction = "#control"/>
+							<SeparatorMenuItem/>
+							<MenuItem fx:id = "save" text = "Save..." onAction = "#control"/>
+						</items>
+					</Menu>
+				</menus>
+			</MenuBar>
+			<HBox spacing = "5">
+				<padding>
+					<Insets top = "5" right = "5" bottom = "0" left = "5"/>
+				</padding>
+				<Button fx:id = "remove" text = "Remove" onAction = "#control">
+					<tooltip>
+						<Tooltip text = "Completely removes an image from the workspace."/>
+					</tooltip>
+				</Button>
+				<Button fx:id = "display" text = "Display" onAction = "#control">
+					<tooltip>
+						<Tooltip text = "Sees again an image you closed."/>
+					</tooltip>
+				</Button>
+			</HBox>
+		</VBox>
 	</top>
 	<left>
 		<GridPane>
@@ -100,7 +103,7 @@
 				<Button fx:id = "gaussFilter" text = "Gauss Filter" onAction = "#control"></Button>
 				<Button fx:id = "medianFilter" text = "Median Filter" onAction = "#control"></Button>
 				<Button fx:id = "highpassFilter" text = "Highpass Filter" onAction = "#control"></Button>
-				<Button fx:id = "prewitt" text = "Prewitt Detector" onAction = "#control"></Button>
+				<Button fx:id = "gradient" text = "Gradient Detector" onAction = "#control"></Button>
 			</VBox>
 		</GridPane>
 	</left>

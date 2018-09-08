@@ -4,6 +4,7 @@ import ar.nadezhda.refractor.core.Image;
 import ar.nadezhda.refractor.core.ImageState;
 import ar.nadezhda.refractor.core.ImageTool;
 import ar.nadezhda.refractor.interfaces.Handler;
+import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
@@ -34,7 +35,7 @@ public abstract class UnaryHandler implements Handler {
     }
 
     @Override
-    public Map<String, Image> handle(List<ImageState> states, Node node) {
+    public Map<String, Image> handle(List<ImageState> states, final ActionEvent action) {
         Map<String, Image> result = new HashMap<>();
         if (states.size()!=1){
         	ImageTool.popup(AlertType.WARNING, "Warning!", new StringBuilder()
@@ -44,6 +45,7 @@ public abstract class UnaryHandler implements Handler {
 					.toString());
         	return result;
         }
+        final Node node = (Node) action.getSource();
         CheckBox lognormBox = (CheckBox) node.getScene().lookup("#dynamicRange");
         CheckBox linearBox = (CheckBox) node.getScene().lookup("#linearCompression");
         CheckBox truncBox = (CheckBox) node.getScene().lookup("#truncate");
@@ -93,7 +95,7 @@ public abstract class UnaryHandler implements Handler {
 
 
         final Image image = imageState.unaryOp(operation, normalize, lognorm,truncate);
-        final String key = ImageTool.buildKey(action, image,
+        final String key = ImageTool.buildKey(this.action, image,
                 states.get(0).getKey());
         result.put(key, image);
         return result;

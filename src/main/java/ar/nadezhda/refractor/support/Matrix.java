@@ -41,8 +41,6 @@
 
 		public static double [][][] absoluteGradient(
 				final double [][][] dx, final double [][][] dy) {
-			return Matrix.filter(dx, (dx_, c, w, h) -> {
-				return Math.hypot(dx[c][w][h], dy[c][w][h]);
-			});
+			return Matrix.filter(dx, (dx_, c, w, h) -> Math.hypot(dx[c][w][h], dy[c][w][h]));
 		}
 	}

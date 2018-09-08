@@ -4,6 +4,7 @@ import ar.nadezhda.refractor.core.Image;
 import ar.nadezhda.refractor.core.ImageState;
 import ar.nadezhda.refractor.core.ImageTool;
 import ar.nadezhda.refractor.interfaces.Handler;
+import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
@@ -15,7 +16,7 @@ import java.util.Map;
 
 public class MedianFilterHandler implements Handler {
     @Override
-    public Map<String, Image> handle(List<ImageState> states, Node node) {
+    public Map<String, Image> handle(List<ImageState> states, final ActionEvent action) {
         Map<String, Image> result = new HashMap<>();
         if (states.size()!=1){
         	ImageTool.popup(AlertType.WARNING, "Warning!",
@@ -23,6 +24,7 @@ public class MedianFilterHandler implements Handler {
         	return result;
         }
         int dimension;
+        final Node node = (Node) action.getSource();
         TextField textField = (TextField) node.getScene().lookup("#dimensionValue");
         CheckBox checkBox = (CheckBox) node.getScene().lookup("#ponderateMedian");
         boolean ponderate = checkBox.isSelected();

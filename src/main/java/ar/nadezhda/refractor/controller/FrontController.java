@@ -18,10 +18,10 @@
 	import java.util.ResourceBundle;
 	import java.util.stream.Collectors;
 	import javafx.collections.ObservableList;
+	import javafx.css.Styleable;
 	import javafx.event.ActionEvent;
 	import javafx.fxml.FXML;
 	import javafx.fxml.Initializable;
-	import javafx.scene.Node;
     import javafx.scene.control.*;
     import javafx.scene.image.ImageView;
     import javafx.scene.image.WritableImage;
@@ -51,14 +51,14 @@
 
 		@Override @FXML
 		public void control(final ActionEvent event) {
-			final Node node = (Node) event.getSource();
+			final Styleable node = (Styleable) event.getSource();
 			Optional.ofNullable(router.get(node.getId()))
 				.ifPresent(handler -> {
 					final List<ImageState> states = getSelectedStates();
 					if (reverseImageOrder.isSelected()) {
 						Collections.reverse(states);
 					}
-					handler.handle(states, node)
+					handler.handle(states, event)
 						.forEach((key, image) -> {
 							addImage(key, image);
 						});

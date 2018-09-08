@@ -13,7 +13,7 @@
 	import java.util.List;
 	import java.util.Map;
 	import java.util.Optional;
-	import javafx.scene.Node;
+	import javafx.event.ActionEvent;
 	import javafx.scene.control.Alert.AlertType;
 	import javafx.stage.FileChooser;
 	import javafx.stage.FileChooser.ExtensionFilter;
@@ -31,7 +31,7 @@
 		}
 
 		@Override
-		public Map<String, Image> handle(final List<ImageState> states, final Node node) {
+		public Map<String, Image> handle(final List<ImageState> states, final ActionEvent action) {
 			if (states.size() != 1) {
 				ImageTool.popup(AlertType.WARNING, "Warning!",
 						"You must select only 1 image to apply the 'save' action.");

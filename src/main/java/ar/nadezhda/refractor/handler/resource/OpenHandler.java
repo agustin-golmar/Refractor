@@ -15,7 +15,8 @@
 	import java.util.Optional;
 	import java.util.function.Function;
 	import java.util.stream.Collectors;
-	import javafx.scene.Node;
+	import javafx.event.ActionEvent;
+	import javafx.scene.Scene;
 	import javafx.scene.control.CheckBox;
 	import javafx.scene.control.Alert.AlertType;
 	import javafx.stage.FileChooser;
@@ -34,10 +35,10 @@
 		}
 
 		@Override
-		public Map<String, Image> handle(final List<ImageState> states, final Node node) {
+		public Map<String, Image> handle(final List<ImageState> states, final ActionEvent action) {
 			final Workspace workspace = Main.context.getBean(Workspace.class);
-			final CheckBox useConfigForLoad = ((CheckBox) node.getScene()
-					.lookup("#useConfigForLoad"));
+			final Scene scene = Main.context.getBean(Scene.class);
+			final CheckBox useConfigForLoad = ((CheckBox) scene.lookup("#useConfigForLoad"));
 			final Map<String, Image> result = new HashMap<>();
 			Optional.ofNullable(chooser.showOpenMultipleDialog(Main.stage))
 				.ifPresent(files -> {

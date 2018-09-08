@@ -8,6 +8,7 @@
 	import java.util.Collections;
 	import java.util.List;
 	import java.util.Map;
+	import javafx.event.ActionEvent;
 	import javafx.scene.Node;
 	import javafx.scene.chart.BarChart;
 	import javafx.scene.chart.CategoryAxis;
@@ -19,7 +20,8 @@
 	public class HistogramHandler implements Handler {
 
 		@Override
-		public Map<String, Image> handle(final List<ImageState> states, final Node node) {
+		public Map<String, Image> handle(final List<ImageState> states, final ActionEvent action) {
+			final Node node = (Node) action.getSource();
 			final CheckBox normalize = ((CheckBox) node.getScene()
 					.lookup("#normalizeHistogram"));
 			states.stream()
