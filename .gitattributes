@@ -1,5 +1,5 @@
 # https://help.github.com/articles/dealing-with-line-endings/
-# Binary files. Git shall not modified this blobs:
+# Binary files. Git will not modify these blobs:
 *.bmp binary
 *.gif binary
 *.jpg binary

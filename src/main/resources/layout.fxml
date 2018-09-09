@@ -9,7 +9,7 @@
 <!-- Layout -->
 <BorderPane xmlns:fx = "http://javafx.com/fxml" fx:controller = "ar.nadezhda.refractor.controller.FrontController">
 	<stylesheets>
-		<!--<URL value = "@style.css"/>-->
+		<URL value = "@style.css"/>
 	</stylesheets>
 	<top>
 		<VBox>
@@ -136,11 +136,11 @@
 								<Button fx:id = "highpassFilter" text = "Highpass Filter" onAction = "#control"/>
 								<Button fx:id = "meanFilter" text = "Mean Filter" onAction = "#control"/>
 								<Button fx:id = "medianFilter" text = "Median Filter" onAction = "#control"/>
+								<Button fx:id = "weightMedianFilter" text = "Weighted Median Filter" onAction = "#control"/>
 								<HBox spacing = "5" alignment = "center_left">
 									<Label text = "Dimension:"/>
 									<TextField fx:id = "dimensionValue" text = "3"/>
 								</HBox>
-								<CheckBox fx:id = "ponderateMedian" text = "Weighted median"/>
 							</VBox>
 						</content>
 					</TitledPane>

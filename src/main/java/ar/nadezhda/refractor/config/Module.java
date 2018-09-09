@@ -6,6 +6,7 @@
 	import ar.nadezhda.refractor.handler.*;
 	import ar.nadezhda.refractor.handler.binary.*;
 	import ar.nadezhda.refractor.handler.edge.*;
+	import ar.nadezhda.refractor.handler.edge.operator.ConvolutionHandler;
 	import ar.nadezhda.refractor.handler.filter.*;
 	import ar.nadezhda.refractor.handler.noise.*;
 	import ar.nadezhda.refractor.handler.resource.*;
@@ -78,19 +79,21 @@
 			router.put("histogram", new HistogramHandler());
 			router.put("equalizer", new EqualizerHandler());
 			router.put("scalarProd", new ScalarProdHandler());
-			router.put("negative",new NegativeHandler());
-			router.put("threshold",new ThresholdHandler());
+			router.put("negative", new NegativeHandler());
+			router.put("threshold", new ThresholdHandler());
 			router.put("power", new PowerHandler());
-			router.put("increaseContrast",new IncreaseContrastHandler());
+			router.put("increaseContrast", new IncreaseContrastHandler());
 			router.put("gaussianNoise", new GaussianNoiseHandler());
-			router.put("exponentialNoise",new ExponentialNoiseHandler());
+			router.put("exponentialNoise", new ExponentialNoiseHandler());
 			router.put("saltAndPepper", new SaltAndPepperHandler());
 			router.put("rayleighNoise", new RayleighNoiseHandler());
-			router.put("meanFilter",new MeanFilterHandler());
-			router.put("gaussFilter",new GaussFilterHandler());
-			router.put("medianFilter",new MedianFilterHandler());
-			router.put("highpassFilter",new HighpassFilterHandler());
+			router.put("meanFilter", new MeanFilterHandler());
+			router.put("gaussFilter", new GaussFilterHandler());
+			router.put("medianFilter", new MedianFilterHandler());
+			router.put("weightMedianFilter", new WeightedMedianFilterHandler());
+			router.put("highpassFilter", new HighpassFilterHandler());
 			router.put("gradient", new GradientEdgeDetectorHandler());
+			router.put("convolution", new ConvolutionHandler());
 			return router;
 		}
 

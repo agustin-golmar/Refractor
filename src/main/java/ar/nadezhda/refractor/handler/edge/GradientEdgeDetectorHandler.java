@@ -6,9 +6,8 @@
 	import ar.nadezhda.refractor.core.ImageState;
 	import ar.nadezhda.refractor.core.ImageTool;
 	import ar.nadezhda.refractor.handler.compression.LinearCompressor;
-	import ar.nadezhda.refractor.handler.edge.operator.PrewittOperator;
+	import ar.nadezhda.refractor.handler.edge.operator.ConvolutionHandler;
 	import ar.nadezhda.refractor.interfaces.Compressor;
-	import ar.nadezhda.refractor.interfaces.DerivativeOperator;
 	import ar.nadezhda.refractor.interfaces.Handler;
 	import ar.nadezhda.refractor.support.Matrix;
 	import java.util.HashMap;
@@ -27,8 +26,7 @@
 					"You must select only 1 image to apply the 'edge detection'.");
 				return result;
 			}
-			// Get from toggle:
-			final DerivativeOperator operator = new PrewittOperator();
+			final var operator = ConvolutionHandler.getOperator();
 			final var state = states.get(0);
 			final var image = state.getImage();
 			final var dx = operator.convolutionOverX(image.data);

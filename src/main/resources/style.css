@@ -1,14 +1,14 @@
 
 	/* Root Element */
 	.root {
-		-fx-background-image : url("assets/background.jpg");
+		/*-fx-background-image : url("assets/background.jpg");
 		-fx-background-repeat : repeat;
 		-fx-background-size : 1920 1200;
 		-fx-background-position : top left;
 		-fx-background-color : orange;
 		-fx-faint-focus-color : transparent;
 		-fx-focus-color : transparent;
-		-fx-grid-lines-visible : false;
+		-fx-grid-lines-visible : false;*/
 	}
 
 	/* Layout Classes */
@@ -17,7 +17,7 @@
 
 	/* GUI Components */
 	.button, .button:focused, .button:hover, .button:pressed {
-		-fx-background-color : rgba(35, 35, 35, 1.0);
+		/*-fx-background-color : rgba(35, 35, 35, 1.0);
 		-fx-background-insets : 0 0 0 0;
 		-fx-background-radius : 0;
 		-fx-border-color : rgba(35, 35, 35, 1.0);
@@ -27,17 +27,17 @@
 		-fx-pref-height : 16px;
 		-fx-pref-width : 120px;
 		-fx-text-fill : white;
-		-fx-text-inner-color : white;
+		-fx-text-inner-color : white;*/
 	}
 
 	.button:hover {
-		-fx-background-color : red;
+		/*-fx-background-color : red;*/
 	}
 
 	.button:pressed {
-		-fx-background-color : rgba(255, 200, 15, 1.0);
+		/*-fx-background-color : rgba(255, 200, 15, 1.0);
 		-fx-text-fill : black;
-		-fx-text-inner-color : black;
+		-fx-text-inner-color : black;*/
 	}
 
 	.box {
@@ -58,28 +58,28 @@
 	}
 
 	.label {
-		-fx-text-fill : white;
-		-fx-text-inner-color : white;
+		/*-fx-text-fill : white;
+		-fx-text-inner-color : white;*/
 	}
 
 	.list-cell {}
 	.list-view {}
 
 	.slider {
-		-fx-pref-width : 300px;
+		-fx-pref-width : 250px;
 		-fx-show-tick-labels : true;
 		-fx-show-tick-marks : true;
 	}
 
 	.slider .axis {
-		-fx-tick-label-fill : white;
+		/*-fx-tick-label-fill : white;*/
 	}
 
 	/* Custom Classes */
 	.check-box, .overlay {
-		-fx-background-color : rgba(35, 35, 35, 1.0);
+		/*-fx-background-color : rgba(35, 35, 35, 1.0);
 		-fx-background-radius : 5px;
 		-fx-padding : 5px;
 		-fx-text-fill : white;
-		-fx-text-inner-color : white;
+		-fx-text-inner-color : white;*/
 	}

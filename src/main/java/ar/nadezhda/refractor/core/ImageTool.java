@@ -2,7 +2,7 @@
 	package ar.nadezhda.refractor.core;
 
 	import ar.nadezhda.refractor.Main;
-import ar.nadezhda.refractor.support.Tool;
+	import ar.nadezhda.refractor.support.Tool;
 	import java.awt.image.BufferedImage;
 	import java.util.stream.Collectors;
 	import java.util.stream.Stream;
