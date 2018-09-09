@@ -4,7 +4,6 @@ import java.awt.Point;
 import java.util.Arrays;
 import java.util.function.DoubleBinaryOperator;
 import java.util.function.DoubleUnaryOperator;
-
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -166,19 +165,10 @@ public class ImageState {
                 }
             }
         }
-        for (int c = 0; c < this.image.getChannels(); c++) {
-            for (int w = 0; w < this.image.getWidth(); w++) {
-                for (int h = 0; h < this.image.getHeight(); h++) {
-                    res.data[c][w][h] = (res.data[c][w][h] - minData[c]) / (maxData[c] - minData[c]) * 255;
-                    res.rawData[c][w][h] = (byte) res.data[c][w][h];
-                }
-            }
-        }
         return res;
     }
 
-    public Image unaryOp(DoubleUnaryOperator op, boolean normalize, boolean lognorm, boolean truncate) {
-        //double maxData = op.applyAsDouble(255.0);
+    public Image unaryOp(DoubleUnaryOperator op) {
         double[] maxData2 = new double[image.getChannels()];
         double[] minData2 = new double[image.getChannels()];
         for (int i=0;i<image.getChannels();i++) {
@@ -198,9 +188,6 @@ public class ImageState {
                 }
             }
         }
-        normalize(normalize, truncate, lognorm, maxData2, minData2, res);
-
-
         return res;
     }
 
@@ -229,7 +216,7 @@ public class ImageState {
 
     }
 
-    public Image filter(int size, DoubleBinaryOperator matrixFiller, boolean normalize, boolean linear, boolean truncate, boolean lognorm){
+    public Image filter(int size, DoubleBinaryOperator matrixFiller, boolean normalize){
         double[][] window = new double[size][size];
         double[] maxData2 = new double[image.getChannels()];
         double[] minData2 = new double[image.getChannels()];
@@ -242,11 +229,11 @@ public class ImageState {
             for (int j=0;j<size;j++) {
                 double val = matrixFiller.applyAsDouble(i-size/2,j-size/2);
                 window[i][j]= val;
-                System.out.print(window[i][j]+ " ");
+                //System.out.print(window[i][j]+ " ");
                 sum+=val;
                 
             }
-            System.out.println("");
+            //System.out.println("");
 
 
         }
@@ -260,7 +247,7 @@ public class ImageState {
 
             }
         }
-        System.out.println("------------------------");
+        //System.out.println("------------------------");
         Image res = new Image(this.image.source, this.image.getChannels(), this.image.getWidth(), this.image.getHeight());
         for (int c=0;c<image.getChannels();c++){
             for (int w=0;w<image.getWidth();w++){
@@ -281,35 +268,10 @@ public class ImageState {
                     else if (res.data[c][w][h]<minData2[c]){
                         minData2[c]=res.data[c][w][h];
                     }
-
-                    //res.rawData[c][w][h] = (byte) res.data[c][w][h];
-
                 }
             }
         }
-        normalize(linear, truncate, lognorm, maxData2, minData2, res);
         return res;
-    }
-
-    private void normalize(boolean normalize, boolean truncate, boolean lognorm, double[] maxData2, double[] minData2, Image res) {
-        for (int c = 0; c < this.image.getChannels(); c++) {
-            for (int w = 0; w < this.image.getWidth(); w++) {
-                for (int h = 0; h < this.image.getHeight(); h++) {
-                    if (truncate && res.data[c][w][h]>255.0){
-                        res.data[c][w][h] = 255.0;
-                    }
-                    else if (truncate && res.data[c][w][h]<0.0){
-                        res.data[c][w][h] = 0.0;
-                    }
-                    else if (lognorm)
-                        res.data[c][w][h] = 255.0/Math.log(1+maxData2[c])*Math.log(1+res.data[c][w][h]);
-                    else if (normalize)
-                        res.data[c][w][h] = 255.0/(maxData2[c]-minData2[c])*(res.data[c][w][h]-minData2[c]);
-                    res.rawData[c][w][h] = (byte) res.data[c][w][h];
-                    //System.out.println(res.data[c][w][h]+"->"+res.rawData[c][w][h]);
-                }
-            }
-        }
     }
 
     public double[] getMean(){
@@ -343,7 +305,6 @@ public class ImageState {
                             }
                         }
                     }
-                    //System.out.println(Arrays.toString(window));
                     Arrays.sort(window);
                     res.data[c][w][h]=window.length%2==1?window[window.length/2]:window[window.length/2]/2+window[window.length/2+1]/2;
 

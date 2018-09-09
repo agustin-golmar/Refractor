@@ -1,15 +1,16 @@
 package ar.nadezhda.refractor.handler.filter;
 
+import ar.nadezhda.refractor.Main;
 import ar.nadezhda.refractor.core.Image;
 import ar.nadezhda.refractor.core.ImageState;
 import ar.nadezhda.refractor.core.ImageTool;
+import ar.nadezhda.refractor.handler.compression.LinearCompressor;
+import ar.nadezhda.refractor.interfaces.Compressor;
 import ar.nadezhda.refractor.interfaces.Handler;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,15 +39,10 @@ public abstract class FilterHandler implements Handler {
         }
 
         final Node node = (Node) action.getSource();
-        CheckBox lognormBox = (CheckBox) node.getScene().lookup("#dynamicRange");
-        CheckBox linearBox = (CheckBox) node.getScene().lookup("#linearCompression");
-        CheckBox truncBox = (CheckBox) node.getScene().lookup("#truncate");
         int dimension;
         TextField textField = (TextField) node.getScene().lookup("#dimensionValue");
-        //TextField textField2 = (TextField) node.getScene().lookup("#scalar2");
         try {
             dimension = Integer.parseInt(textField.getText());
-            //stdDev = Double.parseDouble(textField2.getText());
         } catch (NumberFormatException e) {
         	ImageTool.popup(AlertType.ERROR, "Error!", "The dimension isn't an integer number.");
             return result;
@@ -57,12 +53,17 @@ public abstract class FilterHandler implements Handler {
         }
         generateOperation((dimension - 1.0)/2.0, dimension);
         ImageState imageState = states.get(0);
-        final Image image = imageState.filter(dimension, operation,normalize, linearBox.isSelected(), truncBox.isSelected(),lognormBox.isSelected());
+        final Image image = imageState.filter(dimension, operation, normalize);
         final String key = ImageTool.buildKey(this.action, image,
                 states.get(0).getKey());
         result.put(key, image);
         return result;
     }
+
+    @Override
+	public Compressor getCompressor() {
+		return Main.context.getBean(LinearCompressor.class);
+	}
 
     private void generateOperation(double stdDev, int dimension) {
         switch (action) {

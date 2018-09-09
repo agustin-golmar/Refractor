@@ -5,7 +5,6 @@
 	import ar.nadezhda.refractor.interfaces.Compressor;
 	import javafx.scene.control.RadioMenuItem;
 	import javafx.scene.control.ToggleGroup;
-	import java.util.Map;
 	import javax.inject.Inject;
 	import org.springframework.stereotype.Service;
 
@@ -30,14 +29,13 @@
 		}
 
 		@Override
-		@SuppressWarnings("unchecked")
 		public double [][][] compress(final double [][][] data) {
-			final Map<String, Object> namespace = Main.context
-					.getBean("namespace", Map.class);
-			final RadioMenuItem item = (RadioMenuItem) ((ToggleGroup) namespace
+			final RadioMenuItem item = (RadioMenuItem) ((ToggleGroup) Main.namespace
 					.get("compressor"))
 					.getSelectedToggle();
 			switch (item.getText()) {
+				case "Automatic":
+					return data;
 				case "Dynamic-range":
 					return dynamicRange.compress(data);
 				case "Linear":
@@ -47,5 +45,13 @@
 				default:
 					return nullCompressor.compress(data);
 			}
+		}
+
+		public boolean isAutomatic() {
+			return ((RadioMenuItem) ((ToggleGroup) Main.namespace
+					.get("compressor"))
+					.getSelectedToggle())
+					.getText()
+					.equals("Automatic");
 		}
 	}

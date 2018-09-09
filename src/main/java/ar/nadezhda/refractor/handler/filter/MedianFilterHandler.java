@@ -1,8 +1,11 @@
 package ar.nadezhda.refractor.handler.filter;
 
+import ar.nadezhda.refractor.Main;
 import ar.nadezhda.refractor.core.Image;
 import ar.nadezhda.refractor.core.ImageState;
 import ar.nadezhda.refractor.core.ImageTool;
+import ar.nadezhda.refractor.handler.compression.NullCompressor;
+import ar.nadezhda.refractor.interfaces.Compressor;
 import ar.nadezhda.refractor.interfaces.Handler;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
@@ -50,4 +53,9 @@ public class MedianFilterHandler implements Handler {
         result.put(key, image);
         return result;
     }
+
+    @Override
+	public Compressor getCompressor() {
+		return Main.context.getBean(NullCompressor.class);
+	}
 }

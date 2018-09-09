@@ -7,7 +7,6 @@
 	import java.util.Map;
 	import javafx.event.ActionEvent;
 
-	@FunctionalInterface
 	public interface Handler {
 
 		/**
@@ -25,6 +24,16 @@
 		*	Un mapa con las imágenes generadas y las claves bajo las cuáles se
 		*	deben persistir.
 		*/
-        Map<String, Image> handle(
+        public Map<String, Image> handle(
                 final List<ImageState> states, final ActionEvent action);
+
+        /**
+        * <p>Devuelve el compresor por defecto para la operación realizada,
+        * el cual será utilizado si el modo de compresión seleccionado es el
+        * <b>automático</b>.</p>
+        *
+        * @return
+        *	El compresor recomendado.
+        */
+        public Compressor getCompressor();
 	}

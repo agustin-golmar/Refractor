@@ -12,7 +12,7 @@
 	import javafx.event.ActionEvent;
 	import javafx.scene.control.Alert.AlertType;
 
-	public class BinaryHandler implements Handler {
+	public abstract class BinaryHandler implements Handler {
 
 		protected final String action;
 		protected final DoubleBinaryOperator operation;

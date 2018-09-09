@@ -5,8 +5,9 @@
 	import ar.nadezhda.refractor.core.Image;
 	import ar.nadezhda.refractor.core.ImageState;
 	import ar.nadezhda.refractor.core.ImageTool;
-	import ar.nadezhda.refractor.handler.compression.CompressorService;
+	import ar.nadezhda.refractor.handler.compression.LinearCompressor;
 	import ar.nadezhda.refractor.handler.edge.operator.PrewittOperator;
+	import ar.nadezhda.refractor.interfaces.Compressor;
 	import ar.nadezhda.refractor.interfaces.DerivativeOperator;
 	import ar.nadezhda.refractor.interfaces.Handler;
 	import ar.nadezhda.refractor.support.Matrix;
@@ -28,16 +29,20 @@
 			}
 			// Get from toggle:
 			final DerivativeOperator operator = new PrewittOperator();
-			final var compressor = Main.context.getBean(CompressorService.class);
 			final var state = states.get(0);
 			final var image = state.getImage();
 			final var dx = operator.convolutionOverX(image.data);
 			final var dy = operator.convolutionOverY(image.data);
 			final var grad = Matrix.absoluteGradient(dx, dy);
-			final var borders = new Image(image.getSource(), compressor.compress(grad));
+			final var borders = new Image(image.getSource(), grad);
 			final var key = ImageTool.buildKey("gradient-edge", borders,
 					operator.getClass().getSimpleName(), state.getKey());
 			result.put(key, borders);
 			return result;
+		}
+
+		@Override
+		public Compressor getCompressor() {
+			return Main.context.getBean(LinearCompressor.class);
 		}
 	}

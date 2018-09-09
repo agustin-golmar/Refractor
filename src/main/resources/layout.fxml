@@ -34,9 +34,10 @@
 							<fx:define>
 								<ToggleGroup fx:id = "compressor"/>
 							</fx:define>
+							<RadioMenuItem text = "Automatic" onAction = "#control" toggleGroup = "$compressor" selected = "true"/>
 							<RadioMenuItem text = "Null" onAction = "#control" toggleGroup = "$compressor"/>
 							<RadioMenuItem text = "Truncated" onAction = "#control" toggleGroup = "$compressor"/>
-							<RadioMenuItem text = "Linear" onAction = "#control" toggleGroup = "$compressor" selected = "true"/>
+							<RadioMenuItem text = "Linear" onAction = "#control" toggleGroup = "$compressor"/>
 							<RadioMenuItem text = "Dynamic-range" onAction = "#control" toggleGroup = "$compressor"/>
 						</items>
 					</Menu>
@@ -203,21 +204,14 @@
 		<!-- Components here... -->
 	</right>
 	<bottom>
-		<GridPane>
-			<VBox  GridPane.columnIndex = "1" GridPane.rowIndex = "0" spacing = "5">
-				<CheckBox fx:id = "dynamicRange" text = "Dynamic-range compression."></CheckBox>
-				<CheckBox fx:id = "linearCompression" text = "Linear compression."></CheckBox>
-				<CheckBox fx:id = "truncate" text = "Truncate."></CheckBox>
-			</VBox>
-			<HBox GridPane.columnIndex = "3" GridPane.rowIndex = "0" spacing = "5">
-				<padding>
-					<Insets top = "5" right = "5" bottom = "5" left = "5"/>
-				</padding>
-				<Label fx:id = "mouseLocation" text = "Location (x, y) = (0, 0)" styleClass = "overlay"/>
-				<Label fx:id = "areaDimension" text = "Area (width, height) = (0, 0)" styleClass = "overlay"/>
-				<Label fx:id = "pixelCount" text = "Pixel Count: 0" styleClass = "overlay"/>
-				<Label fx:id = "grayAverage" text = "Average (R, G, B) = (0.0, 0.0, 0.0)" styleClass = "overlay"/>
-			</HBox>
-		</GridPane>
+		<HBox spacing = "20">
+			<padding>
+				<Insets top = "5" right = "5" bottom = "5" left = "5"/>
+			</padding>
+			<Label fx:id = "mouseLocation" text = "Location (x, y) = (0, 0)" styleClass = "overlay"/>
+			<Label fx:id = "areaDimension" text = "Area (width, height) = (0, 0)" styleClass = "overlay"/>
+			<Label fx:id = "pixelCount" text = "Pixel Count: 0" styleClass = "overlay"/>
+			<Label fx:id = "grayAverage" text = "Average (R, G, B) = (0.0, 0.0, 0.0)" styleClass = "overlay"/>
+		</HBox>
 	</bottom>
 </BorderPane>

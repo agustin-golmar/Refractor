@@ -6,6 +6,8 @@
 	import ar.nadezhda.refractor.core.ImageState;
 	import ar.nadezhda.refractor.core.ImageTool;
 	import ar.nadezhda.refractor.core.Workspace;
+	import ar.nadezhda.refractor.handler.compression.NullCompressor;
+	import ar.nadezhda.refractor.interfaces.Compressor;
 	import ar.nadezhda.refractor.interfaces.Handler;
 	import java.util.Collections;
 	import java.util.List;
@@ -32,5 +34,10 @@
 				keys.remove(state.getKey());
 			});
 			return Collections.emptyMap();
+		}
+
+		@Override
+		public Compressor getCompressor() {
+			return Main.context.getBean(NullCompressor.class);
 		}
 	}

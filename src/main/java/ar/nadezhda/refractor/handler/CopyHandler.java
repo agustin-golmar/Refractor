@@ -1,9 +1,12 @@
 
 	package ar.nadezhda.refractor.handler;
 
+	import ar.nadezhda.refractor.Main;
 	import ar.nadezhda.refractor.core.Image;
 	import ar.nadezhda.refractor.core.ImageState;
 	import ar.nadezhda.refractor.core.ImageTool;
+	import ar.nadezhda.refractor.handler.compression.NullCompressor;
+	import ar.nadezhda.refractor.interfaces.Compressor;
 	import ar.nadezhda.refractor.interfaces.Handler;
 	import java.util.HashMap;
 	import java.util.List;
@@ -32,5 +35,10 @@
 					"The selected area has no pixels.");
 			}
 			return result;
+		}
+
+		@Override
+		public Compressor getCompressor() {
+			return Main.context.getBean(NullCompressor.class);
 		}
 	}

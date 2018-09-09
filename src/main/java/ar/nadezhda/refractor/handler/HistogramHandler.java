@@ -5,6 +5,8 @@
 	import ar.nadezhda.refractor.core.Image;
 	import ar.nadezhda.refractor.core.ImageState;
 	import ar.nadezhda.refractor.core.ImageTool;
+	import ar.nadezhda.refractor.handler.compression.NullCompressor;
+	import ar.nadezhda.refractor.interfaces.Compressor;
 	import ar.nadezhda.refractor.interfaces.Handler;
 	import java.util.Collections;
 	import java.util.List;
@@ -36,6 +38,11 @@
 					ImageTool.display(histogram, title, 768, 512);
 				});
 			return Collections.emptyMap();
+		}
+
+		@Override
+		public Compressor getCompressor() {
+			return Main.context.getBean(NullCompressor.class);
 		}
 
 		protected BarChart<String, Number> buildHistogram(

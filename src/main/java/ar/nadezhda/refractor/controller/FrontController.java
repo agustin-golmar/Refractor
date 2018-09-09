@@ -6,7 +6,8 @@
 	import ar.nadezhda.refractor.core.ImageState;
 	import ar.nadezhda.refractor.core.ImageTool;
 	import ar.nadezhda.refractor.core.Workspace;
-	import ar.nadezhda.refractor.interfaces.Controller;
+import ar.nadezhda.refractor.handler.compression.CompressorService;
+import ar.nadezhda.refractor.interfaces.Controller;
 	import ar.nadezhda.refractor.interfaces.Handler;
 	import java.net.URL;
 	import java.text.DecimalFormat;
@@ -52,15 +53,20 @@
 		@Override @FXML
 		public void control(final ActionEvent event) {
 			final Styleable node = (Styleable) event.getSource();
+			final var service = Main.context.getBean(CompressorService.class);
 			Optional.ofNullable(router.get(node.getId()))
 				.ifPresent(handler -> {
 					final List<ImageState> states = getSelectedStates();
+					final var compressor = service.isAutomatic()?
+							handler.getCompressor() : service;
 					if (reverseImageOrder.isSelected()) {
 						Collections.reverse(states);
 					}
 					handler.handle(states, event)
 						.forEach((key, image) -> {
-							addImage(key, image);
+							final var compressedImage = new Image(
+									image.getSource(), compressor.compress(image.data));
+							addImage(key, compressedImage);
 						});
 				});
 		}

@@ -6,6 +6,8 @@
 	import ar.nadezhda.refractor.core.ImageState;
 	import ar.nadezhda.refractor.core.ImageTool;
 	import ar.nadezhda.refractor.core.Workspace;
+	import ar.nadezhda.refractor.handler.compression.NullCompressor;
+	import ar.nadezhda.refractor.interfaces.Compressor;
 	import ar.nadezhda.refractor.interfaces.Handler;
 	import java.io.File;
 	import java.io.IOException;
@@ -62,5 +64,10 @@
 						.collect(Collectors.toMap(Image::getSource, Function.identity())));
 				});
 			return result;
+		}
+
+		@Override
+		public Compressor getCompressor() {
+			return Main.context.getBean(NullCompressor.class);
 		}
 	}
