@@ -9,207 +9,215 @@
 <!-- Layout -->
 <BorderPane xmlns:fx = "http://javafx.com/fxml" fx:controller = "ar.nadezhda.refractor.controller.FrontController">
 	<stylesheets>
-		<URL value = "@style.css"/>
+		<!--<URL value = "@style.css"/>-->
 	</stylesheets>
 	<top>
 		<VBox>
 			<MenuBar>
 				<menus>
-					<Menu text = "File">
+					<Menu text = "_File">
 						<items>
 							<MenuItem fx:id = "open" text = "Open..." onAction = "#control"/>
+							<MenuItem fx:id = "openRaw" text = "Open RAW..." onAction = "#control"/>
 							<SeparatorMenuItem/>
 							<MenuItem fx:id = "save" text = "Save..." onAction = "#control"/>
 						</items>
 					</Menu>
+					<Menu text = "_Options">
+						<items>
+							<CheckMenuItem fx:id = "reverseImageOrder" text = "Reverse order of images" onAction = "#control"/>
+							<CheckMenuItem fx:id = "normalizeHistogram" text = "Normalize histogram" onAction = "#control"/>
+						</items>
+					</Menu>
+					<Menu text = "_Compressor">
+						<items>
+							<fx:define>
+								<ToggleGroup fx:id = "compressor"/>
+							</fx:define>
+							<RadioMenuItem text = "Null" onAction = "#control" toggleGroup = "$compressor"/>
+							<RadioMenuItem text = "Truncated" onAction = "#control" toggleGroup = "$compressor"/>
+							<RadioMenuItem text = "Linear" onAction = "#control" toggleGroup = "$compressor" selected = "true"/>
+							<RadioMenuItem text = "Dynamic-range" onAction = "#control" toggleGroup = "$compressor"/>
+						</items>
+					</Menu>
 				</menus>
 			</MenuBar>
-			<HBox spacing = "5">
-				<padding>
-					<Insets top = "5" right = "5" bottom = "0" left = "5"/>
-				</padding>
-				<Button fx:id = "remove" text = "Remove" onAction = "#control">
-					<tooltip>
-						<Tooltip text = "Completely removes an image from the workspace."/>
-					</tooltip>
-				</Button>
-				<Button fx:id = "display" text = "Display" onAction = "#control">
-					<tooltip>
-						<Tooltip text = "Sees again an image you closed."/>
-					</tooltip>
-				</Button>
-			</HBox>
 		</VBox>
 	</top>
 	<left>
-		<GridPane>
+		<VBox spacing = "5">
 			<padding>
-				<Insets top = "5" right = "0" bottom = "5" left = "5"/>
+				<Insets top = "5" right = "5" bottom = "5" left = "5"/>
 			</padding>
-			<VBox GridPane.columnIndex = "0" GridPane.rowIndex = "0" spacing = "5">
-				<padding>
-					<Insets top = "0" right = "5" bottom = "0" left = "0"/>
-				</padding>
-				<Button fx:id = "copy" text = "Copy" onAction = "#control">
-					<tooltip>
-						<Tooltip text = "Copies the selected area in an image, and create a new one."/>
-					</tooltip>
-				</Button>
-				<Button fx:id = "grayscale" text = "Grayscale" onAction = "#control">
-					<tooltip>
-						<Tooltip text = "Generates the grayscale of the image using their brightness/value (HSB/HSV model)."/>
-					</tooltip>
-				</Button>
-				<Button fx:id = "add" text = "+ (add)" onAction = "#control">
-					<tooltip>
-						<Tooltip text = "Adds 2 images. It uses linear compression."/>
-					</tooltip>
-				</Button>
-				<Button fx:id = "sub" text = "- (sub)" onAction = "#control">
-					<tooltip>
-						<Tooltip text = "Subtracts 2 images. It uses linear compression."/>
-					</tooltip>
-				</Button>
-				<Button fx:id = "product" text = "* (product)" onAction = "#control">
-					<tooltip>
-						<Tooltip text = "Multiplies 2 images. It uses dynamic-range compression."/>
-					</tooltip>
-				</Button>
-				<Button fx:id = "histogram" text = "Histogram" onAction = "#control">
-					<tooltip>
-						<Tooltip text = "Computes the histogram of an image."/>
-					</tooltip>
-				</Button>
-				<Button fx:id = "equalizer" text = "Equalize" onAction = "#control">
-					<tooltip>
-						<Tooltip text = "Applies an equalization process to enhance the image."/>
-					</tooltip>
-				</Button>
-			</VBox>
-			<VBox GridPane.columnIndex = "1" GridPane.rowIndex = "0" spacing = "5">
-				<padding>
-					<Insets top = "0" right = "5" bottom = "0" left = "0"/>
-				</padding>
-				<Button fx:id = "scalarProd" text = "Scalar Product" onAction = "#control"></Button>
-				<Button fx:id = "negative" text = "Negative" onAction = "#control"></Button>
-				<Button fx:id = "threshold" text = "Threshold (u)" onAction = "#control"></Button>
-				<Button fx:id = "power" text = "Power (γ)" onAction = "#control"></Button>
-				<Button fx:id = "increaseContrast" text = "Contrast" onAction = "#control"></Button>
-				<Button fx:id = "gaussianNoise" text = "Gaussian Noise (µ, σ)" onAction = "#control"></Button>
-				<Button fx:id = "exponentialNoise" text = "Exp. Noise (λ)" onAction = "#control"></Button>
-				<Button fx:id = "rayleighNoise" text = "Rayleigh Noise (ξ)" onAction = "#control"></Button>
-				<Button fx:id = "saltAndPepper" text = "Salt &amp; Pepper" onAction = "#control"></Button>
-				<Button fx:id = "meanFilter" text = "Mean Filter" onAction = "#control"></Button>
-				<Button fx:id = "gaussFilter" text = "Gauss Filter" onAction = "#control"></Button>
-				<Button fx:id = "medianFilter" text = "Median Filter" onAction = "#control"></Button>
-				<Button fx:id = "highpassFilter" text = "Highpass Filter" onAction = "#control"></Button>
-				<Button fx:id = "gradient" text = "Gradient Detector" onAction = "#control"></Button>
-			</VBox>
-		</GridPane>
+			<Accordion>
+				<panes>
+					<TitledPane text = "Unary Operations">
+						<content>
+							<VBox>
+								<Button fx:id = "copy" text = "Copy" onAction = "#control"/>
+								<Button fx:id = "equalizer" text = "Equalize" onAction = "#control"/>
+								<Button fx:id = "grayscale" text = "Grayscale" onAction = "#control"/>
+								<Button fx:id = "increaseContrast" text = "Contrast" onAction = "#control"/>
+								<Button fx:id = "negative" text = "Negative" onAction = "#control"/>
+								<Button fx:id = "power" text = "Power (γ)" onAction = "#control"/>
+								<Button fx:id = "scalarProd" text = "Scalar Product" onAction = "#control"/>
+								<HBox spacing = "5" alignment = "center_left">
+									<Label text = "Contrast:"/>
+									<TextField fx:id = "contrastValue" text = "1.0"/>
+								</HBox>
+								<HBox spacing = "5" alignment = "center_left">
+									<Label text = "Scalar:"/>
+									<TextField fx:id = "scalarValue" text = "1.0"/>
+								</HBox>
+								<HBox spacing = "5" alignment = "center" styleClass = "overlay">
+									<Label text = "Gamma (γ):"/>
+									<Slider fx:id = "gammaValue" min = "0" max = "2" minorTickCount = "4" majorTickUnit = "0.5"/>
+								</HBox>
+							</VBox>
+						</content>
+					</TitledPane>
+					<TitledPane text = "Binary Operations">
+						<content>
+							<VBox>
+								<Button fx:id = "add" text = "+ (add)" onAction = "#control"/>
+								<Button fx:id = "product" text = "* (product)" onAction = "#control"/>
+								<Button fx:id = "sub" text = "- (sub)" onAction = "#control"/>
+							</VBox>
+						</content>
+					</TitledPane>
+					<TitledPane text = "Thresholding">
+						<content>
+							<VBox>
+								<Button fx:id = "threshold" text = "Manual (u)" onAction = "#control"/>
+								<Button fx:id = "globalThreshold" text = "Global (u)" onAction = "#control"/>
+								<Button fx:id = "otsuThreshold" text = "Otsu's Method" onAction = "#control"/>
+								<HBox spacing = "5" alignment = "center" styleClass = "overlay">
+									<Label text = "Threshold (u):"/>
+									<Slider fx:id = "uValue" min = "0" max = "255" minorTickCount = "4" majorTickUnit = "25"/>
+								</HBox>
+							</VBox>
+						</content>
+					</TitledPane>
+					<TitledPane text = "Noise Generators">
+						<content>
+							<VBox>
+								<Button fx:id = "exponentialNoise" text = "Exp. Noise (λ)" onAction = "#control"/>
+								<Button fx:id = "gaussianNoise" text = "Gaussian Noise (µ, σ)" onAction = "#control"/>
+								<Button fx:id = "rayleighNoise" text = "Rayleigh Noise (ξ)" onAction = "#control"/>
+								<Button fx:id = "saltAndPepper" text = "Salt &amp; Pepper" onAction = "#control"/>
+								<HBox spacing = "5" alignment = "center" styleClass = "overlay">
+									<Label text = "Lambda (λ):"/>
+									<Slider fx:id = "lambdaValue" min = "0" max = "10" minorTickCount = "4" majorTickUnit = "1"/>
+								</HBox>
+								<HBox spacing = "5" alignment = "center" styleClass = "overlay">
+									<Label text = "Rayleigh (ξ):"/>
+									<Slider fx:id = "rayleighValue" min = "0" max = "10" minorTickCount = "4" majorTickUnit = "1"/>
+								</HBox>
+								<HBox spacing = "5" alignment = "center" styleClass = "overlay">
+									<Label text = "Mean (µ):"/>
+									<Slider fx:id = "meanValue" min = "-1" max = "1" minorTickCount = "4" majorTickUnit = "0.25" value = "0"/>
+								</HBox>
+								<HBox spacing = "5" alignment = "center" styleClass = "overlay">
+									<Label text = "Deviation (σ):"/>
+									<Slider fx:id = "deviationValue" min = "0" max = "1" minorTickCount = "4" majorTickUnit = "0.25" value = "0.25"/>
+								</HBox>
+								<HBox spacing = "5" alignment = "center" styleClass = "overlay">
+									<Label text = "Contamination (%):"/>
+									<Slider fx:id = "contaminationValue" min = "0" max = "100" minorTickCount = "4" majorTickUnit = "10" value = "10"/>
+								</HBox>
+							</VBox>
+						</content>
+					</TitledPane>
+					<TitledPane text = "Filters">
+						<content>
+							<VBox>
+								<Button fx:id = "gaussFilter" text = "Gauss Filter" onAction = "#control"/>
+								<Button fx:id = "highpassFilter" text = "Highpass Filter" onAction = "#control"/>
+								<Button fx:id = "meanFilter" text = "Mean Filter" onAction = "#control"/>
+								<Button fx:id = "medianFilter" text = "Median Filter" onAction = "#control"/>
+								<HBox spacing = "5" alignment = "center_left">
+									<Label text = "Dimension:"/>
+									<TextField fx:id = "dimensionValue" text = "3"/>
+								</HBox>
+								<CheckBox fx:id = "ponderateMedian" text = "Weighted median"/>
+							</VBox>
+						</content>
+					</TitledPane>
+					<TitledPane text = "Advanced Filtering/Diffusion">
+						<content>
+							<VBox>
+								<Button fx:id = "anisotropic" text = "Anisotropic" onAction = "#control"/>
+								<Button fx:id = "bilinear" text = "Bilinear" onAction = "#control"/>
+								<Button fx:id = "isotropic" text = "Isotropic" onAction = "#control"/>
+							</VBox>
+						</content>
+					</TitledPane>
+					<TitledPane text = "Directional Operators">
+						<content>
+							<VBox>
+								<fx:define>
+									<ToggleGroup fx:id = "directionalOperator"/>
+									<ToggleGroup fx:id = "direction"/>
+								</fx:define>
+								<RadioButton text = "Prewitt" onAction = "#control" toggleGroup = "$directionalOperator"/>
+								<RadioButton text = "Sobel" onAction = "#control" toggleGroup = "$directionalOperator" selected = "true"/>
+								<RadioButton text = "Kirsh" onAction = "#control" toggleGroup = "$directionalOperator"/>
+								<RadioButton text = "Custom" onAction = "#control" toggleGroup = "$directionalOperator"/>
+								<RadioButton text = "X (horizontal)" onAction = "#control" toggleGroup = "$direction" selected = "true"/>
+								<RadioButton text = "Y (vertical)" onAction = "#control" toggleGroup = "$direction"/>
+								<RadioButton text = "SW (south-west)" onAction = "#control" toggleGroup = "$direction"/>
+								<RadioButton text = "SE (south-east)" onAction = "#control" toggleGroup = "$direction"/>
+								<Button fx:id = "convolution" text = "Apply convolution" onAction = "#control"/>
+							</VBox>
+						</content>
+					</TitledPane>
+					<TitledPane text = "Edge Detectors">
+						<content>
+							<VBox>
+								<Button fx:id = "gradient" text = "Gradient" onAction = "#control"/>
+								<Button fx:id = "laplacian" text = "Laplacian" onAction = "#control"/>
+								<Button fx:id = "laplacianWithSlope" text = "Laplacian (with Slope)" onAction = "#control"/>
+								<Button fx:id = "marrHildreth" text = "Marr-Hildreth" onAction = "#control"/>
+							</VBox>
+						</content>
+					</TitledPane>
+					<!-- More panes here... -->
+				</panes>
+			</Accordion>
+		</VBox>
 	</left>
 	<center>
 		<VBox spacing = "5">
 			<padding>
-				<Insets top = "5" right = "5" bottom = "5" left = "0"/>
+				<Insets top = "5" right = "5" bottom = "5" left = "5"/>
 			</padding>
-			<ListView fx:id = "keys" minWidth = "480"/>
+			<HBox spacing = "5">
+				<Button fx:id = "display" text = "Display" onAction = "#control"/>
+				<Button fx:id = "histogram" text = "Histogram" onAction = "#control"/>
+				<Button fx:id = "remove" text = "Remove" onAction = "#control"/>
+			</HBox>
+			<ListView fx:id = "keys" minWidth = "500"/>
 		</VBox>
 	</center>
 	<right>
-		<VBox spacing = "5">
-			<padding>
-				<Insets top = "5" right = "10" bottom = "5" left = "0"/>
-			</padding>
-			<!-- Operator Parameters -->
-			<HBox alignment = "center_left" spacing = "5">
-				<Label text = "Contrast:"/>
-				<TextField fx:id = "contrastValue" text = "1.0"/>
-			</HBox>
-			<HBox alignment = "center_left" spacing = "5">
-				<Label text = "Scalar:"/>
-				<TextField fx:id = "scalarValue" text = "1.0"/>
-			</HBox>
-			<HBox alignment = "center_left" spacing = "5">
-				<Label text = "Dimension:"/>
-				<TextField fx:id = "dimensionValue" text = "3"/>
-			</HBox>
-			<!-- Sliders -->
-			<HBox alignment = "center" spacing = "5" styleClass = "overlay">
-				<Label text = "Gamma (γ):"/>
-				<Slider fx:id = "gammaValue" min = "0" max = "2" minorTickCount = "4" majorTickUnit = "0.5"/>
-			</HBox>
-			<HBox alignment = "center" spacing = "5" styleClass = "overlay">
-				<Label text = "Threshold (u):"/>
-				<Slider fx:id = "uValue" min = "0" max = "255" minorTickCount = "4" majorTickUnit = "25"/>
-			</HBox>
-			<HBox alignment = "center" spacing = "5" styleClass = "overlay">
-				<Label text = "Lambda (λ):"/>
-				<Slider fx:id = "lambdaValue" min = "0" max = "10" minorTickCount = "4" majorTickUnit = "1"/>
-			</HBox>
-			<HBox alignment = "center" spacing = "5" styleClass = "overlay">
-				<Label text = "Rayleigh (ξ):"/>
-				<Slider fx:id = "rayleighValue" min = "0" max = "10" minorTickCount = "4" majorTickUnit = "1"/>
-			</HBox>
-			<HBox alignment = "center" spacing = "5" styleClass = "overlay">
-				<Label text = "Mean (µ):"/>
-				<Slider fx:id = "meanValue" min = "-1" max = "1" minorTickCount = "4" majorTickUnit = "0.25" value = "0"/>
-			</HBox>
-			<HBox alignment = "center" spacing = "5" styleClass = "overlay">
-				<Label text = "Deviation (σ):"/>
-				<Slider fx:id = "deviationValue" min = "0" max = "1" minorTickCount = "4" majorTickUnit = "0.25" value = "0.25"/>
-			</HBox>
-			<HBox alignment = "center" spacing = "5" styleClass = "overlay">
-				<Label text = "Contamination (%):"/>
-				<Slider fx:id = "contaminationValue" min = "0" max = "100" minorTickCount = "4" majorTickUnit = "10" value = "10"/>
-			</HBox>
-		</VBox>
+		<!-- Components here... -->
 	</right>
 	<bottom>
 		<GridPane>
-			<VBox  GridPane.columnIndex = "0" GridPane.rowIndex = "0" spacing = "5">
-				<padding>
-					<Insets top = "0" right = "5" bottom = "5" left = "5"/>
-				</padding>
-				<CheckBox fx:id = "useConfigForLoad" text = "Use config for load.">
-					<tooltip>
-						<Tooltip text = "For *.raw images, use the pre-configured dimensions."/>
-					</tooltip>
-				</CheckBox>
-				<CheckBox fx:id = "reverseImageOrder" text = "Reverse image order.">
-					<tooltip>
-						<Tooltip text = "Reverses the application order. Useful in non-commutative operations."/>
-					</tooltip>
-				</CheckBox>
-				<CheckBox fx:id = "normalizeHistogram" text = "Normalize histogram.">
-					<tooltip>
-						<Tooltip text = "Normalizes the histogram between 0 and 1. Otherwise just counts the gray-levels."/>
-					</tooltip>
-				</CheckBox>
-				<CheckBox fx:id = "ponderateMedian" text = "Weighted median."></CheckBox>
-			</VBox>
 			<VBox  GridPane.columnIndex = "1" GridPane.rowIndex = "0" spacing = "5">
 				<CheckBox fx:id = "dynamicRange" text = "Dynamic-range compression."></CheckBox>
 				<CheckBox fx:id = "linearCompression" text = "Linear compression."></CheckBox>
 				<CheckBox fx:id = "truncate" text = "Truncate."></CheckBox>
 			</VBox>
-			<VBox  GridPane.columnIndex = "2" GridPane.rowIndex = "0" spacing = "5">
-				<fx:define>
-					<ToggleGroup fx:id = "compressor"/>
-				</fx:define>
-				<RadioButton text = "Dynamic Range" toggleGroup = "$compressor"/>
-				<RadioButton text = "Linear" toggleGroup = "$compressor"/>
-				<RadioButton text = "Truncated" toggleGroup = "$compressor"/>
-				<RadioButton text = "Null" toggleGroup = "$compressor" selected = "true"/>
-			</VBox>
-			<VBox GridPane.columnIndex = "3" GridPane.rowIndex = "0" spacing = "5">
+			<HBox GridPane.columnIndex = "3" GridPane.rowIndex = "0" spacing = "5">
 				<padding>
-					<Insets top = "0" right = "5" bottom = "5" left = "5"/>
+					<Insets top = "5" right = "5" bottom = "5" left = "5"/>
 				</padding>
 				<Label fx:id = "mouseLocation" text = "Location (x, y) = (0, 0)" styleClass = "overlay"/>
 				<Label fx:id = "areaDimension" text = "Area (width, height) = (0, 0)" styleClass = "overlay"/>
 				<Label fx:id = "pixelCount" text = "Pixel Count: 0" styleClass = "overlay"/>
 				<Label fx:id = "grayAverage" text = "Average (R, G, B) = (0.0, 0.0, 0.0)" styleClass = "overlay"/>
-			</VBox>
+			</HBox>
 		</GridPane>
 	</bottom>
 </BorderPane>

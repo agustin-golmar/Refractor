@@ -29,7 +29,7 @@
 			if (states.size() != 2) {
 				ImageTool.popup(AlertType.WARNING, "Warning!", new StringBuilder()
 						.append("You must select exactly 2 images to apply the '")
-						.append(action)
+						.append(this.action)
 						.append("' action.")
 						.toString());
 				return result;

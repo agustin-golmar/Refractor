@@ -31,7 +31,7 @@ public abstract class FilterHandler implements Handler {
         if (states.size()!=1){
         	ImageTool.popup(AlertType.WARNING, "Warning!", new StringBuilder()
 					.append("You must select only 1 image to apply the '")
-					.append(action)
+					.append(this.action)
 					.append("' action.")
 					.toString());
         	return result;

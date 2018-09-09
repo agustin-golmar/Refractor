@@ -1,6 +1,6 @@
 [![...](res/readme-header.png)](https://github.com/agustin-golmar/Refractor)
 [![...](https://img.shields.io/badge/Java-v10.0-orange.svg)](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
-[![...](https://img.shields.io/badge/release-v0.1-blue.svg)](https://github.com/agustin-golmar/Refractor/releases)
+[![...](https://img.shields.io/badge/release-v1.9-blue.svg)](https://github.com/agustin-golmar/Refractor/releases)
 [![...](https://www.travis-ci.com/agustin-golmar/Refractor.svg?branch=master)](https://www.travis-ci.com/agustin-golmar/Refractor)
 
 # Refractor
@@ -13,7 +13,7 @@ Currently, the following features are provided:
 
 * Support for open and save images in whatever format you like: _BMP_, _GIF_, _JPG_, _PGM_, _PNG_, _PPM_, _RAW_, _TIFF_, and _WBMP_.
 * Basic unary operations:
-	* __Cut__: selects an area with the mouse and duplicates the selection.
+	* __Copy__: selects an area with the mouse and duplicates the selection.
 	* __Scalar Product__: multiplies an image by a scalar value. Then apply a compressor.
 	* __Grayscale__: it takes the bright-component of the _HSB/HSV_ model and make a grayscale of the image.
 	* __Negative__: the complement of an image.

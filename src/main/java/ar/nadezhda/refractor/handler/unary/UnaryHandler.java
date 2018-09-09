@@ -40,7 +40,7 @@ public abstract class UnaryHandler implements Handler {
         if (states.size()!=1){
         	ImageTool.popup(AlertType.WARNING, "Warning!", new StringBuilder()
 					.append("You must select only 1 image to apply the '")
-					.append(action)
+					.append(this.action)
 					.append("' action.")
 					.toString());
         	return result;
@@ -56,33 +56,33 @@ public abstract class UnaryHandler implements Handler {
 
         // Validate required parameters:
         try {
-	        if (action.equals("scalarProd")) {
+	        if (this.action.equals("scalarProd")) {
 	        	scalar = Double.parseDouble(((TextField) node.getScene().lookup("#scalarValue")).getText());
 	        }
-	        else if (action.equals("power")) {
+	        else if (this.action.equals("power")) {
 	        	scalar = ((Slider) node.getScene().lookup("#gammaValue")).getValue();
 	        }
-	        else if (action.equals("threshold")) {
+	        else if (this.action.equals("threshold")) {
 	        	scalar = ((Slider) node.getScene().lookup("#uValue")).getValue();
 	        }
-	        else if (action.equals("exponentialNoise")) {
+	        else if (this.action.equals("exponentialNoise")) {
 	        	scalar = ((Slider) node.getScene().lookup("#lambdaValue")).getValue();
 	        }
-	        else if (action.equals("rayleighNoise")) {
+	        else if (this.action.equals("rayleighNoise")) {
 	        	scalar = ((Slider) node.getScene().lookup("#rayleighValue")).getValue();
 	        }
-	        else if (action.equals("gaussianNoise")) {
+	        else if (this.action.equals("gaussianNoise")) {
 	        	scalar = ((Slider) node.getScene().lookup("#deviationValue")).getValue();
 	        	mean = ((Slider) node.getScene().lookup("#meanValue")).getValue();
 	        }
-	        else if (action.equals("saltAndPepper")) {
+	        else if (this.action.equals("saltAndPepper")) {
 	        	scalar = 0.01 * ((Slider) node.getScene().lookup("#contaminationValue")).getValue();
 	        }
-	        else if (action.equals("negative")) {
+	        else if (this.action.equals("negative")) {
 	        	// Negative doesn't need parameters...
 	        }
 	        else {
-	        	ImageTool.popup(AlertType.ERROR, "Error!", "Unknown action: " + action + ".");
+	        	ImageTool.popup(AlertType.ERROR, "Error!", "Unknown action: " + this.action + ".");
 	        	return result;
 	        }
         }

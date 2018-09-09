@@ -3,7 +3,7 @@
 
 	import ar.nadezhda.refractor.Main;
 	import ar.nadezhda.refractor.interfaces.Compressor;
-	import javafx.scene.control.RadioButton;
+	import javafx.scene.control.RadioMenuItem;
 	import javafx.scene.control.ToggleGroup;
 	import java.util.Map;
 	import javax.inject.Inject;
@@ -34,11 +34,11 @@
 		public double [][][] compress(final double [][][] data) {
 			final Map<String, Object> namespace = Main.context
 					.getBean("namespace", Map.class);
-			final RadioButton button = (RadioButton) ((ToggleGroup) namespace
+			final RadioMenuItem item = (RadioMenuItem) ((ToggleGroup) namespace
 					.get("compressor"))
 					.getSelectedToggle();
-			switch (button.getText()) {
-				case "Dynamic Range":
+			switch (item.getText()) {
+				case "Dynamic-range":
 					return dynamicRange.compress(data);
 				case "Linear":
 					return linear.compress(data);

@@ -1,6 +1,7 @@
 
 	package ar.nadezhda.refractor.config;
 
+	import ar.nadezhda.refractor.Main;
 	import ar.nadezhda.refractor.format.*;
 	import ar.nadezhda.refractor.handler.*;
 	import ar.nadezhda.refractor.handler.binary.*;
@@ -51,6 +52,7 @@
 			final FXMLLoader loader = new FXMLLoader(layout.getURL());
 			final Parent parent = loader.load();
 			namespace = loader.getNamespace();
+			Main.namespace = namespace;
 			return parent;
 		}
 
@@ -64,6 +66,7 @@
 			// Se pueden cargar por reflection?
 			final Map<String, Handler> router = new HashMap<>();
 			router.put("open", new OpenHandler());
+			router.put("openRaw", new OpenRAWHandler());
 			router.put("save", new SaveHandler());
 			router.put("copy", new CopyHandler());
 			router.put("remove", new RemoveHandler());

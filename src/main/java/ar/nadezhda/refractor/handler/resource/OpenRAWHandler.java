@@ -20,18 +20,17 @@
 	import javafx.stage.FileChooser;
 	import javafx.stage.FileChooser.ExtensionFilter;
 
-	public class OpenHandler implements Handler {
+	public class OpenRAWHandler implements Handler {
 
 		protected final FileChooser chooser;
 
-		public OpenHandler() {
+		public OpenRAWHandler() {
 			this.chooser = new FileChooser();
 			this.chooser.setInitialDirectory(new File("."));
 			this.chooser.setTitle("Refractor: Open an image...");
+			// Only RAW filter...
 			this.chooser.getExtensionFilters()
-				.addAll((ExtensionFilter []) Main.context.getBean("filters"));
-			// Remove RAW filter...
-			this.chooser.getExtensionFilters().remove(7);
+				.add(((ExtensionFilter []) Main.context.getBean("filters"))[7]);
 		}
 
 		@Override
@@ -49,7 +48,7 @@
 										"The image is already in the workspace.");
 								}
 								else {
-									return workspace.loadImage(path);
+									return workspace.loadImageUsingConfig(path);
 								}
 							}
 							catch (final IOException exception) {

@@ -6,7 +6,10 @@
 	import javafx.application.Application;
 	import javafx.scene.Scene;
 	import javafx.stage.Stage;
-	import org.springframework.beans.factory.UnsatisfiedDependencyException;
+
+import java.util.Map;
+
+import org.springframework.beans.factory.UnsatisfiedDependencyException;
 	import org.springframework.boot.SpringApplication;
 	import org.springframework.boot.autoconfigure.SpringBootApplication;
 	import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -22,6 +25,7 @@
 		public static ConfigurableApplicationContext context;
 		public static RefractorProperties config;
 		public static Stage stage;
+		public static Map<String, Object> namespace;
 
 		public static void main(final String ... arguments) {
 			try {

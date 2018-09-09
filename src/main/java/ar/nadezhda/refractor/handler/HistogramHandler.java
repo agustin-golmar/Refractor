@@ -1,6 +1,7 @@
 
 	package ar.nadezhda.refractor.handler;
 
+	import ar.nadezhda.refractor.Main;
 	import ar.nadezhda.refractor.core.Image;
 	import ar.nadezhda.refractor.core.ImageState;
 	import ar.nadezhda.refractor.core.ImageTool;
@@ -9,21 +10,19 @@
 	import java.util.List;
 	import java.util.Map;
 	import javafx.event.ActionEvent;
-	import javafx.scene.Node;
 	import javafx.scene.chart.BarChart;
 	import javafx.scene.chart.CategoryAxis;
 	import javafx.scene.chart.NumberAxis;
 	import javafx.scene.chart.XYChart.Data;
 	import javafx.scene.chart.XYChart.Series;
-	import javafx.scene.control.CheckBox;
+	import javafx.scene.control.CheckMenuItem;
 
 	public class HistogramHandler implements Handler {
 
 		@Override
 		public Map<String, Image> handle(final List<ImageState> states, final ActionEvent action) {
-			final Node node = (Node) action.getSource();
-			final CheckBox normalize = ((CheckBox) node.getScene()
-					.lookup("#normalizeHistogram"));
+			final var normalize = (CheckMenuItem) Main.namespace
+					.get("normalizeHistogram");
 			states.stream()
 				.forEachOrdered(state -> {
 					final Image image = state.getImage();

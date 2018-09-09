@@ -30,7 +30,7 @@
 		implements Controller, Initializable {
 
 		@FXML protected ListView<String> keys;
-		@FXML protected CheckBox reverseImageOrder;
+		@FXML protected CheckMenuItem reverseImageOrder;
 		@FXML protected Label mouseLocation;
 		@FXML protected Label areaDimension;
 		@FXML protected Label pixelCount;
