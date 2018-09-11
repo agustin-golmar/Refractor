@@ -43,4 +43,74 @@
 				final double [][][] dx, final double [][][] dy) {
 			return Matrix.filter(dx, (dx_, c, w, h) -> Math.hypot(dx[c][w][h], dy[c][w][h]));
 		}
+
+		public static double [][][] hRoots(
+				final double [][][] space, final double slope) {
+			final var width = space[0].length;
+			return Matrix.filter(space, (space_, c, w, h) -> {
+				final var k = space[c][w][h];
+				final var k1 = w + 1 < width? space[c][w + 1][h] : 0.0;
+				if (signChange(k, k1)) {
+					return slope < Math.abs(k) + Math.abs(k1)? 255.0 : 0.0;
+				}
+				else if (k1 == 0.0) {
+					final var k2 = w + 2 < width? space[c][w + 2][h] : 0.0;
+					if (signChange(k, k2)) {
+						return slope < Math.abs(k) + Math.abs(k2)? 255.0 : 0.0;
+					}
+					else return 0.0;
+				}
+				else return 0.0;
+			});
+		}
+
+		public static double [][][] vRoots(
+				final double [][][] space, final double slope) {
+			final var height = space[0][0].length;
+			return Matrix.filter(space, (space_, c, w, h) -> {
+				final var k = space[c][w][h];
+				final var k1 = h + 1 < height? space[c][w][h + 1] : 0.0;
+				if (signChange(k, k1)) {
+					return slope < Math.abs(k) + Math.abs(k1)? 255.0 : 0.0;
+				}
+				else if (k1 == 0.0) {
+					final var k2 = h + 2 < height? space[c][w][h + 2] : 0.0;
+					if (signChange(k, k2)) {
+						return slope < Math.abs(k) + Math.abs(k2)? 255.0 : 0.0;
+					}
+					else return 0.0;
+				}
+				else return 0.0;
+			});
+		}
+
+		public static double [][][] roots(
+				final double [][][] space, final double slope) {
+			final var hRoots = Matrix.hRoots(space, slope);
+			final var vRoots = Matrix.vRoots(space, slope);
+			return Matrix.filter(space, (space_, c, w, h) -> {
+				if (0.0 < hRoots[c][w][h]) return 255.0;
+				if (0.0 < vRoots[c][w][h]) return 255.0;
+				return 0.0;
+			});
+		}
+
+		public static boolean signChange(final double x, final double y) {
+			return (Math.signum(x) == +1.0 && Math.signum(y) == -1.0)
+				|| (Math.signum(x) == -1.0 && Math.signum(y) == +1.0);
+		}
+
+		public static double [][] marrHildreth(final int dim, final double σ) {
+			final var filter = new double [dim][dim];
+			final var S2PI = Math.sqrt(2.0 * Math.PI);
+			final var σ2 = σ*σ;
+			for (int i = 0; i < dim; ++i)
+				for (int j = 0; j < dim; ++j) {
+					final var x = i - dim/2;
+					final var y = j - dim/2;
+					final var factor = (x*x + y*y) / σ2;
+					filter[i][j] = (factor - 2) * Math.exp(-factor/2.0) / (S2PI*σ*σ2);
+				}
+			return filter;
+		}
 	}

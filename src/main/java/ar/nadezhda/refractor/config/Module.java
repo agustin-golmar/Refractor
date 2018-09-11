@@ -94,6 +94,8 @@
 			router.put("highpassFilter", new HighpassFilterHandler());
 			router.put("gradient", new GradientEdgeDetectorHandler());
 			router.put("convolution", new ConvolutionHandler());
+			router.put("laplacian", new LaplacianHandler());
+			router.put("marrHildreth", new MarrHildrethHandler());
 			return router;
 		}
 

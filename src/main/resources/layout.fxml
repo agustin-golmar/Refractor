@@ -163,6 +163,7 @@
 								<RadioButton text = "Prewitt" onAction = "#control" toggleGroup = "$directionalOperator"/>
 								<RadioButton text = "Sobel" onAction = "#control" toggleGroup = "$directionalOperator" selected = "true"/>
 								<RadioButton text = "Kirsh" onAction = "#control" toggleGroup = "$directionalOperator"/>
+								<RadioButton text = "Laplace" onAction = "#control" toggleGroup = "$directionalOperator"/>
 								<RadioButton text = "Custom" onAction = "#control" toggleGroup = "$directionalOperator"/>
 								<RadioButton text = "X (horizontal)" onAction = "#control" toggleGroup = "$direction" selected = "true"/>
 								<RadioButton text = "Y (vertical)" onAction = "#control" toggleGroup = "$direction"/>
@@ -176,9 +177,20 @@
 						<content>
 							<VBox>
 								<Button fx:id = "gradient" text = "Gradient" onAction = "#control"/>
-								<Button fx:id = "laplacian" text = "Laplacian" onAction = "#control"/>
-								<Button fx:id = "laplacianWithSlope" text = "Laplacian (with Slope)" onAction = "#control"/>
+								<Button fx:id = "laplacian" text = "Laplacian (with Slope)" onAction = "#control"/>
 								<Button fx:id = "marrHildreth" text = "Marr-Hildreth" onAction = "#control"/>
+								<HBox spacing = "5" alignment = "center">
+									<Label text = "Slope (s):"/>
+									<Slider fx:id = "slopeValue" min = "0" max = "2048" minorTickCount = "4" majorTickUnit = "128" value = "0"/>
+								</HBox>
+								<HBox spacing = "5" alignment = "center_left">
+									<Label text = "Dimension:"/>
+									<TextField fx:id = "mhDimValue" text = "7"/>
+								</HBox>
+								<HBox spacing = "5" alignment = "center">
+									<Label text = "Deviation (σ):"/>
+									<Slider fx:id = "mhDevValue" min = "0" max = "3.0" minorTickCount = "4" majorTickUnit = "0.5" value = "1"/>
+								</HBox>
 							</VBox>
 						</content>
 					</TitledPane>

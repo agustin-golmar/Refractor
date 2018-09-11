@@ -6,8 +6,8 @@
 	import ar.nadezhda.refractor.core.ImageState;
 	import ar.nadezhda.refractor.core.ImageTool;
 	import ar.nadezhda.refractor.core.Workspace;
-import ar.nadezhda.refractor.handler.compression.CompressorService;
-import ar.nadezhda.refractor.interfaces.Controller;
+	import ar.nadezhda.refractor.handler.compression.CompressorService;
+	import ar.nadezhda.refractor.interfaces.Controller;
 	import ar.nadezhda.refractor.interfaces.Handler;
 	import java.net.URL;
 	import java.text.DecimalFormat;
@@ -36,6 +36,8 @@ import ar.nadezhda.refractor.interfaces.Controller;
 		@FXML protected Label areaDimension;
 		@FXML protected Label pixelCount;
 		@FXML protected Label grayAverage;
+		@FXML protected Slider mhDevValue;
+		@FXML protected TextField mhDimValue;
 
 		protected final Map<String, Handler> router;
 		protected final Workspace workspace;
@@ -74,6 +76,15 @@ import ar.nadezhda.refractor.interfaces.Controller;
 		@Override
 		public void initialize(final URL url, final ResourceBundle resources) {
 			keys.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+			mhDimValue.textProperty().addListener((value, oldValue, newValue) -> {
+				try {
+					final var dim = Integer.parseInt(newValue);
+					mhDevValue.setMax(dim/7.0);
+				}
+				catch (final NumberFormatException spurious) {
+					mhDevValue.setMax(1.0);
+				}
+			});
 		}
 
 		protected ObservableList<String> getSelectedKeys() {

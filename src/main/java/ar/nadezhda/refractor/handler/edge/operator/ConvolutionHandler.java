@@ -66,6 +66,8 @@
 					return new SobelOperator();
 				case "Kirsh":
 					return new KirshOperator();
+				case "Laplace":
+					return new LaplaceOperator();
 				case "Custom":
 					return new CustomOperator();
 				default: return null;
