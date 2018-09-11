@@ -11,10 +11,6 @@
 		-fx-grid-lines-visible : false;*/
 	}
 
-	/* Layout Classes */
-	.h-box {}
-	.v-box {}
-
 	/* GUI Components */
 	.button, .button:focused, .button:hover, .button:pressed {
 		/*-fx-background-color : rgba(35, 35, 35, 1.0);
@@ -53,33 +49,29 @@
 		-fx-background-color : rgba(255, 200, 15, 1.0);
 	}
 
-	.check-box {
-
+	.button, .text-field {
+		-fx-pref-width : 100px;
 	}
 
-	.label {
-		/*-fx-text-fill : white;
-		-fx-text-inner-color : white;*/
+	.menu-item {
+		-fx-pref-width : 200px;
 	}
 
-	.list-cell {}
-	.list-view {}
+	.radio-button {
+		-fx-pref-width : 150px;
+	}
 
 	.slider {
-		-fx-pref-width : 250px;
+		-fx-pref-width : 300px;
 		-fx-show-tick-labels : true;
 		-fx-show-tick-marks : true;
 	}
 
-	.slider .axis {
-		/*-fx-tick-label-fill : white;*/
+	/* Specific CSS */
+	#weightMedianFilter, #convolution {
+		-fx-pref-width : 205px;
 	}
 
-	/* Custom Classes */
-	.check-box, .overlay {
-		/*-fx-background-color : rgba(35, 35, 35, 1.0);
-		-fx-background-radius : 5px;
-		-fx-padding : 5px;
-		-fx-text-fill : white;
-		-fx-text-inner-color : white;*/
+	#convolution {
+		-fx-pref-width : 310px;
 	}

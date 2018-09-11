@@ -35,6 +35,7 @@
 								<ToggleGroup fx:id = "compressor"/>
 							</fx:define>
 							<RadioMenuItem text = "Automatic" onAction = "#control" toggleGroup = "$compressor" selected = "true"/>
+							<SeparatorMenuItem/>
 							<RadioMenuItem text = "Null" onAction = "#control" toggleGroup = "$compressor"/>
 							<RadioMenuItem text = "Truncated" onAction = "#control" toggleGroup = "$compressor"/>
 							<RadioMenuItem text = "Linear" onAction = "#control" toggleGroup = "$compressor"/>
@@ -54,144 +55,130 @@
 				<panes>
 					<TitledPane text = "Unary Operations">
 						<content>
-							<VBox>
-								<Button fx:id = "copy" text = "Copy" onAction = "#control"/>
-								<Button fx:id = "equalizer" text = "Equalize" onAction = "#control"/>
-								<Button fx:id = "grayscale" text = "Grayscale" onAction = "#control"/>
-								<Button fx:id = "increaseContrast" text = "Contrast" onAction = "#control"/>
-								<Button fx:id = "negative" text = "Negative" onAction = "#control"/>
-								<Button fx:id = "power" text = "Power (γ)" onAction = "#control"/>
-								<Button fx:id = "scalarProd" text = "Scalar Product" onAction = "#control"/>
-								<HBox spacing = "5" alignment = "center_left">
-									<Label text = "Contrast:"/>
-									<TextField fx:id = "contrastValue" text = "1.0"/>
-								</HBox>
-								<HBox spacing = "5" alignment = "center_left">
-									<Label text = "Scalar:"/>
-									<TextField fx:id = "scalarValue" text = "1.0"/>
-								</HBox>
-								<HBox spacing = "5" alignment = "center" styleClass = "overlay">
-									<Label text = "Gamma (γ):"/>
-									<Slider fx:id = "gammaValue" min = "0" max = "2" minorTickCount = "4" majorTickUnit = "0.5"/>
-								</HBox>
-							</VBox>
+							<GridPane alignment = "center_left" hgap = "5" vgap = "5">
+								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "0" fx:id = "copy" text = "Copy" onAction = "#control"/>
+								<Button GridPane.columnIndex = "1" GridPane.rowIndex = "0" fx:id = "equalizer" text = "Equalize" onAction = "#control"/>
+								<Button GridPane.columnIndex = "2" GridPane.rowIndex = "0" fx:id = "grayscale" text = "Grayscale" onAction = "#control"/>
+								<Button GridPane.columnIndex = "3" GridPane.rowIndex = "0" fx:id = "negative" text = "Negative" onAction = "#control"/>
+								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "1" fx:id = "increaseContrast" text = "Contrast" onAction = "#control"/>
+								<TextField GridPane.columnIndex = "1" GridPane.rowIndex = "1" fx:id = "contrastValue" text = "1.0"/>
+								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "2" fx:id = "scalarProd" text = "Scalar Product" onAction = "#control"/>
+								<TextField GridPane.columnIndex = "1" GridPane.rowIndex = "2" fx:id = "scalarValue" text = "1.0"/>
+								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "3" fx:id = "power" text = "Power" onAction = "#control"/>
+								<Slider GridPane.columnIndex = "1" GridPane.rowIndex = "3" GridPane.columnSpan = "3"
+									fx:id = "gammaValue" min = "0" max = "2" minorTickCount = "4" majorTickUnit = "0.5"/>
+								<Label GridPane.columnIndex = "4" GridPane.rowIndex = "3" GridPane.halignment = "center" text = "(γ)"/>
+							</GridPane>
 						</content>
 					</TitledPane>
 					<TitledPane text = "Binary Operations">
 						<content>
-							<VBox>
-								<Button fx:id = "add" text = "+ (add)" onAction = "#control"/>
-								<Button fx:id = "product" text = "* (product)" onAction = "#control"/>
-								<Button fx:id = "sub" text = "- (sub)" onAction = "#control"/>
-							</VBox>
+							<GridPane alignment = "center_left" hgap = "5" vgap = "5">
+								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "0" fx:id = "add" text = "+ (add)" onAction = "#control"/>
+								<Button GridPane.columnIndex = "1" GridPane.rowIndex = "0" fx:id = "sub" text = "- (sub)" onAction = "#control"/>
+								<Button GridPane.columnIndex = "2" GridPane.rowIndex = "0" fx:id = "product" text = "* (product)" onAction = "#control"/>
+							</GridPane>
 						</content>
 					</TitledPane>
 					<TitledPane text = "Thresholding">
 						<content>
-							<VBox>
-								<Button fx:id = "threshold" text = "Manual (u)" onAction = "#control"/>
-								<Button fx:id = "globalThreshold" text = "Global (u)" onAction = "#control"/>
-								<Button fx:id = "otsuThreshold" text = "Otsu's Method" onAction = "#control"/>
-								<HBox spacing = "5" alignment = "center" styleClass = "overlay">
-									<Label text = "Threshold (u):"/>
-									<Slider fx:id = "uValue" min = "0" max = "255" minorTickCount = "4" majorTickUnit = "25"/>
-								</HBox>
-							</VBox>
+							<GridPane alignment = "center_left" hgap = "5" vgap = "5">
+								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "0" fx:id = "threshold" text = "Manual" onAction = "#control"/>
+								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "1" fx:id = "globalThreshold" text = "Global" onAction = "#control"/>
+								<Slider GridPane.columnIndex = "1" GridPane.rowIndex = "0" GridPane.columnSpan = "3" GridPane.rowSpan = "2"
+									fx:id = "uValue" min = "0" max = "256" minorTickCount = "4" majorTickUnit = "32"/>
+								<Label GridPane.columnIndex = "4" GridPane.rowIndex = "0" GridPane.rowSpan = "2" GridPane.halignment = "center" text = "(u)"/>
+								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "2" fx:id = "otsuThreshold" text = "Otsu's Method" onAction = "#control"/>
+							</GridPane>
 						</content>
 					</TitledPane>
 					<TitledPane text = "Noise Generators">
 						<content>
-							<VBox>
-								<Button fx:id = "exponentialNoise" text = "Exp. Noise (λ)" onAction = "#control"/>
-								<Button fx:id = "gaussianNoise" text = "Gaussian Noise (µ, σ)" onAction = "#control"/>
-								<Button fx:id = "rayleighNoise" text = "Rayleigh Noise (ξ)" onAction = "#control"/>
-								<Button fx:id = "saltAndPepper" text = "Salt &amp; Pepper" onAction = "#control"/>
-								<HBox spacing = "5" alignment = "center" styleClass = "overlay">
-									<Label text = "Lambda (λ):"/>
-									<Slider fx:id = "lambdaValue" min = "0" max = "10" minorTickCount = "4" majorTickUnit = "1"/>
-								</HBox>
-								<HBox spacing = "5" alignment = "center" styleClass = "overlay">
-									<Label text = "Rayleigh (ξ):"/>
-									<Slider fx:id = "rayleighValue" min = "0" max = "10" minorTickCount = "4" majorTickUnit = "1"/>
-								</HBox>
-								<HBox spacing = "5" alignment = "center" styleClass = "overlay">
-									<Label text = "Mean (µ):"/>
-									<Slider fx:id = "meanValue" min = "-1" max = "1" minorTickCount = "4" majorTickUnit = "0.25" value = "0"/>
-								</HBox>
-								<HBox spacing = "5" alignment = "center" styleClass = "overlay">
-									<Label text = "Deviation (σ):"/>
-									<Slider fx:id = "deviationValue" min = "0" max = "1" minorTickCount = "4" majorTickUnit = "0.25" value = "0.25"/>
-								</HBox>
-								<HBox spacing = "5" alignment = "center" styleClass = "overlay">
-									<Label text = "Contamination (%):"/>
-									<Slider fx:id = "contaminationValue" min = "0" max = "100" minorTickCount = "4" majorTickUnit = "10" value = "10"/>
-								</HBox>
-							</VBox>
+							<GridPane alignment = "center_left" hgap = "5" vgap = "5">
+								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "0" fx:id = "exponentialNoise" text = "Exponential" onAction = "#control"/>
+								<Slider GridPane.columnIndex = "1" GridPane.rowIndex = "0"
+									fx:id = "lambdaValue" min = "0" max = "10" minorTickCount = "4" majorTickUnit = "1"/>
+								<Label GridPane.columnIndex = "2" GridPane.rowIndex = "0" GridPane.halignment = "center" text = "(λ)"/>
+								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "1" fx:id = "rayleighNoise" text = "Rayleigh" onAction = "#control"/>
+								<Slider GridPane.columnIndex = "1" GridPane.rowIndex = "1"
+									fx:id = "rayleighValue" min = "0" max = "10" minorTickCount = "4" majorTickUnit = "1"/>
+								<Label GridPane.columnIndex = "2" GridPane.rowIndex = "1" GridPane.halignment = "center" text = "(ξ)"/>
+								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "2" fx:id = "saltAndPepper" text = "Salt &amp; Pepper" onAction = "#control"/>
+								<Slider GridPane.columnIndex = "1" GridPane.rowIndex = "2"
+									fx:id = "contaminationValue" min = "0" max = "100" minorTickCount = "4" majorTickUnit = "10" value = "10"/>
+								<Label GridPane.columnIndex = "2" GridPane.rowIndex = "2" GridPane.halignment = "center" text = "(%)"/>
+								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "3"
+									fx:id = "gaussianNoise" text = "Gaussian" onAction = "#control"/>
+								<Slider GridPane.columnIndex = "1" GridPane.rowIndex = "3"
+									fx:id = "meanValue" min = "-1" max = "1" minorTickCount = "4" majorTickUnit = "0.25" value = "0"/>
+								<Slider GridPane.columnIndex = "1" GridPane.rowIndex = "4"
+									fx:id = "deviationValue" min = "0" max = "5" minorTickCount = "4" majorTickUnit = "0.5" value = "0.25"/>
+								<Label GridPane.columnIndex = "2" GridPane.rowIndex = "3" GridPane.halignment = "center" text = "(µ)"/>
+								<Label GridPane.columnIndex = "2" GridPane.rowIndex = "4" GridPane.halignment = "center" text = "(σ)"/>
+							</GridPane>
 						</content>
 					</TitledPane>
 					<TitledPane text = "Filters">
 						<content>
-							<VBox>
-								<Button fx:id = "gaussFilter" text = "Gauss Filter" onAction = "#control"/>
-								<Button fx:id = "highpassFilter" text = "Highpass Filter" onAction = "#control"/>
-								<Button fx:id = "meanFilter" text = "Mean Filter" onAction = "#control"/>
-								<Button fx:id = "medianFilter" text = "Median Filter" onAction = "#control"/>
-								<Button fx:id = "weightMedianFilter" text = "Weighted Median Filter" onAction = "#control"/>
-								<HBox spacing = "5" alignment = "center_left">
-									<Label text = "Dimension:"/>
-									<TextField fx:id = "dimensionValue" text = "3"/>
-								</HBox>
-							</VBox>
+							<GridPane alignment = "center_left" hgap = "5" vgap = "5">
+								<Label GridPane.columnIndex = "0" GridPane.rowIndex = "0" GridPane.halignment = "right" text = "Dimension:"/>
+								<TextField GridPane.columnIndex = "1" GridPane.rowIndex = "0" fx:id = "dimensionValue" text = "3"/>
+								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "1" fx:id = "gaussFilter" text = "Gaussian" onAction = "#control"/>
+								<Button GridPane.columnIndex = "1" GridPane.rowIndex = "1" fx:id = "highpassFilter" text = "Highpass" onAction = "#control"/>
+								<Button GridPane.columnIndex = "2" GridPane.rowIndex = "1" fx:id = "meanFilter" text = "Mean" onAction = "#control"/>
+								<Button GridPane.columnIndex = "3" GridPane.rowIndex = "1" fx:id = "medianFilter" text = "Median" onAction = "#control"/>
+								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "2" GridPane.columnSpan = "2"
+									fx:id = "weightMedianFilter" text = "Weighted Median (d = 3)" onAction = "#control"/>
+							</GridPane>
 						</content>
 					</TitledPane>
 					<TitledPane text = "Advanced Filtering/Diffusion">
 						<content>
-							<VBox>
-								<Button fx:id = "anisotropic" text = "Anisotropic" onAction = "#control"/>
-								<Button fx:id = "bilinear" text = "Bilinear" onAction = "#control"/>
-								<Button fx:id = "isotropic" text = "Isotropic" onAction = "#control"/>
-							</VBox>
+							<GridPane alignment = "center_left" hgap = "5" vgap = "5">
+								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "0" fx:id = "isotropic" text = "Isotropic" onAction = "#control"/>
+								<Button GridPane.columnIndex = "1" GridPane.rowIndex = "0" fx:id = "bilinear" text = "Bilinear" onAction = "#control"/>
+								<Button GridPane.columnIndex = "2" GridPane.rowIndex = "0" fx:id = "anisotropic" text = "Anisotropic" onAction = "#control"/>
+							</GridPane>
 						</content>
 					</TitledPane>
 					<TitledPane text = "Directional Operators">
 						<content>
-							<VBox>
+							<GridPane alignment = "center_left" hgap = "5" vgap = "5">
 								<fx:define>
 									<ToggleGroup fx:id = "directionalOperator"/>
 									<ToggleGroup fx:id = "direction"/>
 								</fx:define>
-								<RadioButton text = "Prewitt" onAction = "#control" toggleGroup = "$directionalOperator"/>
-								<RadioButton text = "Sobel" onAction = "#control" toggleGroup = "$directionalOperator" selected = "true"/>
-								<RadioButton text = "Kirsh" onAction = "#control" toggleGroup = "$directionalOperator"/>
-								<RadioButton text = "Laplace" onAction = "#control" toggleGroup = "$directionalOperator"/>
-								<RadioButton text = "Custom" onAction = "#control" toggleGroup = "$directionalOperator"/>
-								<RadioButton text = "X (horizontal)" onAction = "#control" toggleGroup = "$direction" selected = "true"/>
-								<RadioButton text = "Y (vertical)" onAction = "#control" toggleGroup = "$direction"/>
-								<RadioButton text = "SW (south-west)" onAction = "#control" toggleGroup = "$direction"/>
-								<RadioButton text = "SE (south-east)" onAction = "#control" toggleGroup = "$direction"/>
-								<Button fx:id = "convolution" text = "Apply convolution" onAction = "#control"/>
-							</VBox>
+								<RadioButton GridPane.columnIndex = "0" GridPane.rowIndex = "0" text = "Prewitt" onAction = "#control" toggleGroup = "$directionalOperator"/>
+								<RadioButton GridPane.columnIndex = "0" GridPane.rowIndex = "1"
+									text = "Sobel" onAction = "#control" toggleGroup = "$directionalOperator" selected = "true"/>
+								<RadioButton GridPane.columnIndex = "0" GridPane.rowIndex = "2" text = "Kirsh" onAction = "#control" toggleGroup = "$directionalOperator"/>
+								<RadioButton GridPane.columnIndex = "0" GridPane.rowIndex = "3" text = "Laplace" onAction = "#control" toggleGroup = "$directionalOperator"/>
+								<RadioButton GridPane.columnIndex = "0" GridPane.rowIndex = "4" text = "Custom" onAction = "#control" toggleGroup = "$directionalOperator"/>
+								<RadioButton GridPane.columnIndex = "1" GridPane.rowIndex = "0"
+									text = "X (horizontal)" onAction = "#control" toggleGroup = "$direction" selected = "true"/>
+								<RadioButton GridPane.columnIndex = "1" GridPane.rowIndex = "1" text = "Y (vertical)" onAction = "#control" toggleGroup = "$direction"/>
+								<RadioButton GridPane.columnIndex = "1" GridPane.rowIndex = "2" text = "SW (south-west)" onAction = "#control" toggleGroup = "$direction"/>
+								<RadioButton GridPane.columnIndex = "1" GridPane.rowIndex = "3" text = "SE (south-east)" onAction = "#control" toggleGroup = "$direction"/>
+								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "5" GridPane.columnSpan = "2"
+									fx:id = "convolution" text = "Apply convolution" onAction = "#control"/>
+							</GridPane>
 						</content>
 					</TitledPane>
 					<TitledPane text = "Edge Detectors">
 						<content>
-							<VBox>
-								<Button fx:id = "gradient" text = "Gradient" onAction = "#control"/>
-								<Button fx:id = "laplacian" text = "Laplacian (with Slope)" onAction = "#control"/>
-								<Button fx:id = "marrHildreth" text = "Marr-Hildreth" onAction = "#control"/>
-								<HBox spacing = "5" alignment = "center">
-									<Label text = "Slope (s):"/>
-									<Slider fx:id = "slopeValue" min = "0" max = "2048" minorTickCount = "4" majorTickUnit = "128" value = "0"/>
-								</HBox>
-								<HBox spacing = "5" alignment = "center_left">
-									<Label text = "Dimension:"/>
-									<TextField fx:id = "mhDimValue" text = "7"/>
-								</HBox>
-								<HBox spacing = "5" alignment = "center">
-									<Label text = "Deviation (σ):"/>
-									<Slider fx:id = "mhDevValue" min = "0" max = "3.0" minorTickCount = "4" majorTickUnit = "0.5" value = "1"/>
-								</HBox>
-							</VBox>
+							<GridPane alignment = "center_left" hgap = "5" vgap = "5">
+								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "0" fx:id = "gradient" text = "Gradient" onAction = "#control"/>
+								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "1" fx:id = "laplacian" text = "Laplacian" onAction = "#control"/>
+								<Slider GridPane.columnIndex = "1" GridPane.rowIndex = "1"
+									fx:id = "slopeValue" min = "0" max = "2048" minorTickCount = "4" majorTickUnit = "128" value = "0"/>
+								<Label GridPane.columnIndex = "2" GridPane.rowIndex = "1" GridPane.halignment = "center" text = "(slope)"/>
+								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "2" fx:id = "marrHildreth" text = "Marr-Hildreth" onAction = "#control"/>
+								<Slider GridPane.columnIndex = "1" GridPane.rowIndex = "2"
+									fx:id = "mhDevValue" min = "0" max = "3.0" minorTickCount = "4" majorTickUnit = "0.5" value = "1"/>
+								<Label GridPane.columnIndex = "2" GridPane.rowIndex = "2" GridPane.halignment = "center" text = "(σ)"/>
+								<Label GridPane.columnIndex = "0" GridPane.rowIndex = "3" GridPane.halignment = "right" text = "Dimension:"/>
+								<TextField GridPane.columnIndex = "1" GridPane.rowIndex = "3" fx:id = "mhDimValue" text = "7"/>
+							</GridPane>
 						</content>
 					</TitledPane>
 					<!-- More panes here... -->
@@ -220,10 +207,10 @@
 			<padding>
 				<Insets top = "5" right = "5" bottom = "5" left = "5"/>
 			</padding>
-			<Label fx:id = "mouseLocation" text = "Location (x, y) = (0, 0)" styleClass = "overlay"/>
-			<Label fx:id = "areaDimension" text = "Area (width, height) = (0, 0)" styleClass = "overlay"/>
-			<Label fx:id = "pixelCount" text = "Pixel Count: 0" styleClass = "overlay"/>
-			<Label fx:id = "grayAverage" text = "Average (R, G, B) = (0.0, 0.0, 0.0)" styleClass = "overlay"/>
+			<Label fx:id = "mouseLocation" text = "Location (x, y) = (0, 0)"/>
+			<Label fx:id = "areaDimension" text = "Area (width, height) = (0, 0)"/>
+			<Label fx:id = "pixelCount" text = "Pixel Count: 0"/>
+			<Label fx:id = "grayAverage" text = "Average (R, G, B) = (0.0, 0.0, 0.0)"/>
 		</HBox>
 	</bottom>
 </BorderPane>
