@@ -5,24 +5,24 @@
 
 	public interface DerivativeOperator {
 
-		public double [][] dX();
-		public double [][] dY();
-		public double [][] dSW();
-		public double [][] dSE();
+		double [][] dX();
+		double [][] dY();
+		double [][] dSW();
+		double [][] dSE();
 
-		public default double [][][] convolutionOverX(final double [][][] space) {
+		default double [][][] convolutionOverX(final double[][][] space) {
 			return Matrix.convolution(space, dX());
 		}
 
-		public default double [][][] convolutionOverY(final double [][][] space) {
+		default double [][][] convolutionOverY(final double[][][] space) {
 			return Matrix.convolution(space, dY());
 		}
 
-		public default double [][][] convolutionOverSW(final double [][][] space) {
+		default double [][][] convolutionOverSW(final double[][][] space) {
 			return Matrix.convolution(space, dSW());
 		}
 
-		public default double [][][] convolutionOverSE(final double [][][] space) {
+		default double [][][] convolutionOverSE(final double[][][] space) {
 			return Matrix.convolution(space, dSE());
 		}
 	}

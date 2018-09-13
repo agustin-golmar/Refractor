@@ -4,5 +4,5 @@
 	@FunctionalInterface
 	public interface Compressor {
 
-		public double [][][] compress(final double [][][] data);
+		double [][][] compress(final double[][][] data);
 	}

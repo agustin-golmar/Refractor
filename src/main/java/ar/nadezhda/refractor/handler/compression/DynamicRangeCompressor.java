@@ -1,8 +1,8 @@
 
 	package ar.nadezhda.refractor.handler.compression;
 
-	import ar.nadezhda.refractor.interfaces.Compressor;
-	import org.springframework.stereotype.Component;
+    import ar.nadezhda.refractor.interfaces.Compressor;
+    import org.springframework.stereotype.Component;
 
 	@Component
 	public class DynamicRangeCompressor implements Compressor {

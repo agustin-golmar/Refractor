@@ -24,7 +24,7 @@
 		*	Un mapa con las imágenes generadas y las claves bajo las cuáles se
 		*	deben persistir.
 		*/
-        public Map<String, Image> handle(
+        Map<String, Image> handle(
                 final List<ImageState> states, final ActionEvent action);
 
         /**
@@ -35,5 +35,5 @@
         * @return
         *	El compresor recomendado.
         */
-        public Compressor getCompressor();
+        Compressor getCompressor();
 	}

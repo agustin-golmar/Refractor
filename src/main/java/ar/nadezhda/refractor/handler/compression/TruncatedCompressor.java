@@ -14,8 +14,8 @@
 					for (int c = 0; c < data.length; ++c) {
 						if (data[c][w][h] < 0.0) data[c][w][h] = 0.0;
 						else if (255.0 < data[c][w][h]) data[c][w][h] = 255.0;
-						else {};
-					}
+						else {}
+                    }
 			return data;
 		}
 	}
