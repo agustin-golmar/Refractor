@@ -17,6 +17,7 @@ public class ImageState {
     protected final Pane root;
     protected final Point anchor;
     protected final String key;
+    protected double windowSum;
 
     public ImageState(final String key, final ImageView view, final Image image) {
         this.key = key;
@@ -314,5 +315,43 @@ public class ImageState {
             }
         }
         return res;
+    }
+
+    public Image bilinearFilter(int dimension, double sigmar) {
+        var imageMatrix = new double[image.getChannels()][image.getWidth()][image.getHeight()];
+        for (int c=0;c<imageMatrix.length;c++) {
+            for (int w=0;w<imageMatrix[0].length;w++){
+                for (int h=0;h<imageMatrix[0][0].length;h++){
+                    var window = generateBilinearWindow(dimension,sigmar,c,w,h);
+                    for (int i=0;i<window.length;i++){
+                        for (int j=0;j<window[0].length;j++){
+                            imageMatrix[c][w][h]+=window[i][j];
+                        }
+                    }
+                    imageMatrix[c][w][h]/=windowSum;
+
+                }
+            }
+        }
+        return new Image(image.source,imageMatrix);
+    }
+
+    private double[][] generateBilinearWindow(int dimension, double sigmar,int c, int w, int h) {
+        var window = new double[dimension][dimension];
+        windowSum=0;
+        for (int i=0;i<dimension;i++){
+            for (int j=0;j<dimension;j++){
+                var base = dimension/2;
+                final var ew = w - base + i;
+                final var eh = h - base + j;
+                if (-1 < ew && ew < image.getWidth() && -1 < eh && eh < image.getHeight()){
+                    window[i][j]=Math.exp(- (Math.pow(w-ew,2) + Math.pow(h-eh,2))/dimension -
+                            Math.abs(image.data[c][w][h]-image.data[c][ew][eh])/(2*sigmar));
+                    windowSum+=window[i][j];
+                    window[i][j]*=image.data[c][ew][eh];
+                }
+            }
+        }
+        return window;
     }
 }
