@@ -99,7 +99,7 @@ public abstract class UnaryHandler implements Handler {
                 operation = (n) -> Math.pow(255.0,1.0-scalar)*Math.pow(n,scalar);
                 break;
             case "gaussianNoise":
-                operation = (n) -> n+255.0*(random.nextGaussian()*scalar+mean);
+                operation = (n) -> n+255*(random.nextGaussian()*scalar+mean);
                 break;
             case "exponentialNoise":
                 operation = (n) -> n*Math.log(random.nextDouble())*(-1/scalar);

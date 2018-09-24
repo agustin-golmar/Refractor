@@ -170,22 +170,22 @@ public class ImageState {
     }
 
     public Image unaryOp(DoubleUnaryOperator op) {
-        double[] maxData2 = new double[image.getChannels()];
+        /*double[] maxData2 = new double[image.getChannels()];
         double[] minData2 = new double[image.getChannels()];
         for (int i=0;i<image.getChannels();i++) {
             maxData2[i]=255;
             minData2[i]=0;
-        }
+        }*/
         Image res = new Image(this.image.source, this.image.getChannels(), this.image.getWidth(), this.image.getHeight());
         for (int c = 0; c < image.getChannels(); c++) {
             for (int w = 0; w < image.getWidth(); w++) {
                 for (int h = 0; h < image.getHeight(); h++) {
                     res.data[c][w][h] = op.applyAsDouble(image.data[c][w][h]);
                     //if (res.data[c][w][h]>maxData
-                    if (res.data[c][w][h]>maxData2[c])
+                    /*if (res.data[c][w][h]>maxData2[c])
                         maxData2[c]=res.data[c][w][h];
                     else if (res.data[c][w][h]<minData2[c])
-                        minData2[c]=res.data[c][w][h];
+                        minData2[c]=res.data[c][w][h];*/
                 }
             }
         }
@@ -329,6 +329,7 @@ public class ImageState {
                         }
                     }
                     imageMatrix[c][w][h]/=windowSum;
+                    //System.out.println("Original: "+image.data[c][w][h]+" || Cambio: "+imageMatrix[c][w][h]);
 
                 }
             }
@@ -345,8 +346,12 @@ public class ImageState {
                 final var ew = w - base + i;
                 final var eh = h - base + j;
                 if (-1 < ew && ew < image.getWidth() && -1 < eh && eh < image.getHeight()){
-                    window[i][j]=Math.exp(- (Math.pow(w-ew,2) + Math.pow(h-eh,2))/dimension -
-                            Math.abs(image.data[c][w][h]-image.data[c][ew][eh])/(2*sigmar));
+                    window[i][j]=Math.exp(
+                            - (((w-ew)*(w-ew)) + ((h-eh)*(h-eh)))/
+                            (2*(dimension/2.0)*(dimension/2.0)) -
+                            Math.pow(Math.abs(image.data[c][w][h]-image.data[c][ew][eh]),2)/
+                                    (2*sigmar*sigmar)
+                    );
                     windowSum+=window[i][j];
                     window[i][j]*=image.data[c][ew][eh];
                 }
