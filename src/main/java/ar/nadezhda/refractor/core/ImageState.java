@@ -348,7 +348,7 @@ public class ImageState {
                 if (-1 < ew && ew < image.getWidth() && -1 < eh && eh < image.getHeight()){
                     window[i][j]=Math.exp(
                             - (((w-ew)*(w-ew)) + ((h-eh)*(h-eh)))/
-                            (2*(dimension/2.0)*(dimension/2.0)) -
+                            (2.0*(dimension/3)*(dimension/3)) -
                             Math.pow(Math.abs(image.data[c][w][h]-image.data[c][ew][eh]),2)/
                                     (2*sigmar*sigmar)
                     );
