@@ -359,4 +359,43 @@ public class ImageState {
         }
         return window;
     }
+
+    public Image anisotropicFilter(int steps, double sigma, boolean isotropic) {
+        var ret = new double[image.getChannels()][image.getWidth()][image.getHeight()];
+        var temp = new double[image.getChannels()][image.getWidth()][image.getHeight()];
+        matrixCopy(image.data,ret);
+        for (var i=0;i<steps;i++){
+            matrixCopy(ret,temp);
+            for (var c=0;c<ret.length;c++){
+                for (var w=0;w<ret[0].length;w++){
+                    for (var h=0;h<ret[0][0].length;h++){
+                        var dn=h<ret[0][0].length-1?temp[c][w][h+1]-temp[c][w][h]:0;
+                        var ds=h>0?temp[c][w][h-1]-temp[c][w][h]:0;
+                        var de=w<ret[0].length-1?temp[c][w+1][h]-temp[c][w][h]:0;
+                        var dw=w>0?temp[c][w-1][h]-temp[c][w][h]:0;
+                        if (isotropic){
+                            ret[c][w][h]=temp[c][w][h]+0.25*(dn+ds+de+dw);
+                        } else {
+                            ret[c][w][h] = temp[c][w][h] + 0.25 * (dn * Math.exp((-dn) * dn / (sigma * sigma)) +
+                                    ds * Math.exp((-ds) * ds / (sigma * sigma)) +
+                                    de * Math.exp((-de) * de / (sigma * sigma)) +
+                                    dw * Math.exp((-dw) * dw / (sigma * sigma)));
+                        }
+                    }
+                }
+            }
+        }
+        return new Image(image.source,ret);
+
+    }
+
+    private void matrixCopy(double[][][] m1, double[][][] m2) {
+        for (var i =0;i<m1.length;i++){
+            for (var j=0;j<m1[0].length;j++){
+                for (var k=0;k<m1[0][0].length;k++){
+                    m2[i][j][k]=m1[i][j][k];
+                }
+            }
+        }
+    }
 }

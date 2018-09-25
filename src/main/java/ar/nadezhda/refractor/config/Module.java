@@ -8,7 +8,9 @@
 	import ar.nadezhda.refractor.handler.edge.*;
 	import ar.nadezhda.refractor.handler.edge.operator.ConvolutionHandler;
 	import ar.nadezhda.refractor.handler.filter.*;
+    import ar.nadezhda.refractor.handler.filter.advanced.AnisotropicFilterHandler;
     import ar.nadezhda.refractor.handler.filter.advanced.BilinearFilterHandler;
+    import ar.nadezhda.refractor.handler.filter.advanced.IsotropicFilterHandler;
     import ar.nadezhda.refractor.handler.noise.*;
 	import ar.nadezhda.refractor.handler.resource.*;
 	import ar.nadezhda.refractor.handler.unary.*;
@@ -98,6 +100,8 @@
 			router.put("laplacian", new LaplacianHandler());
 			router.put("marrHildreth", new MarrHildrethHandler());
 			router.put("bilinear",new BilinearFilterHandler());
+			router.put("anisotropic",new AnisotropicFilterHandler());
+            router.put("isotropic",new IsotropicFilterHandler());
 			return router;
 		}
 

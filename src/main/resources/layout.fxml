@@ -142,6 +142,10 @@
 								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "2" fx:id = "isotropic" text = "Isotropic" onAction = "#control"/>
 								<Button GridPane.columnIndex = "1" GridPane.rowIndex = "2" fx:id = "bilinear" text = "Bilinear" onAction = "#control"/>
 								<Button GridPane.columnIndex = "2" GridPane.rowIndex = "2" fx:id = "anisotropic" text = "Anisotropic" onAction = "#control"/>
+                                <Label GridPane.columnIndex = "0" GridPane.rowIndex = "3" GridPane.halignment = "right" text = "Sigma Detector:"/>
+                                <TextField GridPane.columnIndex = "1" GridPane.rowIndex = "3" fx:id = "sigmadet" text = "3"/>
+                                <Label GridPane.columnIndex = "0" GridPane.rowIndex = "4" GridPane.halignment = "right" text = "Steps:"/>
+                                <TextField GridPane.columnIndex = "1" GridPane.rowIndex = "4" fx:id = "steps" text = "3"/>
 							</GridPane>
 						</content>
 					</TitledPane>
