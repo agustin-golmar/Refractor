@@ -360,7 +360,7 @@ public class ImageState {
         return window;
     }
 
-    public Image anisotropicFilter(int steps, double sigma, boolean isotropic) {
+    public Image anisotropicFilter(int steps, boolean isotropic) {
         var ret = new double[image.getChannels()][image.getWidth()][image.getHeight()];
         var temp = new double[image.getChannels()][image.getWidth()][image.getHeight()];
         matrixCopy(image.data,ret);
@@ -376,10 +376,11 @@ public class ImageState {
                         if (isotropic){
                             ret[c][w][h]=temp[c][w][h]+0.25*(dn+ds+de+dw);
                         } else {
-                            ret[c][w][h] = temp[c][w][h] + 0.25 * (dn * Math.exp((-dn) * dn / (sigma * sigma)) +
-                                    ds * Math.exp((-ds) * ds / (sigma * sigma)) +
-                                    de * Math.exp((-de) * de / (sigma * sigma)) +
-                                    dw * Math.exp((-dw) * dw / (sigma * sigma)));
+                            ret[c][w][h] = temp[c][w][h] + 0.25 * (dn * Math.exp((-dn) * dn / ((i+1)*(i+1))) +
+                                    ds * Math.exp((-ds) * ds / ((i+1)*(i+1))) +
+                                    de * Math.exp((-de) * de / ((i+1)*(i+1))) +
+                                    dw * Math.exp((-dw) * dw / ((i+1)*(i+1))));
+                            //System.out.println(ret[c][w][h]);
                         }
                     }
                 }

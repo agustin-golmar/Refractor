@@ -34,18 +34,15 @@ public class AnisotropicFilterHandler implements Handler {
         System.out.println("Iso: "+isotropic);
         final Node node = (Node) action.getSource();
         int steps;
-        double sigma;
         TextField textField = (TextField) node.getScene().lookup("#steps");
-        TextField textField2 = (TextField) node.getScene().lookup("#sigmadet");
         try {
             steps = Integer.parseInt(textField.getText());
-            sigma = Double.parseDouble(textField2.getText());
         } catch (NumberFormatException e) {
             ImageTool.popup(Alert.AlertType.ERROR, "Error!", "The steps aren't an integer number.");
             return result;
         }
         ImageState imageState = states.get(0);
-        final Image image = imageState.anisotropicFilter(steps,sigma,isotropic);
+        final Image image = imageState.anisotropicFilter(steps,isotropic);
         final String key = ImageTool.buildKey("anisotropic", image,
                 states.get(0).getKey());
         result.put(key, image);
