@@ -31,7 +31,7 @@ public class AnisotropicFilterHandler implements Handler {
                     .toString());
             return result;
         }
-        System.out.println("Iso: "+isotropic);
+        //System.out.println("Iso: "+isotropic);
         final Node node = (Node) action.getSource();
         int steps;
         TextField textField = (TextField) node.getScene().lookup("#steps");
