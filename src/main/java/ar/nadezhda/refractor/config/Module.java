@@ -13,7 +13,8 @@
     import ar.nadezhda.refractor.handler.filter.advanced.IsotropicFilterHandler;
     import ar.nadezhda.refractor.handler.noise.*;
 	import ar.nadezhda.refractor.handler.resource.*;
-	import ar.nadezhda.refractor.handler.unary.*;
+    import ar.nadezhda.refractor.handler.threshold.GlobalThresholdHandler;
+    import ar.nadezhda.refractor.handler.unary.*;
 	import ar.nadezhda.refractor.interfaces.Handler;
 	import ar.nadezhda.refractor.interfaces.ImageFormat;
 	import javafx.collections.ObservableMap;
@@ -102,6 +103,7 @@
 			router.put("bilinear",new BilinearFilterHandler());
 			router.put("anisotropic",new AnisotropicFilterHandler());
             router.put("isotropic",new IsotropicFilterHandler());
+            router.put("globalThreshold",new GlobalThresholdHandler());
 			return router;
 		}
 

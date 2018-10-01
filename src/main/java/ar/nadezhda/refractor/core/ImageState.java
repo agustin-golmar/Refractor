@@ -399,4 +399,52 @@ public class ImageState {
             }
         }
     }
+
+    public int getInitialT() {
+        var max = image.data[0][0][0];
+        var min = max;
+        for (var c=0;c<image.getChannels();c++){
+            for (var w=0;w<image.getWidth();w++){
+                for (var h=0;h<image.getHeight();h++){
+                    if (image.data[c][w][h]>max)
+                        max=image.data[c][w][h];
+                    else if (image.data[c][w][h]<min)
+                        min=image.data[c][w][h];
+                }
+            }
+        }
+        return (int)(max-min)/2;
+    }
+
+    public double getMaxAvg(int t) {
+        var sum=0;
+        var count=0;
+        for (var c=0;c<image.getChannels();c++){
+            for (var w=0;w<image.getWidth();w++){
+                for (var h=0;h<image.getHeight();h++){
+                    if (image.data[c][w][h]>t){
+                        count++;
+                        sum+=image.data[c][w][h];
+                    }
+                }
+            }
+        }
+        return sum/count;
+    }
+
+    public double getMinAvg(int t) {
+        var sum=0;
+        var count=0;
+        for (var c=0;c<image.getChannels();c++){
+            for (var w=0;w<image.getWidth();w++){
+                for (var h=0;h<image.getHeight();h++){
+                    if (image.data[c][w][h]<=t){
+                        count++;
+                        sum+=image.data[c][w][h];
+                    }
+                }
+            }
+        }
+        return sum/count;
+    }
 }
