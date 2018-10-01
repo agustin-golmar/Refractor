@@ -14,6 +14,7 @@
     import ar.nadezhda.refractor.handler.noise.*;
 	import ar.nadezhda.refractor.handler.resource.*;
     import ar.nadezhda.refractor.handler.threshold.GlobalThresholdHandler;
+    import ar.nadezhda.refractor.handler.threshold.OtzuThresholdHandler;
     import ar.nadezhda.refractor.handler.unary.*;
 	import ar.nadezhda.refractor.interfaces.Handler;
 	import ar.nadezhda.refractor.interfaces.ImageFormat;
@@ -104,6 +105,7 @@
 			router.put("anisotropic",new AnisotropicFilterHandler());
             router.put("isotropic",new IsotropicFilterHandler());
             router.put("globalThreshold",new GlobalThresholdHandler());
+            router.put("otsuThreshold",new OtzuThresholdHandler());
 			return router;
 		}
 
