@@ -149,11 +149,12 @@
 		public double [][] getCummulativeMean(){
             final double[][] normalized = getNormalizedHistogram();
             for (int c=0;c<getChannels();++c){
-                normalized[c][0]*=0;
+                for (int g=0;g<GRAY_LEVELS;g++){
+                    normalized[c][g]*=g;
+                }
             }
             for (int g=1;g<GRAY_LEVELS;++g){
                 for (int c = 0; c < getChannels(); ++c) {
-                    normalized[c][g] *= g;
                     normalized[c][g] += normalized[c][g-1];
                 }
             }
