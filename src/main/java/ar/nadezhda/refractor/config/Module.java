@@ -8,9 +8,7 @@
 	import ar.nadezhda.refractor.handler.edge.*;
 	import ar.nadezhda.refractor.handler.edge.operator.ConvolutionHandler;
 	import ar.nadezhda.refractor.handler.filter.*;
-    import ar.nadezhda.refractor.handler.filter.advanced.AnisotropicFilterHandler;
-    import ar.nadezhda.refractor.handler.filter.advanced.BilinearFilterHandler;
-    import ar.nadezhda.refractor.handler.filter.advanced.IsotropicFilterHandler;
+    import ar.nadezhda.refractor.handler.filter.advanced.*;
     import ar.nadezhda.refractor.handler.noise.*;
 	import ar.nadezhda.refractor.handler.resource.*;
     import ar.nadezhda.refractor.handler.threshold.GlobalThresholdHandler;
@@ -101,7 +99,7 @@
 			router.put("convolution", new ConvolutionHandler());
 			router.put("laplacian", new LaplacianHandler());
 			router.put("marrHildreth", new MarrHildrethHandler());
-			router.put("bilinear",new BilinearFilterHandler());
+			router.put("bilateral",new BilateralFilterHandler());
 			router.put("anisotropic",new AnisotropicFilterHandler());
             router.put("isotropic",new IsotropicFilterHandler());
             router.put("globalThreshold",new GlobalThresholdHandler());

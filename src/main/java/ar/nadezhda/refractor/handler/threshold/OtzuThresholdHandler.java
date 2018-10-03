@@ -8,7 +8,6 @@ import ar.nadezhda.refractor.handler.compression.NullCompressor;
 import ar.nadezhda.refractor.interfaces.Compressor;
 import ar.nadezhda.refractor.interfaces.Handler;
 import javafx.event.ActionEvent;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 
 import java.util.HashMap;

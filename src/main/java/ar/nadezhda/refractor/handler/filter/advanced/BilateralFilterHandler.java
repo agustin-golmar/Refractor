@@ -5,7 +5,6 @@ import ar.nadezhda.refractor.core.Image;
 import ar.nadezhda.refractor.core.ImageState;
 import ar.nadezhda.refractor.core.ImageTool;
 import ar.nadezhda.refractor.handler.compression.LinearCompressor;
-import ar.nadezhda.refractor.handler.compression.NullCompressor;
 import ar.nadezhda.refractor.interfaces.Compressor;
 import ar.nadezhda.refractor.interfaces.Handler;
 import javafx.event.ActionEvent;
@@ -17,14 +16,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BilinearFilterHandler implements Handler {
+public class BilateralFilterHandler implements Handler {
     @Override
     public Map<String, Image> handle(List<ImageState> states, ActionEvent action) {
         var result = new HashMap<String, Image>();
         if (states.size()!=1){
             ImageTool.popup(Alert.AlertType.WARNING, "Warning!", new StringBuilder()
                     .append("You must select only 1 image to apply the '")
-                    .append("billinear filter")
+                    .append("bilateral filter")
                     .append("' action.")
                     .toString());
             return result;
@@ -46,8 +45,8 @@ public class BilinearFilterHandler implements Handler {
             return result;
         }
         ImageState imageState = states.get(0);
-        final Image image = imageState.bilinearFilter(dimension, sigmar);
-        final String key = ImageTool.buildKey("billinear", image,
+        final Image image = imageState.bilateralFilter(dimension, sigmar);
+        final String key = ImageTool.buildKey("bilateral", image,
                 states.get(0).getKey());
         result.put(key, image);
         return result;

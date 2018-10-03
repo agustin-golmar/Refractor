@@ -137,10 +137,10 @@
 							<GridPane alignment = "center_left" hgap = "5" vgap = "5">
                                 <Label GridPane.columnIndex = "0" GridPane.rowIndex = "0" GridPane.halignment = "right" text = "Dimension:"/>
                                 <TextField GridPane.columnIndex = "1" GridPane.rowIndex = "0" fx:id = "advancedDimensionValue" text = "3"/>
-                                <Label GridPane.columnIndex = "0" GridPane.rowIndex = "1" GridPane.halignment = "right" text = "Sigma r:"/>
+                                <Label GridPane.columnIndex = "0" GridPane.rowIndex = "1" GridPane.halignment = "right" text = "Sigma (r):"/>
                                 <TextField GridPane.columnIndex = "1" GridPane.rowIndex = "1" fx:id = "sigmaR" text = "3"/>
 								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "2" fx:id = "isotropic" text = "Isotropic" onAction = "#control"/>
-								<Button GridPane.columnIndex = "1" GridPane.rowIndex = "2" fx:id = "bilinear" text = "Bilinear" onAction = "#control"/>
+								<Button GridPane.columnIndex = "1" GridPane.rowIndex = "2" fx:id = "bilateral" text = "Bilateral" onAction = "#control"/>
 								<Button GridPane.columnIndex = "2" GridPane.rowIndex = "2" fx:id = "anisotropic" text = "Anisotropic" onAction = "#control"/>
                                 <Label GridPane.columnIndex = "0" GridPane.rowIndex = "3" GridPane.halignment = "right" text = "Steps:"/>
                                 <TextField GridPane.columnIndex = "1" GridPane.rowIndex = "3" fx:id = "steps" text = "3"/>

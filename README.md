@@ -46,7 +46,7 @@ Currently, the following features are provided:
 * Advanced filtering and diffusion, which makes easy an edge-detection process:
 	* __Isotropic__.
 	* __Anisotropic__.
-	* __Bilinear__.
+	* __Bilateral__.
 * Directional operators, the primitives of some edge-detectors:
 	* __Prewitt__.
 	* __Sobel__.

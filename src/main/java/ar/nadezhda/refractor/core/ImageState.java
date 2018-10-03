@@ -317,12 +317,12 @@ public class ImageState {
         return res;
     }
 
-    public Image bilinearFilter(int dimension, double sigmar) {
+    public Image bilateralFilter(int dimension, double sigmar) {
         var imageMatrix = new double[image.getChannels()][image.getWidth()][image.getHeight()];
         for (int c=0;c<imageMatrix.length;c++) {
             for (int w=0;w<imageMatrix[0].length;w++){
                 for (int h=0;h<imageMatrix[0][0].length;h++){
-                    var window = generateBilinearWindow(dimension,sigmar,c,w,h);
+                    var window = generateBilateralWindow(dimension,sigmar,c,w,h);
                     for (int i=0;i<window.length;i++){
                         for (int j=0;j<window[0].length;j++){
                             imageMatrix[c][w][h]+=window[i][j];
@@ -337,7 +337,7 @@ public class ImageState {
         return new Image(image.source,imageMatrix);
     }
 
-    private double[][] generateBilinearWindow(int dimension, double sigmar,int c, int w, int h) {
+    private double[][] generateBilateralWindow(int dimension, double sigmar,int c, int w, int h) {
         var window = new double[dimension][dimension];
         windowSum=0;
         for (int i=0;i<dimension;i++){
