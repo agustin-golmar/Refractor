@@ -51,6 +51,7 @@ public class OtzuThresholdHandler implements Handler {
         final Image image = imageState.unaryOp((n) -> n > maxColor ? 255 : 0);
         final String key = ImageTool.buildKey("otzu_threshold", image,
                 states.get(0).getKey());
+        System.out.println(maxColor);
         result.put(key, image);
         return result;
 

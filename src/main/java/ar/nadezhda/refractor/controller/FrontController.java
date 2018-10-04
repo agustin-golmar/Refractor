@@ -39,9 +39,9 @@
 		@FXML protected Slider mhDevValue;
 		@FXML protected TextField mhDimValue;
 
-		protected final Map<String, Handler> router;
-		protected final Workspace workspace;
-		protected final DecimalFormat decimal;
+		private final Map<String, Handler> router;
+		private final Workspace workspace;
+		private final DecimalFormat decimal;
 
 		@SuppressWarnings("unchecked")
 		public FrontController() {
@@ -87,11 +87,11 @@
 			});
 		}
 
-		protected ObservableList<String> getSelectedKeys() {
+		private ObservableList<String> getSelectedKeys() {
 			return keys.getSelectionModel().getSelectedItems();
 		}
 
-		protected List<ImageState> getSelectedStates() {
+		private List<ImageState> getSelectedStates() {
 			return getSelectedKeys().stream()
 				.map(workspace::getState)
 				.filter(Optional::isPresent)
@@ -99,7 +99,7 @@
 				.collect(Collectors.toList());
 		}
 
-		protected ImageState addImage(final String key, final Image image) {
+		private ImageState addImage(final String key, final Image image) {
 			final WritableImage wImage = ImageTool.getImageForDisplay(image);
 			final ImageState state = ImageTool.displayNewImage(key, wImage, image);
 			addTriggers(state);
@@ -108,7 +108,7 @@
 			return state;
 		}
 
-		protected ImageState addTriggers(final ImageState state) {
+		private ImageState addTriggers(final ImageState state) {
 			final ImageView view = state.getView();
 			view.setOnMouseMoved(event -> {
 				mouseLocation.setText("Location (x, y) = ("
