@@ -47,6 +47,7 @@ public class GlobalThresholdHandler implements Handler {
             //System.out.println(t);
 
         } while (Math.abs(lastT - t) > delta);
+        System.out.println("Umbral: "+t);
         final Image image = imageState.unaryOp((n) -> n > t ? 255 : 0);
         final String key = ImageTool.buildKey("global_threshold", image,
                 states.get(0).getKey());
