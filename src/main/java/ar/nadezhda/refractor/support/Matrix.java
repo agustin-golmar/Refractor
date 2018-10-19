@@ -113,4 +113,62 @@
 				}
 			return filter;
 		}
+
+		public static double[][][] nonMaxSupression(final double [][][] borders,final double [][][] dx, final double[][][] dy) {
+		    final var res = new double[borders.length][borders[0].length][borders[0][0].length];
+		    for (int c=0;c<res.length;c++) {
+		        for (int w=1;w<res[0].length-1;w++) {
+		            for (int h=1;h<res[0][0].length-1;h++) {
+		                if (borders[c][w][h]>0) {
+                            var angle = Math.atan2(dy[c][w][h], dx[c][w][h]);
+                            if (angle<0)
+                                angle+=Math.PI;
+                            int x,y;
+                            if (angle < Math.PI / 8 || angle > 7 * Math.PI/8) {
+                                x=0;
+                                y=1;
+                            }
+                            else if (angle < 3*Math.PI/8) {
+                                x=-1;
+                                y=1;
+                            }
+                            else if (angle < 5* Math.PI/8) {
+                                x=1;
+                                y=0;
+                            }
+                            else {
+                                x=1;
+                                y=1;
+                            }
+                            if (borders[c][w][h]>borders[c][w+x][h+y] && borders[c][w][h]>borders[c][w-x][h-y])
+                                res[c][w][h]=borders[c][w][h];
+                            //System.out.println(angle);
+                        }
+                    }
+                }
+            }
+		    return res;
+        }
+
+        public static void hystheresis(final double[][][] borders, double t1, double t2) {
+		    for (int c=0;c<borders.length;c++) {
+		        for (int w=1;w<borders[0].length-1;w++) {
+		            for (int h=1;h<borders[0][0].length-1;h++) {
+		                if (borders[c][w][h]<t1)
+		                    borders[c][w][h]=0;
+		                else if (borders[c][w][h]<t2 &&
+                                borders[c][w+1][h]==0 &&
+                                borders[c][w][h+1]==0 &&
+                                borders[c][w+1][h+1]==0 &&
+                                borders[c][w-1][h]==0 &&
+                                borders[c][w][h-1]==0 &&
+                                borders[c][w-1][h-1]==0)
+                            borders[c][w][h]=0;
+		                else
+		                    borders[c][w][h]=255;
+
+                    }
+                }
+            }
+        }
 	}

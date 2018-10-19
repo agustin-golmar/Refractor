@@ -1,6 +1,6 @@
 package ar.nadezhda.refractor.core;
 
-import java.awt.Point;
+import java.awt.*;
 import java.util.Arrays;
 import java.util.function.DoubleBinaryOperator;
 import java.util.function.DoubleUnaryOperator;
@@ -217,7 +217,11 @@ public class ImageState {
 
     }
 
-    public Image filter(int size, DoubleBinaryOperator matrixFiller, boolean normalize){
+    public Image filter(int size, DoubleBinaryOperator matrixFiller,boolean normalize){
+        return filter(this.image,size,matrixFiller,normalize);
+    }
+
+    public static Image filter(Image image, int size, DoubleBinaryOperator matrixFiller, boolean normalize){
         double[][] window = new double[size][size];
         double[] maxData2 = new double[image.getChannels()];
         double[] minData2 = new double[image.getChannels()];
@@ -249,7 +253,7 @@ public class ImageState {
             }
         }
         //System.out.println("------------------------");
-        Image res = new Image(this.image.source, this.image.getChannels(), this.image.getWidth(), this.image.getHeight());
+        Image res = new Image(image.source, image.getChannels(), image.getWidth(), image.getHeight());
         for (int c=0;c<image.getChannels();c++){
             for (int w=0;w<image.getWidth();w++){
                 for (int h=0;h<image.getHeight();h++){

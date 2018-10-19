@@ -104,6 +104,7 @@
             router.put("isotropic",new IsotropicFilterHandler());
             router.put("globalThreshold",new GlobalThresholdHandler());
             router.put("otsuThreshold",new OtzuThresholdHandler());
+            router.put("canny",new CannyHandler());
 			return router;
 		}
 

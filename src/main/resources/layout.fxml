@@ -184,6 +184,13 @@
 								<Label GridPane.columnIndex = "2" GridPane.rowIndex = "2" GridPane.halignment = "center" text = "(σ)"/>
 								<Label GridPane.columnIndex = "0" GridPane.rowIndex = "3" GridPane.halignment = "right" text = "Dimension:"/>
 								<TextField GridPane.columnIndex = "1" GridPane.rowIndex = "3" fx:id = "mhDimValue" text = "7"/>
+                                <Button GridPane.columnIndex = "0" GridPane.rowIndex = "4" fx:id = "canny" text = "Canny" onAction = "#control"/>
+                                <Slider GridPane.columnIndex = "1" GridPane.rowIndex = "4"
+                                        fx:id = "t1" min = "0" max = "256" minorTickCount = "5" majorTickUnit = "32" value = "0"/>
+                                <Label GridPane.columnIndex = "2" GridPane.rowIndex = "4" GridPane.halignment = "right" text = "t1"/>
+                                <Slider GridPane.columnIndex = "1" GridPane.rowIndex = "5"
+                                        fx:id = "t2" min = "0" max = "256" minorTickCount = "5" majorTickUnit = "32" value = "0"/>
+                                <Label GridPane.columnIndex = "2" GridPane.rowIndex = "5" GridPane.halignment = "right" text = "t2"/>
 							</GridPane>
 						</content>
 					</TitledPane>
