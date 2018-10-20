@@ -39,7 +39,10 @@ public class CannyHandler implements Handler {
         final var imageState = states.get(0);
 
         final var operator = ConvolutionHandler.getOperator();
-        var image = imageState.filter(3,(i,j)->(1.0/(2*Math.PI*Math.pow(1.0,2)))*
+        var image = imageState.getImage();
+
+        //Hardcoded Gauss Filter
+        image = imageState.filter(3,(i,j)->(1.0/(2*Math.PI*Math.pow(1.0,2)))*
                 Math.exp(-(Math.pow(i,2)+Math.pow(j,2))/Math.pow(1.0,2)),false);
         image = ImageState.filter(image,5,(i,j)->(1.0/(2*Math.PI*Math.pow(2.0,2)))*
                 Math.exp(-(Math.pow(i,2)+Math.pow(j,2))/Math.pow(2.0,2)),false);
