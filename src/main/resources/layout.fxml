@@ -194,6 +194,14 @@
 							</GridPane>
 						</content>
 					</TitledPane>
+					<TitledPane text = "Feature Detectors">
+						<content>
+							<GridPane alignment = "center_left" hgap = "5" vgap = "5">
+								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "0" fx:id = "susan" text = "S.U.S.A.N." onAction = "#control"/>
+								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "1" fx:id = "levelSet" text = "Level-Set Tracking" onAction = "#control"/>
+							</GridPane>
+						</content>
+					</TitledPane>
 					<!-- More panes here... -->
 				</panes>
 			</Accordion>

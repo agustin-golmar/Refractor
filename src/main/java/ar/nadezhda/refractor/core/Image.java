@@ -181,6 +181,31 @@
 			return new Image(source, raw);
 		}
 
+		public Image getFullGrayscale() {
+			final byte [][][] raw = new byte [3][getWidth()][getHeight()];
+			if (getChannels() == 3) {
+				for (int h = 0; h < getHeight(); ++h)
+					for (int w = 0; w < getWidth(); ++w) {
+						final int red = Byte.toUnsignedInt(rawRed()[w][h]);
+						final int green = Byte.toUnsignedInt(rawGreen()[w][h]);
+						final int blue = Byte.toUnsignedInt(rawBlue()[w][h]);
+						final double brightness = Color.RGBtoHSB(red, green, blue, null)[BRIGHTNESS];
+						raw[0][w][h] = (byte) ((GRAY_LEVELS - 1) * brightness);
+						raw[1][w][h] = raw[0][w][h];
+						raw[2][w][h] = raw[0][w][h];
+					}
+			}
+			else {
+				for (int h = 0; h < getHeight(); ++h)
+					for (int w = 0; w < getWidth(); ++w) {
+						raw[0][w][h] = rawGray()[w][h];
+						raw[1][w][h] = raw[0][w][h];
+						raw[2][w][h] = raw[0][w][h];
+					}
+			}
+			return new Image(source, raw);
+		}
+
 		public Image getEqualized() {
 			final byte [][][] raw = new byte [getChannels()][getWidth()][getHeight()];
 			final double [][] cum = getCummulativeHistogram();

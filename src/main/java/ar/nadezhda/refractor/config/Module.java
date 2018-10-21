@@ -7,6 +7,7 @@
 	import ar.nadezhda.refractor.handler.binary.*;
 	import ar.nadezhda.refractor.handler.edge.*;
 	import ar.nadezhda.refractor.handler.edge.operator.ConvolutionHandler;
+	import ar.nadezhda.refractor.handler.feature.*;
 	import ar.nadezhda.refractor.handler.filter.*;
     import ar.nadezhda.refractor.handler.filter.advanced.*;
     import ar.nadezhda.refractor.handler.noise.*;
@@ -105,6 +106,8 @@
             router.put("globalThreshold",new GlobalThresholdHandler());
             router.put("otsuThreshold",new OtzuThresholdHandler());
             router.put("canny",new CannyHandler());
+            router.put("susan", new SUSANHandler());
+            router.put("levelSet", new LevelSetHandler());
 			return router;
 		}
 

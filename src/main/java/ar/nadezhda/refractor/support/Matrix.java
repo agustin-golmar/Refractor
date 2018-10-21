@@ -1,9 +1,14 @@
 
 	package ar.nadezhda.refractor.support;
 
+	import ar.nadezhda.refractor.interfaces.KernelOperator;
 	import ar.nadezhda.refractor.interfaces.Transform;
 
 	public class Matrix {
+
+		public static final double NOTHING = 0.0;
+		public static final double BORDER = 0.5;
+		public static final double CORNER = 1.0;
 
 		public static double [][][] emptySpaceFrom(final double [][][] space) {
 			return new double [space.length][space[0].length][space[0][0].length];
@@ -22,6 +27,12 @@
 
 		public static double [][][] convolution(
 				final double [][][] space, final double [][] kernel) {
+			return convolution(space, kernel, (c, w, h, k, s) -> k * s);
+		}
+
+		public static double [][][] convolution(
+				final double [][][] space, final double [][] kernel,
+				final KernelOperator operator) {
 			final var dim = kernel.length;
 			final var base = dim/2;
 			final var width = space[0].length;
@@ -33,7 +44,7 @@
 						final var ew = w - base + i;
 						final var eh = h - base + j;
 						if (-1 < ew && ew < width && -1 < eh && eh < height)
-							result += kernel[i][j] * space[c][ew][eh];
+							result += operator.apply(c, w, h, kernel[i][j], space[c][ew][eh]);
 					}
 				return result;
 			});
@@ -112,6 +123,30 @@
 					filter[i][j] = (factor - 2) * Math.exp(-factor/2.0) / (S2PI*σ*σ2);
 				}
 			return filter;
+		}
+
+		public static double [][][] colorFeatures(
+				final double [][][] features, final double [][][] space) {
+			final double [][][] result = emptySpaceFrom(space);
+			for (int h = 0; h < space[0][0].length; ++h)
+				for (int w = 0; w < space[0].length; ++w) {
+					if (features[0][w][h] == NOTHING) {
+						result[0][w][h] = space[0][w][h];
+						result[1][w][h] = space[1][w][h];
+						result[2][w][h] = space[2][w][h];
+					}
+					else if (features[0][w][h] == BORDER) {
+						result[0][w][h] = 255.0;
+						result[1][w][h] = 230.0;
+						result[2][w][h] = 40.0;
+					}
+					else if (features[0][w][h] == CORNER) {
+						result[0][w][h] = 255.0;
+						result[1][w][h] = 0.0;
+						result[2][w][h] = 230.0;
+					}
+				}
+			return result;
 		}
 
 		public static double[][][] nonMaxSupression(final double [][][] borders,final double [][][] dx, final double[][][] dy) {
