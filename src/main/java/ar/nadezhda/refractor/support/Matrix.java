@@ -129,7 +129,7 @@
                                 y=1;
                             }
                             else if (angle < 3*Math.PI/8) {
-                                x=-1;
+                                x=1;
                                 y=1;
                             }
                             else if (angle < 5* Math.PI/8) {
@@ -137,7 +137,7 @@
                                 y=0;
                             }
                             else {
-                                x=1;
+                                x=-1;
                                 y=1;
                             }
                             if (borders[c][w][h]>borders[c][w+x][h+y] && borders[c][w][h]>borders[c][w-x][h-y])
@@ -171,4 +171,16 @@
                 }
             }
         }
-	}
+
+        public static double[][][] intersect(double[][][] m1, double[][][] m2) {
+		    var ret = new double [m1.length][m1[0].length][m1[0][0].length];
+		    for (int c=0;c<ret.length;c++){
+		        for (int w=0;w<ret[0].length;w++){
+		            for (int h=0;h<ret[0][0].length;h++){
+		                ret[c][w][h] = m1[c][w][h]>0 && m2[c][w][h]>0?255:0;
+                    }
+                }
+            }
+            return ret;
+        }
+    }

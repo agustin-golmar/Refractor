@@ -42,18 +42,24 @@ public class CannyHandler implements Handler {
         var image = imageState.getImage();
 
         //Hardcoded Gauss Filter
-        image = imageState.filter(3,(i,j)->(1.0/(2*Math.PI*Math.pow(1.0,2)))*
+        var image1 = imageState.filter(3,(i,j)->(1.0/(2*Math.PI*Math.pow(1.0,2)))*
                 Math.exp(-(Math.pow(i,2)+Math.pow(j,2))/Math.pow(1.0,2)),false);
-        image = ImageState.filter(image,5,(i,j)->(1.0/(2*Math.PI*Math.pow(2.0,2)))*
+        var image2 = ImageState.filter(image,5,(i,j)->(1.0/(2*Math.PI*Math.pow(2.0,2)))*
                 Math.exp(-(Math.pow(i,2)+Math.pow(j,2))/Math.pow(2.0,2)),false);
 
-        final var dx = operator.convolutionOverX(image.data);
-        final var dy = operator.convolutionOverY(image.data);
-        final var grad = Matrix.absoluteGradient(dx, dy);
-        var ret = Matrix.nonMaxSupression(grad,dx,dy);
-        Matrix.hystheresis(ret,Math.min(t1,t2),Math.max(t1,t2));
+        final var dx1 = operator.convolutionOverX(image1.data);
+        final var dy1 = operator.convolutionOverY(image1.data);
+        final var dx2 = operator.convolutionOverX(image2.data);
+        final var dy2 = operator.convolutionOverY(image2.data);
+        final var grad1 = Matrix.absoluteGradient(dx1, dy1);
+        var ret1 = Matrix.nonMaxSupression(grad1,dx1,dy1);
+        Matrix.hystheresis(ret1,Math.min(t1,t2),Math.max(t1,t2));
 
-        final var borders = new Image(image.getSource(), ret);
+        final var grad2 = Matrix.absoluteGradient(dx2, dy2);
+        var ret2 = Matrix.nonMaxSupression(grad2,dx2,dy2);
+        Matrix.hystheresis(ret2,Math.min(t1,t2),Math.max(t1,t2));
+
+        final var borders = new Image(image.getSource(), Matrix.intersect(ret1,ret2));
 
 
         final String key = ImageTool.buildKey("Canny", borders,
