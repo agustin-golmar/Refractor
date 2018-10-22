@@ -199,8 +199,8 @@
                                 borders[c][w][h-1]==0 &&
                                 borders[c][w-1][h-1]==0)
                             borders[c][w][h]=0;
-		                else
-		                    borders[c][w][h]=255;
+		                //else
+		                    //borders[c][w][h]=255;
 
                     }
                 }
@@ -212,7 +212,7 @@
 		    for (int c=0;c<ret.length;c++){
 		        for (int w=0;w<ret[0].length;w++){
 		            for (int h=0;h<ret[0][0].length;h++){
-		                ret[c][w][h] = m1[c][w][h]>0 && m2[c][w][h]>0?255:0;
+		                ret[c][w][h] = Math.min(m1[c][w][h],m2[c][w][h]);
                     }
                 }
             }
