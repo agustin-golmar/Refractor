@@ -9,6 +9,7 @@
 		public static final double NOTHING = 0.0;
 		public static final double BORDER = 0.5;
 		public static final double CORNER = 1.0;
+		public static final double CONTOUR = 2.0;
 
 		public static double [][][] emptySpaceFrom(final double [][][] space) {
 			return new double [space.length][space[0].length][space[0][0].length];
@@ -141,6 +142,11 @@
 						result[2][w][h] = 40.0;
 					}
 					else if (features[0][w][h] == CORNER) {
+						result[0][w][h] = 255.0;
+						result[1][w][h] = 0.0;
+						result[2][w][h] = 230.0;
+					}
+					else if (features[0][w][h] == CONTOUR) {
 						result[0][w][h] = 255.0;
 						result[1][w][h] = 0.0;
 						result[2][w][h] = 230.0;
