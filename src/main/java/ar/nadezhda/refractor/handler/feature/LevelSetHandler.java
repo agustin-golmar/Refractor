@@ -29,14 +29,17 @@ public class LevelSetHandler implements Handler {
 	protected final Map<Point, Double> slout = new HashMap<>();
 	protected final double [] θback = {0.0, 0.0, 0.0};
 	protected final double [] θobj = {0.0, 0.0, 0.0};
+	protected final double [][] G = Matrix.gaussian(5, 1.0);
 
 	protected int [][] φ;
 	protected boolean isDynamic = false;
+	protected boolean isFiltered = false;
 
 	@Override
 	public Map<String, Image> handle(final List<ImageState> states, final ActionEvent action) {
 		final var result = new HashMap<String, Image>();
 		isDynamic = ((CheckBox) Main.namespace.get("isDynamic")).isSelected();
+		isFiltered = ((CheckBox) Main.namespace.get("isFiltered")).isSelected();
 		states.stream()
 			.forEachOrdered(state -> {
 				final var image = state.getRGBImage();
@@ -49,7 +52,7 @@ public class LevelSetHandler implements Handler {
 				loadφ(image.data, state.getArea());
 				loadθ(image.data);
 				cycleOne(image.data);
-				System.out.println("\n\tLevelSet cycle: " + timer.getTimeInSeconds() + " sec.");
+				System.out.println("\n\tLevelSet cycled in: " + timer.getTimeInSeconds() + " sec.");
 				// ------------------------------------------------------------
 				final var map = new Image(image.getSource(), Matrix.colorFeatures(getContours(), image.data));
 				final var key = ImageTool.buildKey("level-set", map, state.getKey());
@@ -71,48 +74,74 @@ public class LevelSetHandler implements Handler {
 	}
 
 	protected void cycleTwo(final double [][][] space) {
-		// Ng veces...
-		// ...
-		if (stoppingCriterion(space)) return;
-		else cycleOne(space);
-	}
-
-	protected void cycleOne(final double [][][] space) {
-		final var Na = Math.max(space[0].length, space[0][0].length);
-		System.out.println("Na = " + Na);
-		for (int i = 0; i < Na; ++i) {
+		for (int i = 0; i < G.length; ++i) {
 			lout.stream()
-				.forEach(p -> slout.put(p, getSpeed(space, p)));
-			lin.stream()
-				.forEach(p -> slin.put(p, getSpeed(space, p)));
-			lout.stream()
-				.filter(p -> 0.0 < slout.get(p))
+				.filter(p -> Matrix.convolution(φ, G, p) < 0)
 				.forEach(this::switchIn);
 			update(lout);
 			lin.stream()
 				.forEach(this::drainLin);
 			update(lin);
 			lin.stream()
-				.filter(slin::containsKey)
-				.filter(p -> slin.get(p) < 0.0)
+				.filter(p -> 0 < Matrix.convolution(φ, G, p))
 				.forEach(this::switchOut);
 			update(lin);
 			lout.stream()
 				.forEach(this::drainLout);
 			update(lout);
+		}
+		System.out.println("CycleTwo(lin, lout) = (" + lin.size() + ", " + lout.size() + ")");
+	}
+
+	protected void cycleOne(final double [][][] space) {
+		final var Na = Math.max(space[0].length, space[0][0].length);
+		boolean cycleOneFinish = false;
+		while (!cycleOneFinish) {
 			slin.clear();
 			slout.clear();
 			if (isDynamic) loadθ(space);
-			System.out.println("CycleOne: " + i);
-			System.out.println("(lin, lout) = (" + lin.size() + ", " + lout.size() + ")");
-			if (stoppingCriterion(space)) {
-				System.out.println("Stopping Criterion over CycleOne.");
-				break;
+			for (int i = 0; i < Na; ++i) {
+				lout.stream()
+					.forEach(p -> slout.put(p, getSpeed(space, p)));
+				lin.stream()
+					.forEach(p -> slin.put(p, getSpeed(space, p)));
+				lout.stream()
+					.filter(p -> 0.0 < slout.get(p))
+					.forEach(this::switchIn);
+				update(lout);
+				lin.stream()
+					.forEach(this::drainLin);
+				update(lin);
+				lin.stream()
+					.filter(slin::containsKey)
+					.filter(p -> slin.get(p) < 0.0)
+					.forEach(this::switchOut);
+				update(lin);
+				lout.stream()
+					.forEach(this::drainLout);
+				update(lout);
+				if (isDynamic) loadθ(space);
+				if (stoppingCriterion(space)) {
+					System.out.println("CycleOne(lin, lout) = (" + lin.size() + ", " + lout.size() + ")");
+					System.out.println("Stopping Criterion over CycleOne.");
+					cycleOneFinish = true;
+					break;
+				}
+			}
+			if (isFiltered) {
+				System.out.println("CycleOne(lin, lout) = (" + lin.size() + ", " + lout.size() + ")");
+				cycleTwo(space);
 			}
 		}
-		cycleTwo(space);
 	}
 
+	/**
+	* <p>Se debe ejecutar cada vez que se aplica <b>switchIn/Out</b> o
+	* <b>drainLin/Lout</b>.</p>
+	*
+	* @param points
+	*	El conjunto <b>lin</b> o <b>lout</b> a actualizar.
+	*/
 	protected void update(final Set<Point> points) {
 		points.removeAll(mfr);
 		points.addAll(mfa);
@@ -256,7 +285,7 @@ public class LevelSetHandler implements Handler {
 			θobj[2] /= objSize;
 		}
 		else θobj[0] = θobj[1] = θobj[2] = 0;
-		System.out.println("(θback) = (" + θback[0] + ", " + θback[1] + ", " + θback[2] + ")");
+		System.out.println("\n(θback) = (" + θback[0] + ", " + θback[1] + ", " + θback[2] + ")");
 		System.out.println("(θobj) = (" + θobj[0] + ", " + θobj[1] + ", " + θobj[2] + ")");
 	}
 
@@ -272,30 +301,16 @@ public class LevelSetHandler implements Handler {
 		final var Y = (int) target.getY();
 		final var W = (int) target.getWidth();
 		final var H = (int) target.getHeight();
-		//System.out.println("(X, Y, W, H) = (" + X + ", " + Y + ", " + W + ", " + H + ")");
-		/*
-		 * 200x200
-		 * (X, Y, W, H) = (54, 54, 46, 21)
-		 */
 		φ = Matrix.flatFilterToInt(space, (s, c, w, h) -> {
-			// 54 < w && w < 100 && 54 < h && h < 75
-			// w -> (55, 99)
-			// h -> (55, 74)
 			if (X < w && w < X + W && Y < h && h < Y + H) {
 				// Interior
 				return -3;
 			}
-			// 54 <= w && w <= 100 && 54 <= h && h <= 75
-			// w -> (54, 100)
-			// h -> (54, 75)
 			else if (X <= w && w <= X + W && Y <= h && h <= Y + H) {
 				// Sobre 'lin'
 				lin.add(new Point(w, h));
 				return -1;
 			}
-			// 53 <= w && w <= 101 && 53 <= h && h <= 76
-			// w -> (53, 101)
-			// h -> (53, 76)
 			else if (X - 1 <= w && w <= X + W + 1 && Y - 1 <= h && h <= Y + H + 1) {
 				// Sobre 'lout'
 				lout.add(new Point(w, h));
@@ -306,13 +321,6 @@ public class LevelSetHandler implements Handler {
 				return 3;
 			}
 		});
-		/*System.out.println("\n\n");
-		for (int h = 0; h < φ[0].length; ++h) {
-			for (int w = 0; w < φ.length; ++w) {
-				System.out.print(φ[w][h]+3 + ",");
-			}
-			System.out.println();
-		}*/
 	}
 
 	@Override

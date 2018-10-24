@@ -1,9 +1,11 @@
 
 	package ar.nadezhda.refractor.support;
 
+	import ar.nadezhda.refractor.interfaces.FlatIntTransform;
 	import ar.nadezhda.refractor.interfaces.IntTransform;
 	import ar.nadezhda.refractor.interfaces.KernelOperator;
 	import ar.nadezhda.refractor.interfaces.Transform;
+	import java.awt.Point;
 
 	public class Matrix {
 
@@ -15,6 +17,10 @@
 
 		public static double [][][] emptySpaceFrom(final double [][][] space) {
 			return new double [space.length][space[0].length][space[0][0].length];
+		}
+
+		public static int [][] emptySpaceFrom(final int [][] space) {
+			return new int [space.length][space[0].length];
 		}
 
 		public static int [][] flatIntAndEmptySpaceFrom(final double [][][] space) {
@@ -42,9 +48,62 @@
 			return result;
 		}
 
+		public static int [][] filter(
+				final int [][] space, final FlatIntTransform transform) {
+			final int [][] result = emptySpaceFrom(space);
+			for (int h = 0; h < space[0].length; ++h)
+				for (int w = 0; w < space.length; ++w) {
+					result[w][h] = (int) transform.apply(space, w, h);
+				}
+			return result;
+		}
+
 		public static double [][][] convolution(
 				final double [][][] space, final double [][] kernel) {
 			return convolution(space, kernel, (c, w, h, k, s) -> k * s);
+		}
+
+		public static int [][] convolution(
+				final int [][] space, final double [][] kernel) {
+			return convolution(space, kernel, (c, w, h, k, s) -> k * s);
+		}
+
+		public static int convolution(
+				final int [][] space, final double [][] kernel,
+				final Point point) {
+			final var dim = kernel.length;
+			final var base = dim/2;
+			final var width = space.length;
+			final var height = space[0].length;
+			double result = 0.0;
+			for (int i = 0; i < dim; ++i)
+				for (int j = 0; j < dim; ++j) {
+					final var ew = point.x - base + i;
+					final var eh = point.y - base + j;
+					if (-1 < ew && ew < width && -1 < eh && eh < height)
+						result += kernel[i][j] * space[ew][eh];
+				}
+			return (int) result;
+		}
+
+		public static int [][] convolution(
+				final int [][] space, final double [][] kernel,
+				final KernelOperator operator) {
+			final var dim = kernel.length;
+			final var base = dim/2;
+			final var width = space.length;
+			final var height = space[0].length;
+			return Matrix.filter(space, (space_, w, h) -> {
+				double result = 0.0;
+				for (int i = 0; i < dim; ++i)
+					for (int j = 0; j < dim; ++j) {
+						final var ew = w - base + i;
+						final var eh = h - base + j;
+						if (-1 < ew && ew < width && -1 < eh && eh < height)
+							result += operator.apply(0, w, h, kernel[i][j], space[ew][eh]);
+					}
+				return (int) result;
+			});
 		}
 
 		public static double [][][] convolution(
@@ -139,6 +198,20 @@
 					final var factor = (x*x + y*y) / σ2;
 					filter[i][j] = (factor - 2) * Math.exp(-factor/2.0) / (S2PI*σ*σ2);
 				}
+			return filter;
+		}
+
+		public static double [][] gaussian(final int dim, final double σ) {
+			final var filter = new double [dim][dim];
+			final var d1 = 2*Math.PI*σ*σ;
+			final var d2 = 2*σ*σ;
+			for (int i = 0; i < dim; ++i) {
+				for (int j = 0; j < dim; ++j) {
+					final var x = i - dim/2;
+					final var y = j - dim/2;
+					filter[i][j] = Math.exp(-(x*x + y*y) / d2) / d1;
+				}
+			}
 			return filter;
 		}
 
