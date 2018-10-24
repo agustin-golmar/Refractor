@@ -1,7 +1,6 @@
 [![...](res/readme-header.png)](https://github.com/agustin-golmar/Refractor)
 [![...](https://img.shields.io/badge/Java-v10.0-orange.svg)](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 [![...](https://img.shields.io/badge/release-v1.0-blue.svg)](https://github.com/agustin-golmar/Refractor/releases)
-[![...](https://www.travis-ci.com/agustin-golmar/Refractor.svg?branch=master)](https://www.travis-ci.com/agustin-golmar/Refractor)
 
 # Refractor
 

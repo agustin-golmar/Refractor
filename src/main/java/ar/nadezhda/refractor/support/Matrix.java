@@ -1,6 +1,7 @@
 
 	package ar.nadezhda.refractor.support;
 
+	import ar.nadezhda.refractor.interfaces.IntTransform;
 	import ar.nadezhda.refractor.interfaces.KernelOperator;
 	import ar.nadezhda.refractor.interfaces.Transform;
 
@@ -9,9 +10,25 @@
 		public static final double NOTHING = 0.0;
 		public static final double BORDER = 0.5;
 		public static final double CORNER = 1.0;
+		public static final double CONTOUR = 2.0;
+		public static final double OUTTER_CONTOUR = 3.0;
 
 		public static double [][][] emptySpaceFrom(final double [][][] space) {
 			return new double [space.length][space[0].length][space[0][0].length];
+		}
+
+		public static int [][] flatIntAndEmptySpaceFrom(final double [][][] space) {
+			return new int [space[0].length][space[0][0].length];
+		}
+
+		public static int [][] flatFilterToInt(
+				final double [][][] space, final IntTransform transform) {
+			final int [][] result = flatIntAndEmptySpaceFrom(space);
+			for (int h = 0; h < space[0][0].length; ++h)
+				for (int w = 0; w < space[0].length; ++w) {
+					result[w][h] = transform.apply(space, 0, w, h);
+				}
+			return result;
 		}
 
 		public static double [][][] filter(
@@ -141,6 +158,16 @@
 						result[2][w][h] = 40.0;
 					}
 					else if (features[0][w][h] == CORNER) {
+						result[0][w][h] = 255.0;
+						result[1][w][h] = 0.0;
+						result[2][w][h] = 230.0;
+					}
+					else if (features[0][w][h] == CONTOUR) {
+						result[0][w][h] = 255.0;
+						result[1][w][h] = 230.0;
+						result[2][w][h] = 40.0;
+					}
+					else if (features[0][w][h] == OUTTER_CONTOUR) {
 						result[0][w][h] = 255.0;
 						result[1][w][h] = 0.0;
 						result[2][w][h] = 230.0;

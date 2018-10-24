@@ -198,8 +198,13 @@
 						<content>
 							<GridPane alignment = "center_left" hgap = "5" vgap = "5">
 								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "0" fx:id = "susan" text = "S.U.S.A.N." onAction = "#control"/>
+<<<<<<< HEAD
 								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "1" fx:id = "levelSet" text = "Level-Set Tracking" onAction = "#control"/>
                                 <Button GridPane.columnIndex = "0" GridPane.rowIndex = "2" fx:id = "houghLine" text = "Hough Line" onAction = "#control"/>
+=======
+								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "1" fx:id = "levelSet" text = "Level-Set" onAction = "#control"/>
+								<CheckBox GridPane.columnIndex = "1" GridPane.rowIndex = "1" fx:id = "isDynamic" text = "Dynamic RGB-average (slow)"/>
+>>>>>>> c099f68f7f83d0ecf115225e2772624fe1010dc4
 							</GridPane>
 						</content>
 					</TitledPane>

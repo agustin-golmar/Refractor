@@ -34,6 +34,10 @@ public class ImageState {
         this.image = image;
     }
 
+    public Rectangle getArea() {
+    	return area;
+    }
+
     public String getKey() {
         return key;
     }
@@ -44,6 +48,15 @@ public class ImageState {
 
     public Image getImage() {
         return image;
+    }
+
+    public Image getRGBImage() {
+    	if (image.getChannels() == 3) {
+    		return image;
+    	}
+    	else {
+    		return image.getFullGrayscale();
+    	}
     }
 
     public Pane getRoot() {
