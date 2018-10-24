@@ -108,6 +108,7 @@
             router.put("canny",new CannyHandler());
             router.put("susan", new SUSANHandler());
             router.put("levelSet", new LevelSetHandler());
+            router.put("houghLine",new HoughLineHandler());
 			return router;
 		}
 

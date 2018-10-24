@@ -201,6 +201,7 @@
 								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "1" fx:id = "levelSet" text = "Level-Set" onAction = "#control"/>
 								<CheckBox GridPane.columnIndex = "1" GridPane.rowIndex = "1" fx:id = "isDynamic" text = "Dynamic RGB-average (slow)"/>
 								<CheckBox GridPane.columnIndex = "2" GridPane.rowIndex = "1" fx:id = "isFiltered" text = "Gauss Filter"/>
+								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "2" fx:id = "houghLine" text = "Hough Line" onAction = "#control"/>
 							</GridPane>
 						</content>
 					</TitledPane>
