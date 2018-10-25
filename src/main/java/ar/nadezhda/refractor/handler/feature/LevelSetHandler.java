@@ -185,13 +185,36 @@ public class LevelSetHandler implements Handler {
 		final var left = new Point(x.x - 1, x.y);
 		final var right = new Point(x.x + 1, x.y);
 		// Usar 8-neighbours?
-		if (0 <= up.y && φ[up.x][up.y] < 0
+		/**/
+		final var leftup = new Point(x.x - 1, x.y - 1);
+		final var rightup = new Point(x.x + 1, x.y - 1);
+		final var leftdown = new Point(x.x - 1, x.y + 1);
+		final var rightdown = new Point(x.x + 1, x.y + 1);
+		/**/
+
+		final boolean condition =
+				(up.y < 0 || φ[up.x][up.y] < 0) &&
+				(φ[0].length <= down.y || φ[down.x][down.y] < 0) &&
+				(left.x < 0 || φ[left.x][left.y] < 0) &&
+				(φ.length <= right.x || φ[right.x][right.y] < 0) /**/ &&
+
+				(leftup.x < 0 || leftup.y < 0 || φ[leftup.x][leftup.y] < 0) &&
+				(φ.length <= rightup.x || rightup.y < 0 || φ[rightup.x][rightup.y] < 0) &&
+				(leftdown.x < 0 || φ[0].length <= leftdown.y || φ[leftdown.x][leftdown.y] < 0) &&
+				(φ.length <= rightdown.x || φ[0].length <= rightdown.y || φ[rightdown.x][rightdown.y] < 0);
+
+		if (condition) {
+			mfr.add(x);
+			φ[x.x][x.y] = -3;
+		}
+
+		/*if (0 <= up.y && φ[up.x][up.y] < 0
 			&& down.y < φ[0].length && φ[down.x][down.y] < 0
 			&& 0 <= left.x && φ[left.x][left.y] < 0
 			&& right.x < φ.length && φ[right.x][right.y] < 0) {
 			mfr.add(x);
 			φ[x.x][x.y] = -3;
-		}
+		}*/
 	}
 
 	protected void drainLout(final Point x) {
@@ -200,13 +223,34 @@ public class LevelSetHandler implements Handler {
 		final var left = new Point(x.x - 1, x.y);
 		final var right = new Point(x.x + 1, x.y);
 		// Usar 8-neighbours?
-		if (0 <= up.y && φ[up.x][up.y] > 0
+		final var leftup = new Point(x.x - 1, x.y - 1);
+		final var rightup = new Point(x.x + 1, x.y - 1);
+		final var leftdown = new Point(x.x - 1, x.y + 1);
+		final var rightdown = new Point(x.x + 1, x.y + 1);
+
+		final boolean condition =
+				(up.y < 0 || φ[up.x][up.y] > 0) &&
+				(φ[0].length <= down.y || φ[down.x][down.y] > 0) &&
+				(left.x < 0 || φ[left.x][left.y] > 0) &&
+				(φ.length <= right.x || φ[right.x][right.y] > 0) /**/ &&
+
+				(leftup.x < 0 || leftup.y < 0 || φ[leftup.x][leftup.y] > 0) &&
+				(φ.length <= rightup.x || rightup.y < 0 || φ[rightup.x][rightup.y] > 0) &&
+				(leftdown.x < 0 || φ[0].length <= leftdown.y || φ[leftdown.x][leftdown.y] > 0) &&
+				(φ.length <= rightdown.x || φ[0].length <= rightdown.y || φ[rightdown.x][rightdown.y] > 0);
+
+		if (condition) {
+			mfr.add(x);
+			φ[x.x][x.y] = 3;
+		}
+
+		/*if (0 <= up.y && φ[up.x][up.y] > 0
 			&& down.y < φ[0].length && φ[down.x][down.y] > 0
 			&& 0 <= left.x && φ[left.x][left.y] > 0
 			&& right.x < φ.length && φ[right.x][right.y] > 0) {
 			mfr.add(x);
 			φ[x.x][x.y] = 3;
-		}
+		}*/
 	}
 
 	protected void switchIn(final Point x) {
