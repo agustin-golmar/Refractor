@@ -35,7 +35,7 @@
 							.append(state.getKey())
 							.append(")")
 							.toString();
-					ImageTool.display(histogram, title, 768, 512);
+					ImageTool.display(histogram, title, 768, 512, true);
 				});
 			return Collections.emptyMap();
 		}

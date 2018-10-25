@@ -10,6 +10,7 @@ import ar.nadezhda.refractor.interfaces.Handler;
 import ar.nadezhda.refractor.support.Matrix;
 import ar.nadezhda.refractor.support.Timer;
 import java.awt.Point;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -38,21 +39,34 @@ public class LevelSetHandler implements Handler {
 	@Override
 	public Map<String, Image> handle(final List<ImageState> states, final ActionEvent action) {
 		final var result = new HashMap<String, Image>();
+		if (states.isEmpty()) return result;
+		states.sort(Comparator.comparing(ImageState::getKey));
 		isDynamic = ((CheckBox) Main.namespace.get("isDynamic")).isSelected();
 		isFiltered = ((CheckBox) Main.namespace.get("isFiltered")).isSelected();
+		lin.clear();
+		lout.clear();
+		mfr.clear();
+		mfa.clear();
+		final var image0 = states.get(0).getRGBImage();
+		final var timer0 = Timer.start();
+		loadφ(image0.data, states.get(0).getArea());
+		loadθ(image0.data);
+		cycleOne(image0.data);
+		final var map0 = new Image(image0.getSource(), Matrix.colorFeatures(getContours(), image0.data));
+		System.out.println("\n\t(Frame 0) Level-set cycled in: " + timer0.getTimeInSeconds() + " sec.");
+		final var key0 = ImageTool.buildKey("level-set", map0, states.get(0).getKey());
+		result.put(key0, map0);
+		int [] index = {1};
 		states.stream()
+			.skip(1)
 			.forEachOrdered(state -> {
 				final var image = state.getRGBImage();
-				// ------------------------------------------------------------
 				final var timer = Timer.start();
-				lin.clear();
-				lout.clear();
 				mfr.clear();
 				mfa.clear();
-				loadφ(image.data, state.getArea());
-				loadθ(image.data);
 				cycleOne(image.data);
-				System.out.println("\n\tLevelSet cycled in: " + timer.getTimeInSeconds() + " sec.");
+				System.out.println("\n\t(Frame " + (index[0]++) + ") Level-set cycled in: "
+						+ timer.getTimeInSeconds() + " sec.");
 				// ------------------------------------------------------------
 				final var map = new Image(image.getSource(), Matrix.colorFeatures(getContours(), image.data));
 				final var key = ImageTool.buildKey("level-set", map, state.getKey());

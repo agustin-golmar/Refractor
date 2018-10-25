@@ -219,8 +219,16 @@
 				<Button fx:id = "display" text = "Display" onAction = "#control"/>
 				<Button fx:id = "histogram" text = "Histogram" onAction = "#control"/>
 				<Button fx:id = "remove" text = "Remove" onAction = "#control"/>
+				<CheckBox fx:id = "displayNew" text = "Display on creation"/>
 			</HBox>
 			<ListView fx:id = "keys" minWidth = "500"/>
+			<GridPane alignment = "center_left" hgap = "5" vgap = "5">
+				<Button GridPane.columnIndex = "0" GridPane.rowIndex = "0" fx:id = "video" text = "Video" onAction = "#control"/>
+				<Label GridPane.columnIndex = "1" GridPane.rowIndex = "0" GridPane.halignment = "right" text = "FPS:"/>
+				<TextField GridPane.columnIndex = "2" GridPane.rowIndex = "0" fx:id = "fps" text = "10"/>
+				<ToggleButton GridPane.columnIndex = "3" GridPane.rowIndex = "0" fx:id = "paused" text = "Pause"/>
+				<ToggleButton GridPane.columnIndex = "4" GridPane.rowIndex = "0" fx:id = "stopped" text = "Stop"/>
+			</GridPane>
 		</VBox>
 	</center>
 	<right>

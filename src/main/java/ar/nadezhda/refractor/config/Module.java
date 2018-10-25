@@ -109,6 +109,7 @@
             router.put("susan", new SUSANHandler());
             router.put("levelSet", new LevelSetHandler());
             router.put("houghLine",new HoughLineHandler());
+            router.put("video", new VideoHandler());
 			return router;
 		}
 
@@ -125,6 +126,7 @@
 			formats.add(new RAWFormat());
 			formats.add(new TIFFormat());
 			formats.add(new WBMPFormat());
+			formats.add(new JPEGFormat());
 			return formats;
 		}
 

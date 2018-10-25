@@ -98,7 +98,7 @@
 		}
 
 		public static void display(final Node node, final String title,
-				final int width, final int height) {
+				final int width, final int height, final boolean show) {
 			final Stage stage = new Stage();
 			final StackPane root = new StackPane();
 			final Scene scene = new Scene(root, width, height);
@@ -106,18 +106,18 @@
 			root.getChildren().add(node);
 			stage.setScene(scene);
 			stage.setTitle(title);
-			stage.show();
+			if (show) stage.show();
 		}
 
 		public static ImageState displayNewImage(final String key,
-				final WritableImage wImage, final Image image) {
+				final WritableImage wImage, final Image image, final boolean show) {
 			final ImageView view = new ImageView(wImage);
 			final String title = new StringBuilder()
 					.append(key)
 					.append(" : ")
 					.append(image.getWidth()).append("x").append(image.getHeight())
 					.toString();
-			display(view, title, image.getWidth(), image.getHeight());
+			display(view, title, image.getWidth(), image.getHeight(), show);
 			final ImageState state = new ImageState(key, view, image);
 			view.setUserData(state);
 			return state;
@@ -156,7 +156,7 @@
 					.map(Tool::getUUI)
 					.collect(Collectors.joining(", "));
 			return new StringBuilder()
-					.append("[").append(id++).append("] = ")
+					.append("[").append(String.format("%06d", id++)).append("] = ")
 					.append(action)
 					.append("(").append(srcs).append(")")
 					.toString();

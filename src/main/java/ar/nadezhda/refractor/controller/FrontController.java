@@ -38,6 +38,7 @@
 		@FXML protected Label grayAverage;
 		@FXML protected Slider mhDevValue;
 		@FXML protected TextField mhDimValue;
+		@FXML protected CheckBox displayNew;
 
 		private final Map<String, Handler> router;
 		private final Workspace workspace;
@@ -69,6 +70,7 @@
 							final var compressedImage = new Image(
 									image.getSource(), compressor.compress(image.data));
 							addImage(key, compressedImage);
+							System.out.println("Image added: " + key);
 						});
 				});
 		}
@@ -101,9 +103,10 @@
 
 		private ImageState addImage(final String key, final Image image) {
 			final WritableImage wImage = ImageTool.getImageForDisplay(image);
-			final ImageState state = ImageTool.displayNewImage(key, wImage, image);
+			final ImageState state = ImageTool.displayNewImage(key, wImage, image, displayNew.isSelected());
 			addTriggers(state);
 			keys.getItems().add(key);
+			keys.getItems().sort(null);
 			workspace.addState(key, state);
 			return state;
 		}
