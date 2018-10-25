@@ -299,8 +299,8 @@
                                 borders[c][w][h-1]==0 &&
                                 borders[c][w-1][h-1]==0)
                             borders[c][w][h]=0;
-		                //else
-		                    //borders[c][w][h]=255;
+		                else
+		                    borders[c][w][h]=255;
 
                     }
                 }

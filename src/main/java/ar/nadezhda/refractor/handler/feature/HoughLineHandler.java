@@ -9,8 +9,17 @@ import ar.nadezhda.refractor.interfaces.Compressor;
 import ar.nadezhda.refractor.interfaces.Handler;
 import javafx.event.ActionEvent;
 import javafx.geometry.Point3D;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
+import javafx.stage.Stage;
+
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -69,6 +78,23 @@ public class HoughLineHandler implements Handler {
     }
 
     private double[][][] drawCircles(List<Point3D> circles) {
+        final Stage stage = new Stage();
+        final Pane root = new Pane();
+        //final Scene scene = new Scene(root, width, height);
+        //root.setAlignment(Pos.TOP_LEFT);
+        for (Point3D c:circles){
+            System.out.println(c.getX() + "||" + c.getY() + "||" + c.getZ());
+            Circle cir = new Circle();
+            cir.setCenterX(c.getX());
+            cir.setCenterY(c.getY());
+            cir.setRadius(c.getZ());
+            cir.setFill(Color.TRANSPARENT);
+            cir.setStroke(Color.RED);
+            root.getChildren().add(cir);
+        }
+        final Scene scene = new Scene(root, width, height);
+        stage.setScene(scene);
+        stage.show();
         var res = new double[3][width][height];
         for (int i=0;i<width;i++) {
             for (int j = 0; j < height; j++) {
@@ -76,7 +102,7 @@ public class HoughLineHandler implements Handler {
                 final int fuckJavaJ = j;
                 if (circles.stream().anyMatch(p->Math.abs(
                         (fuckJavaI-p.getX())*(fuckJavaI-p.getX()) + (fuckJavaJ-p.getY())*(fuckJavaJ-p.getY()) - p.getZ()*p.getZ()
-                )<0.5)){
+                )<=0.5)){
                     res[0][i][j]=255;
                 }
             }
@@ -89,7 +115,7 @@ public class HoughLineHandler implements Handler {
         for (int i=0;i<houghMatrix.length;i++){
             for (int j=0;j<houghMatrix[0].length;j++){
                 for (int k=0;k<houghMatrix[0][0].length;k++){
-                    if (houghMatrix[i][j][k]>maxValue*0.8){
+                    if (houghMatrix[i][j][k]>maxValue*0.6){
                         ret.add(new Point3D(i,j,k));
                     }
                 }
@@ -106,7 +132,7 @@ public class HoughLineHandler implements Handler {
                     for (int x=0;x<result.length;x++){
                         for (int y=0;y<result[0].length;y++){
                             int r = getRadius(w,h,x,y);
-                            if (r<result[0][0].length && r>15) {
+                            if (r<result[0][0].length && r>5) {
                                 result[x][y][r]++;
                                 if (result[x][y][r]>maxValue)
                                     maxValue=result[x][y][r];
@@ -124,13 +150,25 @@ public class HoughLineHandler implements Handler {
     }
 
     private double[][][] drawLines(List<Point2D> lines) {
+/*        final Stage stage = new Stage();
+        final Pane root = new Pane();
+        //final Scene scene = new Scene(root, width, height);
+        //root.setAlignment(Pos.TOP_LEFT);
+        for (Point2D l:lines){
+            //System.out.println(c.getX() + "||" + c.getY() + "||" + c.getZ());
+            Line lin = new Line();
+            root.getChildren().add(lin);
+        }
+        final Scene scene = new Scene(root, width, height);
+        stage.setScene(scene);
+        stage.show();*/
         var res = new double[3][width][height];
         for (int i=0;i<width;i++){
             for (int j=0;j<height;j++){
                 final int fuckJavaI = i;
                 final int fuckJavaJ = j;
                 if (lines.stream().anyMatch(p ->
-                        Math.abs(fuckJavaI*Math.cos(p.getX()) + fuckJavaJ*Math.sin(p.getX()) - p.getY()) <0.001)){
+                        Math.abs(fuckJavaI*Math.cos(p.getX()) + fuckJavaJ*Math.sin(p.getX()) - p.getY()) <=0.5)){
                     res[0][i][j]=255;
                 }
             }
@@ -142,7 +180,7 @@ public class HoughLineHandler implements Handler {
         var ret = new ArrayList<Point2D>();
         for (int i=0;i<houghMatrix.length;i++){
             for (int j=0;j<houghMatrix[0].length;j++){
-                if (houghMatrix[i][j]>maxValue*0.8) {
+                if (houghMatrix[i][j]>maxValue*0.5) {
                     ret.add(getRoAndTheta(i,j));
                 }
             }
