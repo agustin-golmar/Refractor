@@ -13,6 +13,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -34,6 +35,8 @@ public class HoughLineHandler implements Handler {
     int height;
     int maxValue;
     boolean circle;
+    int accumAngles;
+    int accumRos;
 
     @Override
     public Map<String, Image> handle(List<ImageState> states, ActionEvent action) {
@@ -46,10 +49,12 @@ public class HoughLineHandler implements Handler {
                     .toString());
             return result;
         }
-        ImageTool.popup(Alert.AlertType.INFORMATION,"Info","Make sure you've selected a thresholded border image." +
-                "Otherwise this won't work.");
+        //ImageTool.popup(Alert.AlertType.INFORMATION,"Info","Make sure you've selected a thresholded border image." +
+          //      "Otherwise this won't work.");
         final var imageState = states.get(0);
         circle = ((CheckBox) Main.namespace.get("houghCircle")).isSelected();
+        accumAngles = Integer.parseInt(((TextField) Main.namespace.get("accumAngles")).getText());
+        accumRos = Integer.parseInt(((TextField) Main.namespace.get("accumRos")).getText());
         var image = imageState.getImage();
         width = image.data[0].length;
         height = image.data[0][0].length;
@@ -102,7 +107,7 @@ public class HoughLineHandler implements Handler {
                 final int fuckJavaJ = j;
                 if (circles.stream().anyMatch(p->Math.abs(
                         (fuckJavaI-p.getX())*(fuckJavaI-p.getX()) + (fuckJavaJ-p.getY())*(fuckJavaJ-p.getY()) - p.getZ()*p.getZ()
-                )<=0.5)){
+                )<=2)){
                     res[0][i][j]=255;
                 }
             }
@@ -168,7 +173,7 @@ public class HoughLineHandler implements Handler {
                 final int fuckJavaI = i;
                 final int fuckJavaJ = j;
                 if (lines.stream().anyMatch(p ->
-                        Math.abs(fuckJavaI*Math.cos(p.getX()) + fuckJavaJ*Math.sin(p.getX()) - p.getY()) <=0.5)){
+                        Math.abs(fuckJavaI*Math.cos(p.getX()) + fuckJavaJ*Math.sin(p.getX()) - p.getY()) <=0.4)){
                     res[0][i][j]=255;
                 }
             }
@@ -180,7 +185,7 @@ public class HoughLineHandler implements Handler {
         var ret = new ArrayList<Point2D>();
         for (int i=0;i<houghMatrix.length;i++){
             for (int j=0;j<houghMatrix[0].length;j++){
-                if (houghMatrix[i][j]>maxValue*0.5) {
+                if (houghMatrix[i][j]>maxValue*0.3) {
                     ret.add(getRoAndTheta(i,j));
                 }
             }
@@ -189,17 +194,18 @@ public class HoughLineHandler implements Handler {
     }
 
     private Point2D getRoAndTheta(int i, int j) {
-        return new Point2D.Double(Math.toRadians(i*180.0/499-90),
-                j*(2*Math.sqrt(2)*Math.max(width,height))/499 - Math.sqrt(2)*Math.max(width,height));
+        return new Point2D.Double(Math.toRadians(i*180.0/(accumAngles-1)-90),
+                j*(2*Math.hypot(width,height))/(accumRos-1) - Math.hypot(width,height));
     }
 
     private int[][] accumulate(double[][][] data) {
-        var result = new int[500][500];
+        var result = new int[accumAngles][accumRos];
         for (int w=0;w<data[0].length;w++){
             for (int h=0;h<data[0][0].length;h++){
-                for (int m=0;m<result[0].length;m++) {
+                for (int m=0;m<result.length;m++) {
                     if (data[0][w][h]==255){
                         int n=getRo(w,h,m);
+                        //System.out.println(n);
                         result[m][n]++;
                         if (result[m][n]>maxValue) {
                             maxValue = result[m][n];
@@ -212,9 +218,9 @@ public class HoughLineHandler implements Handler {
     }
 
     private int getRo(int w, int h, int m) {
-        double angle = Math.toRadians(m*180.0/499.0-90);
+        double angle = Math.toRadians(m*180.0/(accumAngles-1)-90);
         double ro = w*Math.cos(angle)+h*Math.sin(angle);
-        return (int)((ro + Math.sqrt(2)*Math.max(width,height)) * (499) / (2*Math.sqrt(2)*Math.max(width,height)));
+        return (int)((ro + Math.hypot(width,height)) * (accumRos-1) / (2*Math.hypot(width,height)));
     }
 
     @Override

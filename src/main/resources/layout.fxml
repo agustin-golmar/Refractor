@@ -202,6 +202,10 @@
 								<CheckBox GridPane.columnIndex = "1" GridPane.rowIndex = "1" fx:id = "isDynamic" text = "Dynamic RGB-average (slow)"/>
 								<CheckBox GridPane.columnIndex = "2" GridPane.rowIndex = "1" fx:id = "isFiltered" text = "Gauss Filter"/>
 								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "2" fx:id = "houghLine" text = "Hough Line" onAction = "#control"/>
+                                <Label GridPane.columnIndex = "0" GridPane.rowIndex = "3" GridPane.halignment = "right" text = "Angles"/>
+                                <TextField GridPane.columnIndex = "1" GridPane.rowIndex = "3" fx:id = "accumAngles" text = "7"/>
+                                <Label GridPane.columnIndex = "0" GridPane.rowIndex = "4" GridPane.halignment = "right" text = "Ros"/>
+                                <TextField GridPane.columnIndex = "1" GridPane.rowIndex = "4" fx:id = "accumRos" text = "7"/>
                                 <CheckBox GridPane.columnIndex = "1" GridPane.rowIndex = "2" fx:id = "houghCircle" text = "Circle"/>
 							</GridPane>
 						</content>
