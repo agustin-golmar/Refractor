@@ -59,7 +59,7 @@ public class CannyHandler implements Handler {
         var ret2 = Matrix.nonMaxSupression(grad2,dx2,dy2);
         Matrix.hystheresis(ret2,Math.min(t1,t2),Math.max(t1,t2));
 
-        final var borders = new Image(image.getSource(), Matrix.intersect(ret1,ret2));
+        final var borders = new Image(image.getSource(), ret2);
 
 
         final String key = ImageTool.buildKey("Canny", borders,

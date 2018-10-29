@@ -252,9 +252,9 @@
 		public static double[][][] nonMaxSupression(final double [][][] borders,final double [][][] dx, final double[][][] dy) {
 		    final var res = new double[borders.length][borders[0].length][borders[0][0].length];
 		    for (int c=0;c<res.length;c++) {
-		        for (int w=1;w<res[0].length-1;w++) {
-		            for (int h=1;h<res[0][0].length-1;h++) {
-		                if (borders[c][w][h]>0) {
+		        for (int h=1;h<res[0][0].length-1;h++) {
+		            for (int w=1;w<res[0].length-1;w++) {
+		                if (borders[c][w][h]>0.0001) {
                             var angle = Math.atan2(dy[c][w][h], dx[c][w][h]);
                             if (angle<0)
                                 angle+=Math.PI;
@@ -275,8 +275,13 @@
                                 x=-1;
                                 y=1;
                             }
-                            if (borders[c][w][h]>borders[c][w+x][h+y] && borders[c][w][h]>borders[c][w-x][h-y])
-                                res[c][w][h]=borders[c][w][h];
+                            if (borders[c][w][h]>borders[c][w+x][h+y] && borders[c][w][h]>=borders[c][w-x][h-y]) {
+                                res[c][w][h] = borders[c][w][h];
+                                //System.out.println("Paso!");
+
+                            }
+                            //if (c==0)
+                                //System.out.println("p: "+borders[c][w][h]+"|w: "+w + "|h: "+h+" |x: "+x+" |y: "+y);
                             //System.out.println(angle);
                         }
                     }
@@ -312,7 +317,7 @@
 		    for (int c=0;c<ret.length;c++){
 		        for (int w=0;w<ret[0].length;w++){
 		            for (int h=0;h<ret[0][0].length;h++){
-		                ret[c][w][h] = Math.min(m1[c][w][h],m2[c][w][h]);
+		                ret[c][w][h] = Math.max(m1[c][w][h],m2[c][w][h]);
                     }
                 }
             }
