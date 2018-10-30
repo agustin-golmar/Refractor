@@ -185,7 +185,7 @@ public class HoughLineHandler implements Handler {
         var ret = new ArrayList<Point2D>();
         for (int i=0;i<houghMatrix.length;i++){
             for (int j=0;j<houghMatrix[0].length;j++){
-                if (houghMatrix[i][j]>maxValue*0.3) {
+                if (houghMatrix[i][j]>maxValue*0.35) {
                     ret.add(getRoAndTheta(i,j));
                 }
             }
