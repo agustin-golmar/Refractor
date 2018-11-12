@@ -7,31 +7,25 @@ import ar.nadezhda.refractor.core.ImageTool;
 import ar.nadezhda.refractor.handler.compression.LinearCompressor;
 import ar.nadezhda.refractor.interfaces.Compressor;
 import ar.nadezhda.refractor.interfaces.Handler;
-import javafx.event.ActionEvent;
-import javafx.geometry.Point3D;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
-import javafx.stage.Stage;
-
-
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javafx.event.ActionEvent;
+import javafx.geometry.Point3D;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 
 public class HoughLineHandler implements Handler {
 
-
-    int width;
+	int width;
     int height;
     int maxValue;
     boolean circle;
