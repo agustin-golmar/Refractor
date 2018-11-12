@@ -323,4 +323,20 @@
             }
             return ret;
         }
+
+        public static double [][][] prod(double [][][] m1,double[][][] m2){
+		    var res = new double[m1.length][m1[0].length][m1[0][0].length];
+		    for (int i=0;i<m1.length;i++){
+		        for (int j=0;j<m1[0].length;j++){
+		            for (int k=0;k<m1[0][0].length;k++){
+		                res[i][j][k]=m1[i][j][k]*m2[i][j][k];
+                    }
+                }
+            }
+            return res;
+        }
+
+        public static double [][][] pow2(double[][][] m) {
+		    return prod(m,m);
+        }
     }

@@ -110,6 +110,7 @@
             router.put("levelSet", new LevelSetHandler());
             router.put("houghLine",new HoughLineHandler());
             router.put("video", new VideoHandler());
+            router.put("harris",new HarrisHandler());
 			return router;
 		}
 
