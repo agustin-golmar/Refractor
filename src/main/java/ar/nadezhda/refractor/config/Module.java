@@ -8,6 +8,7 @@
 	import ar.nadezhda.refractor.handler.edge.*;
 	import ar.nadezhda.refractor.handler.edge.operator.ConvolutionHandler;
 	import ar.nadezhda.refractor.handler.feature.*;
+	import ar.nadezhda.refractor.handler.feature.advanced.*;
 	import ar.nadezhda.refractor.handler.filter.*;
     import ar.nadezhda.refractor.handler.filter.advanced.*;
     import ar.nadezhda.refractor.handler.noise.*;
@@ -100,17 +101,18 @@
 			router.put("convolution", new ConvolutionHandler());
 			router.put("laplacian", new LaplacianHandler());
 			router.put("marrHildreth", new MarrHildrethHandler());
-			router.put("bilateral",new BilateralFilterHandler());
-			router.put("anisotropic",new AnisotropicFilterHandler());
-            router.put("isotropic",new IsotropicFilterHandler());
-            router.put("globalThreshold",new GlobalThresholdHandler());
-            router.put("otsuThreshold",new OtzuThresholdHandler());
-            router.put("canny",new CannyHandler());
+			router.put("bilateral", new BilateralFilterHandler());
+			router.put("anisotropic", new AnisotropicFilterHandler());
+            router.put("isotropic", new IsotropicFilterHandler());
+            router.put("globalThreshold", new GlobalThresholdHandler());
+            router.put("otsuThreshold", new OtzuThresholdHandler());
+            router.put("canny", new CannyHandler());
             router.put("susan", new SUSANHandler());
             router.put("levelSet", new LevelSetHandler());
-            router.put("houghLine",new HoughLineHandler());
+            router.put("houghLine", new HoughLineHandler());
             router.put("video", new VideoHandler());
-            router.put("harris",new HarrisHandler());
+            router.put("harris", new HarrisHandler());
+            router.put("sift", new SIFTHandler());
 			return router;
 		}
 

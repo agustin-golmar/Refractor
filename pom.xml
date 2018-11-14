@@ -14,7 +14,9 @@
 	<url>https://github.com/agustin-golmar/Refractor</url>
 
 	<description>
-		...
+		A user interface to refract images (i.e., cutting, filtering, merging,
+		thresholding, etc.), and extract relevant information from them (like
+		other images).
 	</description>
 
 	<parent>
@@ -33,8 +35,8 @@
 		<!-- Plugins -->
 		<asm.version>6.2</asm.version>
 		<!-- Dependencies -->
-		<controlsfx.version>9.0.0</controlsfx.version>
 		<javax.inject.version>1</javax.inject.version>
+		<opencv.version>2.4.13.6</opencv.version>
 	</properties>
 
 	<!-- Dependencies -->
@@ -48,16 +50,26 @@
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.controlsfx</groupId>
-			<artifactId>controlsfx</artifactId>
-			<version>${controlsfx.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
 			<version>${javax.inject.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.opencv</groupId>
+			<artifactId>opencv</artifactId>
+			<version>${opencv.version}</version>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
+
+	<!-- Local Repository -->
+	<repositories>
+		<repository>
+			<id>org.opencv</id>
+			<name>OpenCV Local Repository</name>
+			<url>file:///${project.basedir}/lib</url>
+		</repository>
+	</repositories>
 
 	<!-- Plugins -->
 	<build>

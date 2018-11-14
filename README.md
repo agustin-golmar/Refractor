@@ -55,6 +55,13 @@ Currently, the following features are provided:
 	* __Laplacian-based__.
 	* Laplacian with a customizable __slope__ _s_.
 	* __Laplacian of Gaussian__, a.k.a. _The Marr-Hildreth Algorithm_.
+* __Canny Advanced Edge-detector__, with _Hysteresis Thresholding_ and selectable threshold range.
+* __S.U.S.A.N.__ edge and corner detector.
+* __Hough Transform__, over lines and circles.
+* Adjustable FPS _video-generator_.
+* __Level-Set__ object-tracker, over images and videos.
+* __Harris Corner Detector__.
+* __S.I.F.T.__ (_Scale Invariant Feature Transform_).
 
 ## Build
 
@@ -82,6 +89,17 @@ In the root folder (after build), type:
 ```
 $ java -jar target/refractor-1.0-SNAPSHOT.jar
 ```
+
+If you want to apply de __S.I.F.T.__ detector, you need _OpenCV v2.4.13.6_
+installed on your system. Then, you need to set the path to the folder that
+contains the _Java_ libraries. For example:
+
+```
+$ java -Djava.library.path="C:/OpenCV-2.4.13.6/build/java/x64" -jar target/refractor-1.0-SNAPSHOT.jar
+```
+
+The library should be called __opencv\_java2413__. The extension doesn't
+matter.
 
 ## Designers
 

@@ -191,7 +191,6 @@
                                 <Slider GridPane.columnIndex = "1" GridPane.rowIndex = "5"
                                         fx:id = "t2" min = "0" max = "256" minorTickCount = "5" majorTickUnit = "32" value = "0"/>
                                 <Label GridPane.columnIndex = "2" GridPane.rowIndex = "5" GridPane.halignment = "right" text = "t2"/>
-                                <Button GridPane.columnIndex = "0" GridPane.rowIndex = "6" fx:id = "harris" text = "Harris" onAction = "#control"/>
 							</GridPane>
 						</content>
 					</TitledPane>
@@ -208,6 +207,14 @@
                                 <Label GridPane.columnIndex = "0" GridPane.rowIndex = "4" GridPane.halignment = "right" text = "Ros"/>
                                 <TextField GridPane.columnIndex = "1" GridPane.rowIndex = "4" fx:id = "accumRos" text = "1000"/>
                                 <CheckBox GridPane.columnIndex = "1" GridPane.rowIndex = "2" fx:id = "houghCircle" text = "Circle"/>
+                                <Button GridPane.columnIndex = "0" GridPane.rowIndex = "5" fx:id = "harris" text = "Harris" onAction = "#control"/>
+							</GridPane>
+						</content>
+					</TitledPane>
+					<TitledPane text = "Advanced Feature Detectors">
+						<content>
+							<GridPane alignment = "center_left" hgap = "5" vgap = "5">
+								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "0" fx:id = "sift" text = "S.I.F.T." onAction = "#control"/>
 							</GridPane>
 						</content>
 					</TitledPane>
