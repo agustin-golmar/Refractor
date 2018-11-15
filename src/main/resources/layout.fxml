@@ -215,6 +215,12 @@
 						<content>
 							<GridPane alignment = "center_left" hgap = "5" vgap = "5">
 								<Button GridPane.columnIndex = "0" GridPane.rowIndex = "0" fx:id = "sift" text = "S.I.F.T." onAction = "#control"/>
+								<Slider GridPane.columnIndex = "1" GridPane.rowIndex = "0" minorTickCount = "4" majorTickUnit = "0.2"
+									fx:id = "knnRatio" min = "0" max = "1" value = "1"/>
+								<Label GridPane.columnIndex = "2" GridPane.rowIndex = "0" GridPane.halignment = "center" text = "(knn-ratio)"/>
+								<Slider GridPane.columnIndex = "1" GridPane.rowIndex = "1" minorTickCount = "4" majorTickUnit = "20"
+									fx:id = "matchRatio" min = "0" max = "100" value = "20"/>
+								<Label GridPane.columnIndex = "2" GridPane.rowIndex = "1" GridPane.halignment = "center" text = "(match %)"/>
 							</GridPane>
 						</content>
 					</TitledPane>
