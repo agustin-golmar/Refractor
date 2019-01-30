@@ -59,7 +59,7 @@ Currently, the following features are provided:
 * __S.U.S.A.N.__ edge and corner detector.
 * __Hough Transform__, over lines and circles.
 * Adjustable FPS _video-generator_.
-* __Level-Set__ object-tracker, over images and videos.
+* __Level-Set__ object-tracker, over images and videos. Can track multiple objects at the same time.
 * __Harris Corner Detector__.
 * __S.I.F.T.__ (_Scale Invariant Feature Transform_).
 
