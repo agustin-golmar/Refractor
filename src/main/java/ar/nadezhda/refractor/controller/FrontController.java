@@ -126,7 +126,7 @@
 					.updateArea(event.getX(), event.getY());
 			});
 			view.setOnMouseReleased(event -> {
-				state.updateArea(event.getX(), event.getY());
+				state.finishArea(event.getX(), event.getY());
 				areaDimension.setText("Area (width, height) = ("
 						+ state.getXArea() + ", " + state.getYArea() + ")");
 				pixelCount.setText("Pixel Count: " + state.getPixelCount());

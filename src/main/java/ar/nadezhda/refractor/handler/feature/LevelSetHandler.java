@@ -133,7 +133,7 @@ public class LevelSetHandler implements Handler {
 	*	El espacio de la imagen.
 	*/
 	protected void loadFrame0(final ImageState state, final Image image) {
-		final Rectangle [] targets = new Rectangle [] {state.getArea()};		// TODO: crear la función 'state.getAreas()'
+		final Rectangle[] targets = state.getAreas();
 		for (int k = 0; k < targets.length; ++k) {
 			lin.add(new HashSet<>());
 			lout.add(new HashSet<>());
