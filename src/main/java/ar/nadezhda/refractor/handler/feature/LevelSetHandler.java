@@ -554,14 +554,66 @@ public class LevelSetHandler implements Handler {
 	* compuesta por píxeles que pertenecen a un mismo objeto, pero no al
 	* fondo.</p>
 	*
-	* @param x
+	* @param c
 	*	El punto central.
 	* @return
 	*	Un número positivo o igual a cero.
 	*/
-	protected int objectTopologicalNumber(final Point x) {
-		// TODO: Ver Rozitchner, pág. 41.
-		return 1;
+	protected int objectTopologicalNumber(final Point c) {
+		boolean [] areBackground = new boolean[8];
+		boolean inComponentStart = false;
+		boolean inComponent = false;
+		int componentCount = 0;
+		boolean lastIsComponent = false;
+		boolean firstIsComponent = false;
+		boolean firstIsStart = false;
+		boolean lastIsStart = false;
+		areBackground[0] = isBackground(new Point(c.x-1,c.y-1));
+		areBackground[1] = isBackground(new Point(c.x,c.y-1));
+		areBackground[2] = isBackground(new Point(c.x+1,c.y-1));
+		areBackground[3] = isBackground(new Point(c.x+1,c.y));
+		areBackground[4] = isBackground(new Point(c.x+1,c.y+1));
+		areBackground[5] = isBackground(new Point(c.x,c.y+1));
+		areBackground[6] = isBackground(new Point(c.x-1,c.y+1));
+		areBackground[7] = isBackground(new Point(c.x-1,c.y));
+		if (!areBackground[0]) {
+			firstIsStart = true;
+		}
+		if (!areBackground[1] && firstIsStart) {
+			firstIsComponent = true;
+			firstIsStart = false;
+		}
+		for (int i=0; i<areBackground.length; i++) {
+			if (!areBackground[i]) {
+				if (inComponentStart) {
+					inComponentStart = false;
+					inComponent = true;
+					componentCount++;
+				} else if (!inComponent) {
+					inComponentStart = true;
+				}
+			} else {
+				inComponent = false;
+				inComponentStart = false;
+			}
+		}
+		if (inComponent) {
+			lastIsComponent = true;
+		} else if (inComponentStart) {
+			lastIsStart = true;
+		}
+		if (lastIsComponent && firstIsComponent)
+			componentCount--;
+		else if (firstIsStart && lastIsStart)
+			componentCount++;
+		return componentCount;
+	}
+
+	private boolean isBackground (final Point p) {
+		if (p.x < 0 || p.x >= ψ.length || p.y < 0 || p.y >= ψ[0].length){
+			return true;
+		}
+		return ψ[p.x][p.y] == 0;
 	}
 
 	/**
