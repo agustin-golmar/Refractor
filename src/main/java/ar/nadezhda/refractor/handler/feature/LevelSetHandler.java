@@ -38,8 +38,8 @@ public class LevelSetHandler implements Handler {
     protected final Map<Point, Double> slin = new HashMap<>();
     protected final Map<Point, Double> slout = new HashMap<>();
     // Parámetros característicos de cada región:
-    protected final double[] θback = {0.0, 0.0, 0.0};
-    protected final double[] θobj = {0.0, 0.0, 0.0};
+    protected double[][] θback;
+    protected double[][] θobj;
     // Filtro de suavizado de curvas:
     protected final double[][] G = Matrix.gaussian(5, 1.0);
     // Conjuntos de curvas:
@@ -48,6 +48,7 @@ public class LevelSetHandler implements Handler {
     // Mapa de niveles y regiones:
     protected int[][] φ;
     protected int[][] ψ;
+    protected int[][] outers;
 
     /**
      * <p>Si es dinámico, los parámetros característicos se actualizan en cada
@@ -95,7 +96,7 @@ public class LevelSetHandler implements Handler {
             }
             mfr.forEach(Set::clear);
             mfa.forEach(Set::clear);
-            cycleOne(image.data);
+            cycleOne(image.data, state);
             final var map = new Image(image.getSource(), Matrix.colorFeatures(getContours(), image.data));
             final var key = ImageTool.buildKey("level-set", map, state.getKey());
             result.put(key, map);
@@ -130,7 +131,7 @@ public class LevelSetHandler implements Handler {
             mfa.add(new HashSet<>());
         }
         loadφ(image.data, targets);
-        loadθ(image.data);
+        loadθ(image.data, targets.length);
     }
 
     /**
@@ -149,13 +150,14 @@ public class LevelSetHandler implements Handler {
      * <p>Ciclo de expansión-contracción de curvas.</p>
      *
      * @param space La imagen a procesar, en RGB.
+     * @param state El estado de imagen para la cantidad de areas
      */
-    protected void cycleOne(final double[][][] space) {
+    protected void cycleOne(final double[][][] space, ImageState state) {
         final var Na = Math.max(space[0].length, space[0][0].length);
         boolean cycleOneFinish = false;
         final int[] m = {0};
         while (!cycleOneFinish) {
-            if (isDynamic) loadθ(space);
+            if (isDynamic) loadθ(space, state.getAreas().length);
             for (int i = 0; i < Na; ++i) {
                 for (int k = 0; k < lin.size(); ++k) {
                     m[0] = k;
@@ -181,7 +183,7 @@ public class LevelSetHandler implements Handler {
                             .forEach(p -> drainLout(p, m[0]));
                     update(lout.get(k), k);
                 }
-                if (isDynamic) loadθ(space);
+                if (isDynamic) loadθ(space,state.getAreas().length);
                 if (stoppingCriterion(space)) {
                     System.out.println("Cycle I, reach stopping criterion.");
                     cycleOneFinish = true;
@@ -270,7 +272,7 @@ public class LevelSetHandler implements Handler {
         int bestRegion = -1;
         double bestDistance = Double.POSITIVE_INFINITY;
         for (final int m : regions) {
-            final double d = distance(θobj, rgb);                                // TODO: Generalizar para 'm' regiones.
+            final double d = distance(θobj[m], rgb);
             if (d < bestDistance) {
                 bestDistance = d;
                 bestRegion = m;
@@ -325,6 +327,7 @@ public class LevelSetHandler implements Handler {
             H[k] = (int) targets[k].getHeight();
         }
         ψ = Matrix.flatIntAndEmptySpaceFrom(space);
+        outers = Matrix.flatIntAndEmptySpaceFrom(space);
         φ = Matrix.flatFilterToInt(space, (s, c, w, h) -> {
             for (int k = 0; k < targets.length; ++k) {
                 if (X[k] < w && w < X[k] + W[k] && Y[k] < h && h < Y[k] + H[k]) {
@@ -345,6 +348,7 @@ public class LevelSetHandler implements Handler {
             for (int k = 0; k < targets.length; ++k) {
                 if (X[k] - 1 <= w && w <= X[k] + W[k] + 1 && Y[k] - 1 <= h && h <= Y[k] + H[k] + 1) {
                     // Sobre 'lout'
+                    outers[w][h] = k;
                     lout.get(k).add(new Point(w, h));
                     return 1;
                 }
@@ -361,45 +365,50 @@ public class LevelSetHandler implements Handler {
      * considerablemente la performance.</p>
      *
      * @param space La imagen a procesar, en RGB.
+     * @param regionsAmount Cantidad de regiones
      */
-    protected void loadθ(final double[][][] space) {                        // TODO: Extender a 'm' regiones.
-        θback[0] = θback[1] = θback[2] = 0;
-        θobj[0] = θobj[1] = θobj[2] = 0;
-        int backSize = 0;
-        int objSize = 0;
+    protected void loadθ(final double[][][] space, int regionsAmount) {
+        θback = new double [regionsAmount][3];
+        θobj = new double [regionsAmount][3];
+        int[] backSize = new int[regionsAmount];
+        int[] objSize = new int [regionsAmount];
         for (int w = 0; w < space[0].length; ++w)
             for (int h = 0; h < space[0][0].length; ++h) {
                 switch (φ[w][h]) {
                     case -3:
                     case -1: {
-                        ++objSize;
-                        θobj[0] += space[0][w][h];
-                        θobj[1] += space[1][w][h];
-                        θobj[2] += space[2][w][h];
+                        ++objSize[ψ[w][h]];
+                        θobj[ψ[w][h]][0] += space[0][w][h];
+                        θobj[ψ[w][h]][1] += space[1][w][h];
+                        θobj[ψ[w][h]][2] += space[2][w][h];
                         break;
                     }
                     case 3:
                     case 1: {
-                        ++backSize;
-                        θback[0] += space[0][w][h];
-                        θback[1] += space[1][w][h];
-                        θback[2] += space[2][w][h];
+                        ++backSize[outers[w][h]];
+                        θback[outers[w][h]][0] += space[0][w][h];
+                        θback[outers[w][h]][1] += space[1][w][h];
+                        θback[outers[w][h]][2] += space[2][w][h];
                         break;
                     }
                 }
             }
-        if (0 < backSize) {
-            θback[0] /= backSize;
-            θback[1] /= backSize;
-            θback[2] /= backSize;
-        } else θback[0] = θback[1] = θback[2] = 0;
-        if (0 < objSize) {
-            θobj[0] /= objSize;
-            θobj[1] /= objSize;
-            θobj[2] /= objSize;
-        } else θobj[0] = θobj[1] = θobj[2] = 0;
-        System.out.println("\n(θback) = (" + θback[0] + ", " + θback[1] + ", " + θback[2] + ")");
-        System.out.println("(θobj) = (" + θobj[0] + ", " + θobj[1] + ", " + θobj[2] + ")");
+        for (int i=0;i<backSize.length;i++) {
+            if (0 < backSize[i]) {
+                θback[i][0] /= backSize[i];
+                θback[i][1] /= backSize[i];
+                θback[i][2] /= backSize[i];
+            } else θback[i][0] = θback[i][1] = θback[i][2] = 0;
+            System.out.println("(θback) = (" + θback[i][0] + ", " + θback[i][1] + ", " + θback[i][2] + ")");
+        }
+        for (int i=0;i<objSize.length;i++) {
+            if (0 < objSize[i]) {
+                θobj[i][0] /= objSize[i];
+                θobj[i][1] /= objSize[i];
+                θobj[i][2] /= objSize[i];
+            } else θobj[i][0] = θobj[i][1] = θobj[i][2] = 0;
+            System.out.println("(θobj) = (" + θobj[i][0] + ", " + θobj[i][1] + ", " + θobj[i][2] + ")");
+        }
     }
 
     /**
@@ -411,14 +420,14 @@ public class LevelSetHandler implements Handler {
      * @param m     El número de región.
      * @return La velocidad sobre ese píxel.
      */
-    protected double getSpeed(final double[][][] space, final Point x, final int m) {        // TODO: Generalizar para 'm'.
+    protected double getSpeed(final double[][][] space, final Point x, final int m) {
         final double[] rgb = {
                 space[0][x.x][x.y],
                 space[1][x.x][x.y],
                 space[2][x.x][x.y]
         };
         // TODO: Ver Rozitchner, pág. 27, para fórmulas más simples.
-        return Math.log(distance(θback, rgb) / distance(θobj, rgb));
+        return Math.log(distance(θback[m], rgb) / distance(θobj[m], rgb));
     }
 
     /**
