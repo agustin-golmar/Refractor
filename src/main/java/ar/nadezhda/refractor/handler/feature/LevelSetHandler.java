@@ -577,7 +577,7 @@ public class LevelSetHandler implements Handler {
         if (p.x < 0 || p.x >= ψ.length || p.y < 0 || p.y >= ψ[0].length) {
             return true;
         }
-        return ψ[p.x][p.y] == 0;
+        return ψ[p.x][p.y] == -1;
     }
 
     /**
@@ -668,7 +668,7 @@ public class LevelSetHandler implements Handler {
         if (p.x < 0 || p.x >= ψ.length || p.y < 0 || p.y >= ψ[0].length) {
             return false;
         }
-        return ψ[p.x][p.y] == 0;
+        return ψ[p.x][p.y] == -1;
     }
 
     private int getCircularIndex(int i, int size) {
