@@ -38,7 +38,7 @@ public class LevelSetHandler implements Handler {
     protected final Map<Point, Double> slin = new HashMap<>();
     protected final Map<Point, Double> slout = new HashMap<>();
     // Parámetros característicos de cada región:
-    protected double[][] θback;
+    protected double[] θback;
     protected double[][] θobj;
     // Filtro de suavizado de curvas:
     protected final double[][] G = Matrix.gaussian(5, 1.0);
@@ -48,7 +48,6 @@ public class LevelSetHandler implements Handler {
     // Mapa de niveles y regiones:
     protected int[][] φ;
     protected int[][] ψ;
-    protected int[][] outers;
 
     /**
      * <p>Si es dinámico, los parámetros característicos se actualizan en cada
@@ -124,7 +123,9 @@ public class LevelSetHandler implements Handler {
      */
     protected void loadFrame0(final ImageState state, final Image image) {
         final Rectangle[] targets = state.getAreas();
+        System.out.println(targets.length);
         for (int k = 0; k < targets.length; ++k) {
+            System.out.println(k);
             lin.add(new HashSet<>());
             lout.add(new HashSet<>());
             mfr.add(new HashSet<>());
@@ -327,7 +328,6 @@ public class LevelSetHandler implements Handler {
             H[k] = (int) targets[k].getHeight();
         }
         ψ = Matrix.flatIntAndEmptySpaceFrom(space);
-        outers = Matrix.flatIntAndEmptySpaceFrom(space);
         φ = Matrix.flatFilterToInt(space, (s, c, w, h) -> {
             for (int k = 0; k < targets.length; ++k) {
                 if (X[k] < w && w < X[k] + W[k] && Y[k] < h && h < Y[k] + H[k]) {
@@ -348,7 +348,6 @@ public class LevelSetHandler implements Handler {
             for (int k = 0; k < targets.length; ++k) {
                 if (X[k] - 1 <= w && w <= X[k] + W[k] + 1 && Y[k] - 1 <= h && h <= Y[k] + H[k] + 1) {
                     // Sobre 'lout'
-                    outers[w][h] = k;
                     lout.get(k).add(new Point(w, h));
                     return 1;
                 }
@@ -368,15 +367,19 @@ public class LevelSetHandler implements Handler {
      * @param regionsAmount Cantidad de regiones
      */
     protected void loadθ(final double[][][] space, int regionsAmount) {
-        θback = new double [regionsAmount][3];
+        θback = new double[3];
+        θback[0] = 0.0;
+        θback[1] = 0.0;
+        θback[2] = 0.0;
         θobj = new double [regionsAmount][3];
-        int[] backSize = new int[regionsAmount];
+        int backSize = 0;
         int[] objSize = new int [regionsAmount];
         for (int w = 0; w < space[0].length; ++w)
             for (int h = 0; h < space[0][0].length; ++h) {
                 switch (φ[w][h]) {
                     case -3:
                     case -1: {
+                        System.out.println("obj " + space[0][w][h] + ","  + space[1][w][h] + "," + space[2][w][h]);
                         ++objSize[ψ[w][h]];
                         θobj[ψ[w][h]][0] += space[0][w][h];
                         θobj[ψ[w][h]][1] += space[1][w][h];
@@ -385,22 +388,21 @@ public class LevelSetHandler implements Handler {
                     }
                     case 3:
                     case 1: {
-                        ++backSize[outers[w][h]];
-                        θback[outers[w][h]][0] += space[0][w][h];
-                        θback[outers[w][h]][1] += space[1][w][h];
-                        θback[outers[w][h]][2] += space[2][w][h];
+                        ++backSize;
+                        //System.out.println("back " + space[0][w][h] + ","  + space[1][w][h] + "," + space[2][w][h]);
+                        θback[0] += space[0][w][h];
+                        θback[1] += space[1][w][h];
+                        θback[2] += space[2][w][h];
                         break;
                     }
                 }
             }
-        for (int i=0;i<backSize.length;i++) {
-            if (0 < backSize[i]) {
-                θback[i][0] /= backSize[i];
-                θback[i][1] /= backSize[i];
-                θback[i][2] /= backSize[i];
-            } else θback[i][0] = θback[i][1] = θback[i][2] = 0;
-            System.out.println("(θback) = (" + θback[i][0] + ", " + θback[i][1] + ", " + θback[i][2] + ")");
-        }
+        if (0 < backSize) {
+            θback[0] /= backSize;
+            θback[1] /= backSize;
+            θback[2] /= backSize;
+        } else θback[0] = θback[1] = θback[2] = 0;
+        System.out.println("(tita back)" + θback[0] + ',' + θback[1] + ',' + θback[2]);
         for (int i=0;i<objSize.length;i++) {
             if (0 < objSize[i]) {
                 θobj[i][0] /= objSize[i];
@@ -426,8 +428,9 @@ public class LevelSetHandler implements Handler {
                 space[1][x.x][x.y],
                 space[2][x.x][x.y]
         };
+
         // TODO: Ver Rozitchner, pág. 27, para fórmulas más simples.
-        return Math.log(distance(θback[m], rgb) / distance(θobj[m], rgb));
+        return Math.log(distance(θback, rgb) / distance(θobj[m], rgb));
     }
 
     /**
