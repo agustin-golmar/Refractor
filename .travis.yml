@@ -1,0 +1,3 @@
+jdk: openjdk12
+language: java
+script: mvn clean package

@@ -29,14 +29,20 @@
 	<!-- Properties -->
 	<properties>
 		<final-name.jar>${project.artifactId}</final-name.jar>
-		<java.version>10</java.version>
+		<java.version>12</java.version>
 		<main.class>${project.groupId}.Main</main.class>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- Plugins -->
-		<asm.version>6.2</asm.version>
+		<asm.version>7.1</asm.version>
 		<!-- Dependencies -->
 		<javax.inject.version>1</javax.inject.version>
 		<opencv.version>2.4.13.6</opencv.version>
+		<org.openjfx.version>12.0.1</org.openjfx.version>
+		<javafx-base.version>${org.openjfx.version}</javafx-base.version>
+		<javafx-controls.version>${org.openjfx.version}</javafx-controls.version>
+		<javafx-fxml.version>${org.openjfx.version}</javafx-fxml.version>
+		<javafx-graphics.version>${org.openjfx.version}</javafx-graphics.version>
+		<javafx-swing.version>${org.openjfx.version}</javafx-swing.version>
 	</properties>
 
 	<!-- Dependencies -->
@@ -62,23 +68,28 @@
 		</dependency>
 		<dependency>
 			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-base</artifactId>
+			<version>${javafx-base.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-controls</artifactId>
-			<version>11.0.2</version>
+			<version>${javafx-controls.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-fxml</artifactId>
-			<version>11.0.2</version>
+			<version>${javafx-fxml.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openjfx</groupId>
-			<artifactId>javafx-base</artifactId>
-			<version>11.0.2</version>
+			<artifactId>javafx-graphics</artifactId>
+			<version>${javafx-graphics.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-swing</artifactId>
-			<version>11.0.2</version>
+			<version>${javafx-swing.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -94,6 +105,14 @@
 	<!-- Plugins -->
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.openjfx</groupId>
+				<artifactId>javafx-maven-plugin</artifactId>
+				<version>0.0.2</version>
+				<configuration>
+					<mainClass>${main.class}</mainClass>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>

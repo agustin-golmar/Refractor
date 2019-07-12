@@ -1,6 +1,7 @@
 [![...](res/readme-header.png)](https://github.com/agustin-golmar/Refractor)
-[![...](https://img.shields.io/badge/Java-v10.0-orange.svg)](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+[![...](https://img.shields.io/badge/Java-v12.0-orange.svg)](https://www.oracle.com/technetwork/java/javase/downloads/index.html)
 [![...](https://img.shields.io/badge/release-v1.0-blue.svg)](https://github.com/agustin-golmar/Refractor/releases)
+[![...](https://www.travis-ci.com/agustin-golmar/Refractor.svg?branch=master)](https://www.travis-ci.com/agustin-golmar/Refractor)
 
 # Refractor
 
@@ -100,6 +101,14 @@ $ java -Djava.library.path="C:/OpenCV-2.4.13.6/build/java/x64" -jar target/refra
 
 The library should be called __opencv\_java2413__. The extension doesn't
 matter.
+
+To run in _Eclipse IDE_, add the following VM arguments:
+
+```
+--module-path <...>\javafx-sdk-12.0.1\lib --add-modules javafx.base,javafx.controls,javafx.fxml,javafx.graphics,javafx.swing
+```
+
+Where __<...>__ represents the path to the [_OpenJFX SDK v12_](https://gluonhq.com/products/javafx/) installation folder.
 
 ## Designers
 
