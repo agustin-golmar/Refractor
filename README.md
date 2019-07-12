@@ -67,7 +67,7 @@ Currently, the following features are provided:
 ## Build
 
 To build the project, it is necessary to have _Maven +3.5.0_, and
-_Java SE 10 Release_ installed. Then, run:
+_Java SE 12 Release_ installed. Then, run:
 
 ```
 $ mvn clean package
