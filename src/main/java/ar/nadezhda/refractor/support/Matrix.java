@@ -12,8 +12,8 @@
 		public static final double NOTHING = 0.0;
 		public static final double BORDER = 0.5;
 		public static final double CORNER = 1.0;
-		public static final double CONTOUR = 2.0;
-		public static final double OUTTER_CONTOUR = 3.0;
+		public static final double[] CONTOUR = {2.0, 4.0, 6.0};
+		public static final double[] OUTTER_CONTOUR = {3.0,5.0,7.0};
 
 		public static double [][][] emptySpaceFrom(final double [][][] space) {
 			return new double [space.length][space[0].length][space[0][0].length];
@@ -235,15 +235,35 @@
 						result[1][w][h] = 0.0;
 						result[2][w][h] = 230.0;
 					}
-					else if (features[0][w][h] == CONTOUR) {
+					else if (features[0][w][h] == CONTOUR[0]) {
 						result[0][w][h] = 255.0;
 						result[1][w][h] = 230.0;
 						result[2][w][h] = 40.0;
 					}
-					else if (features[0][w][h] == OUTTER_CONTOUR) {
+					else if (features[0][w][h] == OUTTER_CONTOUR[0]) {
 						result[0][w][h] = 255.0;
 						result[1][w][h] = 0.0;
 						result[2][w][h] = 230.0;
+					}
+					else if (features[0][w][h] == CONTOUR[1]) {
+						result[0][w][h] = 255.0;
+						result[1][w][h] = 40.0;
+						result[2][w][h] = 230.0;
+					}
+					else if (features[0][w][h] == OUTTER_CONTOUR[1]) {
+						result[0][w][h] = 0.0;
+						result[1][w][h] = 40;
+						result[2][w][h] = 255.0;
+					}
+					else if (features[0][w][h] == CONTOUR[2]) {
+						result[0][w][h] = 255.0;
+						result[1][w][h] = 255.0;
+						result[2][w][h] = 40.0;
+					}
+					else if (features[0][w][h] == OUTTER_CONTOUR[2]) {
+						result[0][w][h] = 0.0;
+						result[1][w][h] = 0.0;
+						result[2][w][h] = 255.0;
 					}
 				}
 			return result;
