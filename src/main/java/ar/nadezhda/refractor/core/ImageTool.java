@@ -143,10 +143,17 @@
 		}
 
 		public static int ARGB(final Image image, final int w, final int h) {
-			final int red = Byte.toUnsignedInt(image.rawRed()[w][h]);
-			final int green = Byte.toUnsignedInt(image.rawGreen()[w][h]);
-			final int blue = Byte.toUnsignedInt(image.rawBlue()[w][h]);
-			return (red << 16) | (green << 8) | (blue);
+			if (3 == image.getChannels()) {
+				final int red = Byte.toUnsignedInt(image.rawRed()[w][h]);
+				final int green = Byte.toUnsignedInt(image.rawGreen()[w][h]);
+				final int blue = Byte.toUnsignedInt(image.rawBlue()[w][h]);
+				return (red << 16) | (green << 8) | (blue);
+			}
+			else {
+				// For 1 channel only...
+				final int gray = Byte.toUnsignedInt(image.rawGray()[w][h]);
+				return (gray << 16) | (gray << 8) | (gray);
+			}
 		}
 
 		public static String buildKey(final String action, final Image result,
