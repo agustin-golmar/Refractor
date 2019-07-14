@@ -238,6 +238,7 @@
 				<Button fx:id = "display" text = "Display" onAction = "#control"/>
 				<Button fx:id = "histogram" text = "Histogram" onAction = "#control"/>
 				<Button fx:id = "remove" text = "Remove" onAction = "#control"/>
+				<Button fx:id = "reset" text = "Reset" onAction = "#control"/>
 				<CheckBox fx:id = "displayNew" text = "Display on creation"/>
 			</HBox>
 			<ListView fx:id = "keys" minWidth = "500"/>

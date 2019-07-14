@@ -9,10 +9,8 @@ import ar.nadezhda.refractor.interfaces.Compressor;
 import ar.nadezhda.refractor.interfaces.Handler;
 import ar.nadezhda.refractor.support.Matrix;
 import ar.nadezhda.refractor.support.Timer;
-
 import java.awt.Point;
 import java.util.*;
-
 import javafx.event.ActionEvent;
 import javafx.scene.control.CheckBox;
 import javafx.scene.shape.Rectangle;

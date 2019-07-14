@@ -13,14 +13,15 @@ import javafx.scene.shape.Rectangle;
 
 public class ImageState {
 
-	protected Rectangle area;
-	protected final List<Rectangle> areas = new ArrayList<>();
+	protected final List<Rectangle> areas;
 	protected final ImageView view;
 	protected final Image image;
 	protected final Pane root;
 	protected final Point anchor;
 	protected final String key;
+
 	protected double windowSum;
+	protected Rectangle area;
 
 	public ImageState(final String key, final ImageView view, final Image image) {
 		this.key = key;
@@ -35,6 +36,7 @@ public class ImageState {
 		this.root.getChildren().add(area);
 		this.view = view;
 		this.image = image;
+		this.areas = new ArrayList<>();
 	}
 
 	public Rectangle getArea() {
@@ -42,8 +44,8 @@ public class ImageState {
 	}
 
 	public Rectangle[] getAreas() {
-	    return areas.toArray(new Rectangle[0]);
-    }
+		return areas.toArray(Rectangle[]::new);
+	}
 
 	public String getKey() {
 		return key;
@@ -70,7 +72,7 @@ public class ImageState {
 	}
 
 	public ImageState setStartArea(final double x, final double y) {
-	    resetArea();
+		resetArea();
 		anchor.setLocation(Math.max(0, Math.min(x, image.getWidth())), Math.max(0, Math.min(y, image.getHeight())));
 		area.setX(anchor.x);
 		area.setY(anchor.y);
@@ -88,13 +90,13 @@ public class ImageState {
 	}
 
 	public ImageState resetArea() {
-	    area = new Rectangle();
-        this.area.setMouseTransparent(true);
-        this.area.setFill(Color.rgb(255, 255, 255, 0.1));
-        this.area.setStroke(Color.BLACK);
-        this.area.getStrokeDashArray().add(5.0);
-        this.area.setManaged(false);
-        this.root.getChildren().add(area);
+		area = new Rectangle();
+		this.area.setMouseTransparent(true);
+		this.area.setFill(Color.rgb(255, 255, 255, 0.1));
+		this.area.setStroke(Color.BLACK);
+		this.area.getStrokeDashArray().add(5.0);
+		this.area.setManaged(false);
+		this.root.getChildren().add(area);
 		return this;
 	}
 
@@ -451,11 +453,18 @@ public class ImageState {
 		return sum / count;
 	}
 
-    public void finishArea(double x, double y) {
-	    updateArea(x,y);
-	    areas.add(area);
-	    areas.forEach(System.out::println);
-        System.out.println("----------");
+	public void finishArea(double x, double y) {
+		updateArea(x, y);
+		areas.add(area);
+		areas.forEach(System.out::println);
+		System.out.println("----------");
 
-    }
+	}
+
+	public void resetAreas() {
+		System.out.println("Childrens: " + root.getChildren().size());
+		root.getChildren().removeIf(n -> n instanceof Rectangle);
+		areas.clear();
+		System.out.println("Childrens AFTER: " + root.getChildren().size());
+	}
 }
