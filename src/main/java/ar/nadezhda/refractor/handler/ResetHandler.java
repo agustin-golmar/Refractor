@@ -15,7 +15,7 @@ public class ResetHandler implements Handler {
 
 	@Override
 	public Map<String, Image> handle(final List<ImageState> states, final ActionEvent action) {
-		states.stream().forEach(ImageState::resetAreas);
+		states.forEach(ImageState::resetAreas);
 		return Collections.emptyMap();
 	}
 
