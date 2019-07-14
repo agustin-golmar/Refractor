@@ -456,15 +456,10 @@ public class ImageState {
 	public void finishArea(double x, double y) {
 		updateArea(x, y);
 		areas.add(area);
-		areas.forEach(System.out::println);
-		System.out.println("----------");
-
 	}
 
 	public void resetAreas() {
-		System.out.println("Childrens: " + root.getChildren().size());
 		root.getChildren().removeIf(n -> n instanceof Rectangle);
 		areas.clear();
-		System.out.println("Childrens AFTER: " + root.getChildren().size());
 	}
 }
