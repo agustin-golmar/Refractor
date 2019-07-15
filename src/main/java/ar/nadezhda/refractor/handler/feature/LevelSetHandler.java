@@ -176,56 +176,64 @@ public class LevelSetHandler implements Handler {
 	 */
 	protected void cycleOne(final double[][][] space, ImageState state) {
 		final var Na = Math.max(space[0].length, space[0][0].length);
+		boolean reachStoppingCriterion = false;
+		int maxRunnings = 2;
 		System.out.println("Running " + Na + " maximum iterations.");
-		boolean cycleOneFinish = false;
-		final int[] m = {0};
-		while (!cycleOneFinish) {
-			if (isDynamic) {
-				loadθ(space, state.getAreas().length);
-			}
+		do {
+			// Step 2:
 			for (int i = 0; i < Na; ++i) {
 				System.out.println("Running iteration " + i + "...");
 				for (int k = 0; k < lin.size(); ++k) {
 					System.out.println("\tRunning level-set " + k + ".");
-					m[0] = k;
+					final int m = k;
 					slin.clear();
 					slout.clear();
-					lout.get(k).stream().forEach(p -> slout.put(p, getSpeed(space, p, m[0])));
-					lin.get(k).stream().forEach(p -> slin.put(p, getSpeed(space, p, m[0])));
-					lout.get(k).stream().filter(p -> 0.0 < slout.get(p)).forEach(p -> switchIn(p, m[0]));
+					// Computar velocidades:
+					lout.get(k).stream()
+						.forEach(p -> slout.put(p, getSpeed(space, p, m)));
+					lin.get(k).stream()
+						.forEach(p -> slin.put(p, getSpeed(space, p, m)));
+					// Realizar intercambios entre contornos:
+					lout.get(k).stream()
+						.filter(p -> 0.0 < slout.get(p))
+						.forEach(p -> switchIn(p, m));
 					update(lout.get(k), k);
-					lin.get(k).stream().forEach(p -> drainLin(p, m[0]));
+					lin.get(k).stream()
+						.forEach(p -> drainLin(p, m));
 					update(lin.get(k), k);
-					lin.get(k).stream().filter(slin::containsKey).filter(p -> slin.get(p) < 0.0)
-							.forEach(p -> switchOut(p, m[0]));
+					lin.get(k).stream()
+						.filter(slin::containsKey)
+						.filter(p -> slin.get(p) < 0.0)
+						.forEach(p -> switchOut(p, m));
 					update(lin.get(k), k);
-					lout.get(k).stream().forEach(p -> drainLout(p, m[0]));
+					lout.get(k).stream()
+						.forEach(p -> drainLout(p, m));
 					update(lout.get(k), k);
+				}
+				if (stoppingCriterion(space)) {
+					System.out.println("Cycle I, reach stopping-criterion.");
+					reachStoppingCriterion = true;
+					break;
 				}
 				if (isDynamic) {
 					System.out.println("Reloading feature vectors again.");
 					loadθ(space, state.getAreas().length);
 				}
-				if (stoppingCriterion(space)) {
-					System.out.println("Cycle I, reach stopping criterion.");
-					cycleOneFinish = true;
-					break;
-				}
-				else {
-					// Stopping-criterion fail.
-				}
 			}
+			if (!reachStoppingCriterion) {
+				System.out.println("Cannot reach stopping-criterion after "
+						+ Na + " iterations on every target.");
+			}
+			// Step 3:
 			if (isFiltered) {
 				System.out.println("Running cycle II...");
 				cycleTwo(space);
 			}
-			if (!cycleOneFinish) {
-				System.out.println("Cannot reach stopping-criterion after "
-						+ Na + " iterations. Running again.");
-				break;																			// TODO: remover el 'break;'
-			}
+			// Step 4:
+			--maxRunnings;
 		}
-		System.out.println("Cycle I, ended.");
+		while (!reachStoppingCriterion && 0 < maxRunnings);
+		System.out.println("Cycle I, ended. Applying likelihood test...");
 		likelihoodTest(space);
 	}
 
@@ -239,17 +247,22 @@ public class LevelSetHandler implements Handler {
 	 * @param space La imagen a procesar, en RGB.
 	 */
 	protected void cycleTwo(final double[][][] space) {
-		final int[] m = { 0 };
 		for (int i = 0; i < G.length; ++i) {
 			for (int k = 0; k < lin.size(); ++k) {
-				m[0] = k;
-				lout.get(k).stream().filter(p -> Matrix.convolution(φ, G, p) < 0).forEach(p -> switchIn(p, m[0]));
+				final int m = k;
+				lout.get(k).stream()
+					.filter(p -> Matrix.convolution(φ, G, p) < 0.0)
+					.forEach(p -> switchIn(p, m));
 				update(lout.get(k), k);
-				lin.get(k).stream().forEach(p -> drainLin(p, m[0]));
+				lin.get(k).stream()
+					.forEach(p -> drainLin(p, m));
 				update(lin.get(k), k);
-				lin.get(k).stream().filter(p -> 0 < Matrix.convolution(φ, G, p)).forEach(p -> switchOut(p, m[0]));
+				lin.get(k).stream()
+					.filter(p -> 0.0 < Matrix.convolution(φ, G, p))
+					.forEach(p -> switchOut(p, m));
 				update(lin.get(k), k);
-				lout.get(k).stream().forEach(p -> drainLout(p, m[0]));
+				lout.get(k).stream()
+					.forEach(p -> drainLout(p, m));
 				update(lout.get(k), k);
 			}
 		}
@@ -294,7 +307,9 @@ public class LevelSetHandler implements Handler {
 	protected int maximal(final double[][][] space, final Set<Integer> regions, final Point x) {
 		if (regions.isEmpty())
 			return -1;
-		final double[] rgb = { space[0][x.x][x.y], space[1][x.x][x.y], space[2][x.x][x.y] };
+		final double[] rgb = {
+			space[0][x.x][x.y], space[1][x.x][x.y], space[2][x.x][x.y]
+		};
 		int bestRegion = -1;
 		double bestDistance = Double.POSITIVE_INFINITY;
 		for (final int m : regions) {
@@ -316,8 +331,13 @@ public class LevelSetHandler implements Handler {
 	 */
 	protected void likelihoodTest(final double[][][] space) {
 		for (int k = 0; k < lout.size(); ++k) {
-			lout.get(k).stream().filter(p -> 1 < relaxedTopologicalNumber(p))
-					.forEachOrdered(p -> ψ[p.x][p.y] = maximal(space, S(p), p));
+			lout.get(k).stream()
+				.filter(p -> 1 < relaxedTopologicalNumber(p))
+				.forEachOrdered(p -> {
+					System.out.println("\tLevel " + φ[p.x][p.y] + ": "
+						+ ψ[p.x][p.y] + " to " + maximal(space, S(p), p));
+					ψ[p.x][p.y] = maximal(space, S(p), p);
+				});
 		}
 		System.out.println("Likelihood Test, ended.");
 	}
@@ -399,53 +419,55 @@ public class LevelSetHandler implements Handler {
 	 * @param space         La imagen a procesar, en RGB.
 	 * @param regionsAmount Cantidad de regiones
 	 */
-	protected void loadθ(final double[][][] space, int regionsAmount) {
-		θback = new double[3];
-		θback[0] = 0.0;
-		θback[1] = 0.0;
-		θback[2] = 0.0;
+	protected void loadθ(final double[][][] space, final int regionsAmount) {
+		System.out.println("Regions for loadθ: " + regionsAmount);
+		θback = new double[] {0.0, 0.0, 0.0};
 		θobj = new double[regionsAmount][3];
 		int backSize = 0;
-		int[] objSize = new int[regionsAmount];
-		for (int w = 0; w < space[0].length; ++w)
+		final int[] objSize = new int[regionsAmount];
+		for (int w = 0; w < space[0].length; ++w) {
 			for (int h = 0; h < space[0][0].length; ++h) {
 				switch (φ[w][h]) {
-				case -3:
-				case -1: {
-					System.out.println("obj " + space[0][w][h] + "," + space[1][w][h] + "," + space[2][w][h]);
-					++objSize[ψ[w][h]];
-					θobj[ψ[w][h]][0] += space[0][w][h];
-					θobj[ψ[w][h]][1] += space[1][w][h];
-					θobj[ψ[w][h]][2] += space[2][w][h];
-					break;
-				}
-				case 3:
-				case 1: {
-					++backSize;
-					// System.out.println("back " + space[0][w][h] + "," + space[1][w][h] + "," +
-					// space[2][w][h]);
-					θback[0] += space[0][w][h];
-					θback[1] += space[1][w][h];
-					θback[2] += space[2][w][h];
-					break;
-				}
+					case -3:
+					case -1: {
+						++objSize[ψ[w][h]];
+						θobj[ψ[w][h]][0] += space[0][w][h];
+						θobj[ψ[w][h]][1] += space[1][w][h];
+						θobj[ψ[w][h]][2] += space[2][w][h];
+						break;
+					}
+					case 3:
+					case 1: {
+						++backSize;
+						θback[0] += space[0][w][h];
+						θback[1] += space[1][w][h];
+						θback[2] += space[2][w][h];
+						break;
+					}
 				}
 			}
+		}
+		System.out.println("Pixels in background: " + backSize);
+		System.out.println("\tθback(+) = (" + θback[0] + ", " + θback[1] + ", " + θback[2] + ")");
 		if (0 < backSize) {
 			θback[0] /= backSize;
 			θback[1] /= backSize;
 			θback[2] /= backSize;
-		} else
+		} else {
 			θback[0] = θback[1] = θback[2] = 0;
-		System.out.println("(tita back)" + θback[0] + ',' + θback[1] + ',' + θback[2]);
-		for (int i = 0; i < objSize.length; i++) {
+		}
+		System.out.println("\tθback = (" + θback[0] + ", " + θback[1] + ", " + θback[2] + ")");
+		for (int i = 0; i < objSize.length; ++i) {
+			System.out.println("Pixels in region " + i + ": " + objSize[i]);
+			System.out.println("\tθobj(" + i + ", +) = (" + θobj[i][0] + ", " + θobj[i][1] + ", " + θobj[i][2] + ")");
 			if (0 < objSize[i]) {
 				θobj[i][0] /= objSize[i];
 				θobj[i][1] /= objSize[i];
 				θobj[i][2] /= objSize[i];
-			} else
+			} else {
 				θobj[i][0] = θobj[i][1] = θobj[i][2] = 0;
-			System.out.println("(θobj) = (" + θobj[i][0] + ", " + θobj[i][1] + ", " + θobj[i][2] + ")");
+			}
+			System.out.println("\tθobj(" + i + ") = (" + θobj[i][0] + ", " + θobj[i][1] + ", " + θobj[i][2] + ")");
 		}
 	}
 
@@ -461,9 +483,9 @@ public class LevelSetHandler implements Handler {
 	 * @return La velocidad sobre ese píxel.
 	 */
 	protected double getSpeed(final double[][][] space, final Point x, final int m) {
-		final double[] rgb = { space[0][x.x][x.y], space[1][x.x][x.y], space[2][x.x][x.y] };
-
-		// TODO: Ver Rozitchner, pág. 27, para fórmulas más simples.
+		final double[] rgb = {
+			space[0][x.x][x.y], space[1][x.x][x.y], space[2][x.x][x.y]
+		};
 		return Math.log(distance(θback, rgb) / distance(θobj[m], rgb));
 	}
 
@@ -478,11 +500,12 @@ public class LevelSetHandler implements Handler {
 	 */
 	protected boolean stoppingCriterion(final double[][][] space) {
 		boolean condition = true;
-		final int[] m = { 0 };
 		for (int k = 0; k < lin.size(); ++k) {
-			m[0] = k;
-			condition = condition && lout.get(k).stream().allMatch(p -> getSpeed(space, p, m[0]) <= 0.0)
-					&& lin.get(k).stream().allMatch(p -> 0.0 <= getSpeed(space, p, m[0]));
+			final int m = k;
+			final boolean converge = lout.get(k).stream().allMatch(p -> getSpeed(space, p, m) <= 0.0)
+				&& lin.get(k).stream().allMatch(p -> 0.0 <= getSpeed(space, p, m));
+			condition = condition && converge;
+			if (converge) System.out.println("Region " + k + " converges!");
 		}
 		return condition;
 	}
@@ -698,8 +721,9 @@ public class LevelSetHandler implements Handler {
 
 	private boolean anyIsTrue(boolean... values) {
 		for (boolean v : values) {
-			if (v)
+			if (v) {
 				return true;
+			}
 		}
 		return false;
 	}

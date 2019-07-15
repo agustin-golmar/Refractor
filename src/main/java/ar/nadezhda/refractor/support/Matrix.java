@@ -68,7 +68,7 @@
 			return convolution(space, kernel, (c, w, h, k, s) -> k * s);
 		}
 
-		public static int convolution(
+		public static double convolution(
 				final int [][] space, final double [][] kernel,
 				final Point point) {
 			final var dim = kernel.length;
@@ -83,7 +83,7 @@
 					if (-1 < ew && ew < width && -1 < eh && eh < height)
 						result += kernel[i][j] * space[ew][eh];
 				}
-			return (int) result;
+			return /*(int)*/ result;
 		}
 
 		public static int [][] convolution(
