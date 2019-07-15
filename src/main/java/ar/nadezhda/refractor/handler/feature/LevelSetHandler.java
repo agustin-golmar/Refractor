@@ -38,7 +38,7 @@ public class LevelSetHandler implements Handler {
 	protected final Map<Point, Double> slin = new HashMap<>();
 	protected final Map<Point, Double> slout = new HashMap<>();
 	// Parámetros característicos de cada región:
-	protected double[] θback;
+	protected double[][] θback;
 	protected double[][] θobj;
 	// Filtro de suavizado de curvas:
 	protected final double[][] G = Matrix.gaussian(5, 1.0);
@@ -66,6 +66,15 @@ public class LevelSetHandler implements Handler {
 
 	/**
 	 * <p>
+	 * Si es disjunto, se computa el θback utilizando los píxeles que no pertenecen
+	 * a ninguna región. Sino, se computa un θback para cada región 'm', donde el mismo se
+	 * compone del fondo más los píxeles de todas las demás regiones distitnas de 'm'.
+	 * </p>
+	 */
+	protected boolean isDisjoint = false;
+
+	/**
+	 * <p>
 	 * En general, el proceso de tracking es el siguiente:
 	 * <ol>
 	 * <li>Computar la función inicial <b>φ</b> y las curvas iniciales.</li>
@@ -87,6 +96,7 @@ public class LevelSetHandler implements Handler {
 		states.sort(Comparator.comparing(ImageState::getKey));
 		isDynamic = ((CheckBox) Main.namespace.get("isDynamic")).isSelected();
 		isFiltered = ((CheckBox) Main.namespace.get("isFiltered")).isSelected();
+		isDisjoint = ((CheckBox) Main.namespace.get("isDisjoint")).isSelected();
 		lin.clear();
 		lout.clear();
 		mfr.clear();
@@ -107,7 +117,7 @@ public class LevelSetHandler implements Handler {
 			mfa.forEach(Set::clear);
 			System.out.println("Begin cycle I...");
 			cycleOne(image.data, state);
-			final var map = new Image(image.getSource(), Matrix.colorFeatures(getContours(), image.data));
+			final var map = new Image(image.getSource(), Matrix.colorLevelSets(getContours(), image.data));
 			final var key = ImageTool.buildKey("level-set", map, state.getKey());
 			result.put(key, map);
 			reportFPT(index[0]++, timer);
@@ -177,14 +187,14 @@ public class LevelSetHandler implements Handler {
 	protected void cycleOne(final double[][][] space, ImageState state) {
 		final var Na = Math.max(space[0].length, space[0][0].length);
 		boolean reachStoppingCriterion = false;
-		int maxRunnings = 2;
+		int maxRunnings = 1;
 		System.out.println("Running " + Na + " maximum iterations.");
 		do {
 			// Step 2:
 			for (int i = 0; i < Na; ++i) {
-				System.out.println("Running iteration " + i + "...");
+				//System.out.println("Running iteration " + i + "...");
 				for (int k = 0; k < lin.size(); ++k) {
-					System.out.println("\tRunning level-set " + k + ".");
+					//System.out.println("\tRunning level-set " + k + ".");
 					final int m = k;
 					slin.clear();
 					slout.clear();
@@ -227,7 +237,9 @@ public class LevelSetHandler implements Handler {
 			// Step 3:
 			if (isFiltered) {
 				System.out.println("Running cycle II...");
+				//validator();
 				cycleTwo(space);
+				//validator();
 			}
 			// Step 4:
 			--maxRunnings;
@@ -334,8 +346,8 @@ public class LevelSetHandler implements Handler {
 			lout.get(k).stream()
 				.filter(p -> 1 < relaxedTopologicalNumber(p))
 				.forEachOrdered(p -> {
-					System.out.println("\tLevel " + φ[p.x][p.y] + ": "
-						+ ψ[p.x][p.y] + " to " + maximal(space, S(p), p));
+					//System.out.println("\tLevel " + φ[p.x][p.y] + ": "
+					//	+ ψ[p.x][p.y] + " to " + maximal(space, S(p), p));
 					ψ[p.x][p.y] = maximal(space, S(p), p);
 				});
 		}
@@ -421,9 +433,9 @@ public class LevelSetHandler implements Handler {
 	 */
 	protected void loadθ(final double[][][] space, final int regionsAmount) {
 		System.out.println("Regions for loadθ: " + regionsAmount);
-		θback = new double[] {0.0, 0.0, 0.0};
+		θback = new double[regionsAmount][3];
 		θobj = new double[regionsAmount][3];
-		int backSize = 0;
+		final int[] backSize = new int[regionsAmount];
 		final int[] objSize = new int[regionsAmount];
 		for (int w = 0; w < space[0].length; ++w) {
 			for (int h = 0; h < space[0][0].length; ++h) {
@@ -434,29 +446,47 @@ public class LevelSetHandler implements Handler {
 						θobj[ψ[w][h]][0] += space[0][w][h];
 						θobj[ψ[w][h]][1] += space[1][w][h];
 						θobj[ψ[w][h]][2] += space[2][w][h];
+						if (isDisjoint) {
+							for (int i = 0; i < regionsAmount; ++i) {
+								/*
+								 * Para cada región diferente a la actual,
+								 * agregarle estos píxeles a su θback.
+								 */
+								if (i != ψ[w][h]) {
+									++backSize[i];
+									θback[i][0] += space[0][w][h];
+									θback[i][1] += space[1][w][h];
+									θback[i][2] += space[2][w][h];
+								}
+							}
+						}
 						break;
 					}
 					case 3:
 					case 1: {
-						++backSize;
-						θback[0] += space[0][w][h];
-						θback[1] += space[1][w][h];
-						θback[2] += space[2][w][h];
+						for (int i = 0; i < regionsAmount; ++i) {
+							++backSize[i];
+							θback[i][0] += space[0][w][h];
+							θback[i][1] += space[1][w][h];
+							θback[i][2] += space[2][w][h];
+						}
 						break;
 					}
 				}
 			}
 		}
-		System.out.println("Pixels in background: " + backSize);
-		System.out.println("\tθback(+) = (" + θback[0] + ", " + θback[1] + ", " + θback[2] + ")");
-		if (0 < backSize) {
-			θback[0] /= backSize;
-			θback[1] /= backSize;
-			θback[2] /= backSize;
-		} else {
-			θback[0] = θback[1] = θback[2] = 0;
+		for (int i = 0; i < backSize.length; ++i) {
+			System.out.println("Pixels in background " + i + ": " + backSize[i]);
+			System.out.println("\tθback(+) = (" + θback[i][0] + ", " + θback[i][1] + ", " + θback[i][2] + ")");
+			if (0 < backSize[i]) {
+				θback[i][0] /= backSize[i];
+				θback[i][1] /= backSize[i];
+				θback[i][2] /= backSize[i];
+			} else {
+				θback[i][0] = θback[i][1] = θback[i][2] = 0;
+			}
+			System.out.println("\tθback = (" + θback[i][0] + ", " + θback[i][1] + ", " + θback[i][2] + ")");
 		}
-		System.out.println("\tθback = (" + θback[0] + ", " + θback[1] + ", " + θback[2] + ")");
 		for (int i = 0; i < objSize.length; ++i) {
 			System.out.println("Pixels in region " + i + ": " + objSize[i]);
 			System.out.println("\tθobj(" + i + ", +) = (" + θobj[i][0] + ", " + θobj[i][1] + ", " + θobj[i][2] + ")");
@@ -486,7 +516,7 @@ public class LevelSetHandler implements Handler {
 		final double[] rgb = {
 			space[0][x.x][x.y], space[1][x.x][x.y], space[2][x.x][x.y]
 		};
-		return Math.log(distance(θback, rgb) / distance(θobj[m], rgb));
+		return Math.log(distance(θback[m], rgb) / distance(θobj[m], rgb));
 	}
 
 	/**
@@ -505,7 +535,7 @@ public class LevelSetHandler implements Handler {
 			final boolean converge = lout.get(k).stream().allMatch(p -> getSpeed(space, p, m) <= 0.0)
 				&& lin.get(k).stream().allMatch(p -> 0.0 <= getSpeed(space, p, m));
 			condition = condition && converge;
-			if (converge) System.out.println("Region " + k + " converges!");
+			//if (converge) System.out.println("Region " + k + " converges!");
 		}
 		return condition;
 	}
@@ -845,16 +875,19 @@ public class LevelSetHandler implements Handler {
 		final var rightup = new Point(x.x + 1, x.y - 1);
 		final var leftdown = new Point(x.x - 1, x.y + 1);
 		final var rightdown = new Point(x.x + 1, x.y + 1);
-		final boolean condition = (up.y < 0 || φ[up.x][up.y] < 0) && (φ[0].length <= down.y || φ[down.x][down.y] < 0)
-				&& (left.x < 0 || φ[left.x][left.y] < 0) && (φ.length <= right.x || φ[right.x][right.y] < 0)
-				&& (leftup.x < 0 || leftup.y < 0 || φ[leftup.x][leftup.y] < 0)
-				&& (φ.length <= rightup.x || rightup.y < 0 || φ[rightup.x][rightup.y] < 0)
-				&& (leftdown.x < 0 || φ[0].length <= leftdown.y || φ[leftdown.x][leftdown.y] < 0)
-				&& (φ.length <= rightdown.x || φ[0].length <= rightdown.y || φ[rightdown.x][rightdown.y] < 0);
+		final boolean condition = (up.y < 0 || φ[up.x][up.y] < 0)
+			&& (φ[0].length <= down.y || φ[down.x][down.y] < 0)
+			&& (left.x < 0 || φ[left.x][left.y] < 0)
+			&& (φ.length <= right.x || φ[right.x][right.y] < 0)
+			&& (leftup.x < 0 || leftup.y < 0 || φ[leftup.x][leftup.y] < 0)
+			&& (φ.length <= rightup.x || rightup.y < 0 || φ[rightup.x][rightup.y] < 0)
+			&& (leftdown.x < 0 || φ[0].length <= leftdown.y || φ[leftdown.x][leftdown.y] < 0)
+			&& (φ.length <= rightdown.x || φ[0].length <= rightdown.y || φ[rightdown.x][rightdown.y] < 0);
 		if (condition) {
 			mfr.get(m).add(x);
+			//System.out.println("Lin(φ, ψ) = (" + φ[x.x][x.y] + ", " + ψ[x.x][x.y] + ") -> (" + -3 + ", " + m + ")");
 			φ[x.x][x.y] = -3;
-			ψ[x.x][x.y] = m; // TODO: Verificar (no está en los papers, pero tiene sentido).
+			ψ[x.x][x.y] = m;
 		}
 	}
 
@@ -878,16 +911,20 @@ public class LevelSetHandler implements Handler {
 		final var rightup = new Point(x.x + 1, x.y - 1);
 		final var leftdown = new Point(x.x - 1, x.y + 1);
 		final var rightdown = new Point(x.x + 1, x.y + 1);
-		final boolean condition = (up.y < 0 || φ[up.x][up.y] > 0) && (φ[0].length <= down.y || φ[down.x][down.y] > 0)
-				&& (left.x < 0 || φ[left.x][left.y] > 0) && (φ.length <= right.x || φ[right.x][right.y] > 0)
+		final boolean condition = (up.y < 0 || φ[up.x][up.y] > 0)
+				&& (φ[0].length <= down.y || φ[down.x][down.y] > 0)
+				&& (left.x < 0 || φ[left.x][left.y] > 0)
+				&& (φ.length <= right.x || φ[right.x][right.y] > 0)
 				&& (leftup.x < 0 || leftup.y < 0 || φ[leftup.x][leftup.y] > 0)
 				&& (φ.length <= rightup.x || rightup.y < 0 || φ[rightup.x][rightup.y] > 0)
 				&& (leftdown.x < 0 || φ[0].length <= leftdown.y || φ[leftdown.x][leftdown.y] > 0)
 				&& (φ.length <= rightdown.x || φ[0].length <= rightdown.y || φ[rightdown.x][rightdown.y] > 0);
 		if (condition) {
 			mfr.get(m).add(x);
+			//System.out.println("Lout(φ, ψ, m = " + m + ") = (" + φ[x.x][x.y] + ", " + ψ[x.x][x.y]
+			//	+ ") -> (" + 3 + ", " + -1 + ")");
 			φ[x.x][x.y] = 3;
-			ψ[x.x][x.y] = -1; // TODO: Verificar (está en Rozitchner, pero no en Shi/Karl).
+			ψ[x.x][x.y] = -1;
 		}
 	}
 
@@ -900,14 +937,39 @@ public class LevelSetHandler implements Handler {
 	 *
 	 * @return La imagen con las curvas marcadas bajo alguna constante.
 	 */
-	protected double[][][] getContours() {
-		final var contours = new double[1][φ.length][φ[0].length];
+	protected int[][] getContours() {
+		final var contours = new int[φ.length][φ[0].length];
+		final int max = Matrix.CONTOUR_COLORS.length;
 		for (int k = 0; k < lin.size(); ++k) {
-			int finalK = k;
-			lin.get(k).stream().forEach(p -> contours[0][p.x][p.y] = Matrix.CONTOUR[finalK %3]);
-			int finalK1 = k;
-			lout.get(k).stream().forEach(p -> contours[0][p.x][p.y] = Matrix.OUTTER_CONTOUR[finalK1 % 3]);
+			final int r = k;
+			lin.get(k).stream()
+				.forEach(p -> contours[p.x][p.y] = 1);
+			lout.get(k).stream()
+				.forEach(p -> contours[p.x][p.y] = (2 + r) % max);
 		}
 		return contours;
+	}
+
+	/**
+	 * <p>
+	 * Imprime la cantidad de píxeles en las listas <i>Lin</i> y <i>Lout</i> y
+	 * la cantidad de píxeles diferentes. Si las cantidades son iguales,
+	 * entonces las listas están bien formadas, ya que no se mantienen píxeles
+	 * duplicados en conjuntos (level-sets), de diferentes regiones.
+	 * </p>
+	 */
+	protected void validator() {
+		int linpoints = 0;
+		int loutpoints = 0;
+		var lins = new HashSet<>();
+		var louts = new HashSet<>();
+		for (int k = 0; k < lin.size(); ++k) {
+			linpoints += lin.get(k).size();
+			lins.addAll(lin.get(k));
+			loutpoints += lout.get(k).size();
+			louts.addAll(lout.get(k));
+		}
+		System.err.println("Lin Points: " + linpoints + " (" + lins.size() + " distincts).");
+		System.err.println("Lout Points: " + loutpoints + " (" + louts.size() + " distincts).");
 	}
 }
