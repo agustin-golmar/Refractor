@@ -900,11 +900,13 @@ public class LevelSetHandler implements Handler {
 	 *
 	 * @return La imagen con las curvas marcadas bajo alguna constante.
 	 */
-	protected double[][][] getContours() { // TODO: Agregar más colores.
+	protected double[][][] getContours() {
 		final var contours = new double[1][φ.length][φ[0].length];
 		for (int k = 0; k < lin.size(); ++k) {
-			lin.get(k).stream().forEach(p -> contours[0][p.x][p.y] = Matrix.CONTOUR);
-			lout.get(k).stream().forEach(p -> contours[0][p.x][p.y] = Matrix.OUTTER_CONTOUR);
+			int finalK = k;
+			lin.get(k).stream().forEach(p -> contours[0][p.x][p.y] = Matrix.CONTOUR[finalK %3]);
+			int finalK1 = k;
+			lout.get(k).stream().forEach(p -> contours[0][p.x][p.y] = Matrix.OUTTER_CONTOUR[finalK1 % 3]);
 		}
 		return contours;
 	}
